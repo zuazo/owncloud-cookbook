@@ -10,6 +10,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
 
   config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 443, host: 8443
 
   config.ssh.max_tries = 40
   config.ssh.timeout   = 120

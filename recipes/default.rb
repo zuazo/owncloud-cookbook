@@ -124,3 +124,16 @@ web_app 'owncloud' do
   port '80'
   enable true
 end
+
+if node['owncloud']['ssl']
+  include_recipe 'apache2::mod_ssl'
+  package 'ssl-cert' # generates a self-signed (snakeoil) certificate
+
+  web_app 'owncloud-ssl' do
+    template 'vhost.erb'
+    docroot node['owncloud']['dir']
+    server_name node['owncloud']['server_name']
+    port '443'
+    enable true
+  end
+end
