@@ -32,8 +32,8 @@ Vagrant.configure("2") do |config|
         "admin" => {
           "pass" => "changeme"
         },
-        "database" => {
-          "pass" => "changeme"
+        "config" => {
+          "dbpassword" => "changeme"
         }
       }
     }

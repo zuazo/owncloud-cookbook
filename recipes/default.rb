@@ -26,14 +26,14 @@ include_recipe 'database::mysql'
 include_recipe 'mysql::server'
 
 if Chef::Config[:solo]
-  if node['owncloud']['database']['pass'].nil? or
+  if node['owncloud']['config']['dbpassword'].nil? or
     node['owncloud']['admin']['pass'].nil?
     Chef::Application.fatal!(
       'You must set owncloud\'s database and admin passwords in chef-solo mode.'
     )
   end
 else
-  node.set_unless['owncloud']['database']['pass'] = secure_password
+  node.set_unless['owncloud']['config']['dbpassword'] = secure_password
   node.set_unless['owncloud']['admin']['pass'] = secure_password
   node.save
 end
@@ -50,16 +50,16 @@ mysql_connection_info = {
   :password => node['mysql']['server_root_password']
 }
 
-mysql_database node['owncloud']['database']['name'] do
+mysql_database node['owncloud']['config']['dbname'] do
   connection mysql_connection_info
   action :create
 end
 
-mysql_database_user node['owncloud']['database']['user'] do
+mysql_database_user node['owncloud']['config']['dbuser'] do
   connection mysql_connection_info
-  database_name node['owncloud']['database']['name']
+  database_name node['owncloud']['config']['dbname']
   host 'localhost'
-  password node['owncloud']['database']['pass']
+  password node['owncloud']['config']['dbpassword']
   privileges [:all]
   action :grant
 end
@@ -97,26 +97,6 @@ end
   end
 end
 
-template 'autoconfig.php' do
-  path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
-  source 'autoconfig.php.erb'
-  owner node['apache']['user']
-  group node['apache']['group']
-  mode 00640
-  variables(
-    :dbtype => node['owncloud']['database']['type'],
-    :dbname => node['owncloud']['database']['name'],
-    :dbuser => node['owncloud']['database']['user'],
-    :dbpass => node['owncloud']['database']['pass'],
-    :dbhost => node['owncloud']['database']['host'],
-    :dbprefix => node['owncloud']['database']['prefix'],
-    :admin_user => node['owncloud']['admin']['user'],
-    :admin_pass => node['owncloud']['admin']['pass'],
-    :data_dir => node['owncloud']['data_dir']
-  )
-  not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
-end
-
 web_app 'owncloud' do
   template 'vhost.erb'
   docroot node['owncloud']['dir']
@@ -135,5 +115,52 @@ if node['owncloud']['ssl']
     server_name node['owncloud']['server_name']
     port '443'
     enable true
+  end
+end
+
+template 'autoconfig.php' do
+  path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
+  source 'autoconfig.php.erb'
+  owner node['apache']['user']
+  group node['apache']['group']
+  mode 00640
+  variables(
+    :dbtype => node['owncloud']['config']['dbtype'],
+    :dbname => node['owncloud']['config']['dbname'],
+    :dbuser => node['owncloud']['config']['dbuser'],
+    :dbpass => node['owncloud']['config']['dbpassword'],
+    :dbhost => node['owncloud']['config']['dbhost'],
+    :dbprefix => node['owncloud']['config']['dbtableprefix'],
+    :admin_user => node['owncloud']['admin']['user'],
+    :admin_pass => node['owncloud']['admin']['pass'],
+    :data_dir => node['owncloud']['data_dir']
+  )
+  not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
+  notifies :restart, "service[apache2]", :immediately
+  notifies :get, "http_request[run setup]", :immediately
+end
+
+http_request "run setup" do
+  url "http://localhost/"
+  message ''
+  action :nothing
+end
+
+ruby_block "apply config" do
+  block do
+    config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
+    config = OwnCloud::Config.new(config_file)
+    # exotic case: change dbtype when sqlite3 driver is available
+    if node['owncloud']['config']['dbtype'] == 'sqlite' and config['dbtype'] == 'sqlite3'
+      node['owncloud']['config']['dbtype'] == config['dbtype']
+    end
+    config.merge(node['owncloud']['config'])
+    config.write
+    unless Chef::Config[:solo]
+      # store important options that where generated automatically by the setup
+      node.set_unless['owncloud']['config']['passwordsalt'] = config['passwordsalt']
+      node.set_unless['owncloud']['config']['instanceid'] = config['instanceid']
+      node.save
+    end
   end
 end

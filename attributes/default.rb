@@ -11,9 +11,9 @@ default['owncloud']['ssl'] = true
 default['owncloud']['admin']['user'] = 'admin'
 default['owncloud']['admin']['pass'] = nil
 
-default['owncloud']['database']['type'] = 'mysql'
-default['owncloud']['database']['name'] = 'owncloud'
-default['owncloud']['database']['user'] = 'owncloud'
-default['owncloud']['database']['pass'] = nil
-default['owncloud']['database']['host'] = 'localhost'
-default['owncloud']['database']['prefix'] = ''
+default['owncloud']['config']['dbtype'] = 'mysql'
+default['owncloud']['config']['dbname'] = 'owncloud'
+default['owncloud']['config']['dbuser'] = 'owncloud'
+default['owncloud']['config']['dbpassword'] = nil
+default['owncloud']['config']['dbhost'] = 'localhost'
+default['owncloud']['config']['dbtableprefix'] = ''
