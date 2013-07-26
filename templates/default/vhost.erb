@@ -26,13 +26,8 @@
 
   SSLEngine on
 
-  #   A self-signed (snakeoil) certificate can be created by installing
-  #   the ssl-cert package. See
-  #   /usr/share/doc/apache2.2-common/README.Debian.gz for more info.
-  #   If both key and certificate are stored in the same file, only the
-  #   SSLCertificateFile directive is needed.
-  SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
-  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+  SSLCertificateFile    <%= @params[:ssl_cert] %>
+  SSLCertificateKeyFile <%= @params[:ssl_key] %>
 
   BrowserMatch "MSIE [2-6]" \
     nokeepalive ssl-unclean-shutdown \
