@@ -11,6 +11,10 @@ module OwnCloud
       read
     end
 
+    def [](index)
+      @options[index]
+    end
+
     def merge(new_options)
       @options.merge!(new_options) if new_options.kind_of?(Hash)
     end
