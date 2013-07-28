@@ -111,6 +111,16 @@ mysql_database_user node['owncloud']['config']['dbuser'] do
 end
 
 #==============================================================================
+# Set up mail transfer agent
+#==============================================================================
+
+if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail')
+  node.default['postfix']['mail_type'] = 'client'
+  node.default['postfix']['mydomain'] = node['owncloud']['server_name']
+  include_recipe 'postfix::default'
+end
+
+#==============================================================================
 # Download and extract ownCloud
 #==============================================================================
 

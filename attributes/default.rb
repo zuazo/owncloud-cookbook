@@ -20,3 +20,13 @@ default['owncloud']['config']['dbuser'] = 'owncloud'
 default['owncloud']['config']['dbpassword'] = nil
 default['owncloud']['config']['dbhost'] = 'localhost'
 default['owncloud']['config']['dbtableprefix'] = ''
+
+default['owncloud']['config']['mail_smtpmode'] = 'sendmail'
+default['owncloud']['config']['mail_smtphost'] = '127.0.0.1'
+default['owncloud']['config']['mail_smtpport'] = 25
+default['owncloud']['config']['mail_smtptimeout'] = 10
+default['owncloud']['config']['mail_smtpsecure'] = ''
+default['owncloud']['config']['mail_smtpauth'] = false
+default['owncloud']['config']['mail_smtpauthtype'] = 'LOGIN'
+default['owncloud']['config']['mail_smtpname'] = ''
+default['owncloud']['config']['mail_smtppassword'] = ''
