@@ -127,21 +127,29 @@ end
 directory node['owncloud']['www_dir']
 
 basename = ::File.basename(node['owncloud']['download_url'])
+local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
-execute "extract owncloud" do
-  command <<-EOF
-      tar xfj '#{::File.join(Chef::Config[:file_cache_path], basename)}' \
-      --no-same-owner
-    EOF
-  cwd node['owncloud']['www_dir']
-  action :nothing
+http_request 'HEAD owncloud' do
+  message ''
+  url node['owncloud']['download_url']
+  action :head
+  if File.exists?(local_file)
+    headers "If-Modified-Since" => File.mtime(local_file).httpdate
+  end
+  notifies :create, "remote_file[download owncloud]", :immediately
 end
 
 remote_file "download owncloud" do
   source node['owncloud']['download_url']
-  path ::File.join(Chef::Config[:file_cache_path], basename)
-  action :create_if_missing
+  path local_file
+  action :nothing
   notifies :run, "execute[extract owncloud]", :immediately
+end
+
+execute "extract owncloud" do
+  command "tar xfj '#{local_file}' --no-same-owner"
+  cwd node['owncloud']['www_dir']
+  action :nothing
 end
 
 [
