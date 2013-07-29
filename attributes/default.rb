@@ -1,5 +1,5 @@
 
-default['owncloud']['version'] = '5.0.7'
+default['owncloud']['version'] = 'latest'
 default['owncloud']['download_url'] = "http://download.owncloud.org/community/owncloud-#{node['owncloud']['version']}.tar.bz2"
 
 default['owncloud']['www_dir'] = value_for_platform_family(

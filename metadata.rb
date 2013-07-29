@@ -24,7 +24,7 @@ attribute 'owncloud/version',
   :description => 'Version of ownCloud to install',
   :type => 'string',
   :required => 'optional',
-  :default => '"5.0.7"'
+  :default => '"latest"'
 
 attribute 'owncloud/download_url',
   :display_name => 'ownCloud Download Url',

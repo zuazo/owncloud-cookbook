@@ -33,7 +33,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['version']</code></td>
     <td>Version of ownCloud to install</td>
-    <td><code>"5.0.7"</code></td>
+    <td><code>"latest"</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['download_url']</code></td>
