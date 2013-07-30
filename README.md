@@ -150,6 +150,36 @@ Attributes
     <td>Password to use for sendmail mail, depends on mail_smtpauth if this is used</td>
     <td><code>""</code></td>
   </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['enabled']</code></td>
+    <td>Whether to enable ownCloud cron</td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['min']</code></td>
+    <td>Minute to run ownCloud cron at</td>
+    <td><code>"*/15"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['hour']</code></td>
+    <td>Hour to run ownCloud cron at</td>
+    <td><code>"*"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['day']</code></td>
+    <td>Day of month to run ownCloud cron at</td>
+    <td><code>"*"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['month']</code></td>
+    <td>Month to run ownCloud cron at</td>
+    <td><code>"*"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['cron']['weekday']</code></td>
+    <td>Weekday to run ownCloud cron at</td>
+    <td><code>"*"</code></td>
+  </tr>
 </table>
 
 Recipes

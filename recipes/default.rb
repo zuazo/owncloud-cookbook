@@ -336,3 +336,25 @@ ruby_block "apply config" do
     end
   end
 end
+
+#==============================================================================
+# Enable cron for background jobs
+#==============================================================================
+
+if node['owncloud']['cron']['enabled'] == true
+  cron 'owncloud cron' do
+    user node['apache']['user']
+    minute node['owncloud']['cron']['min']
+    hour node['owncloud']['cron']['hour']
+    day node['owncloud']['cron']['day']
+    month node['owncloud']['cron']['month']
+    weekday node['owncloud']['cron']['weekday']
+    command "php -f '#{node['owncloud']['dir']}/cron.php' >> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
+  end
+else
+  cron 'owncloud cron' do
+    user node['apache']['user']
+    command "php -f '#{node['owncloud']['dir']}/cron.php' >> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
+    action :delete
+  end
+end
