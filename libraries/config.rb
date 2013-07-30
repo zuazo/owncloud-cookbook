@@ -16,7 +16,18 @@ module OwnCloud
     end
 
     def merge(new_options)
-      @options.merge!(new_options) if new_options.kind_of?(Hash)
+      return unless new_options.respond_to?(:to_hash)
+      new_options = new_options.to_hash
+      # remove not set values
+      new_options.reject!{|k, v| v.nil?}
+      # merge options overring collisions with new values
+      @options.merge!(new_options) do |key, v1, v2|
+        # exotic case: mantain original dbtype when sqlite3 driver is available
+        if key == 'dbtype' and v1 == 'sqlite3' and v2 == 'sqlite'
+          return v1
+        end
+        v2
+      end
     end
 
     def read()

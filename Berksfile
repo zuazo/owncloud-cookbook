@@ -1,10 +1,12 @@
 site :opscode
 
-cookbook 'mysql'
-cookbook 'database'
 cookbook 'apache2'
-cookbook 'php'
+cookbook 'apt'
+cookbook 'database'
+cookbook 'mysql'
 cookbook 'openssl'
-cookbook 'postfix'
 cookbook 'owncloud', path: "./"
 cookbook 'owncloud_test', path: "./test/kitchen/cookbooks/owncloud_test"
+cookbook 'php'
+cookbook 'postfix'
+cookbook 'postgresql'

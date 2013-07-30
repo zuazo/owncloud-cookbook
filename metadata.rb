@@ -11,11 +11,13 @@ supports 'debian'
 supports 'ubuntu'
 
 depends 'apache2'
+depends 'apt'
 depends 'database'
 depends 'mysql'
 depends 'openssl'
 depends 'php'
 depends 'postfix'
+depends 'postgresql'
 
 recipe 'owncloud::default', 'Installs and configures ownCloud'
 
@@ -85,8 +87,8 @@ attribute 'owncloud/admin/pass',
 
 attribute 'owncloud/config/dbtype',
   :display_name => 'ownCloud Database Type',
-  :description => 'Type of database, only mysql supported for now',
-  :choice => [ '"mysql"' ],
+  :description => 'Type of database, can be sqlite, mysql or pgsql',
+  :choice => [ '"mysql"', '"pgsql"', '"sqlite"' ],
   :type => 'string',
   :required => 'optional',
   :default => '"mysql"'

@@ -21,31 +21,51 @@
 # Calculate dependencies for different distros
 #==============================================================================
 
+dbtype = node['owncloud']['config']['dbtype']
+
 case node['platform']
 when 'debian', 'ubuntu'
+  # Sync apt package index
+  include_recipe 'apt'
+
   php_pkgs = %w{ php5-gd }
-  php_mysql_pkg = 'php5-mysql'
+  php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
+  php_pkgs << 'php5-mysql' if dbtype == 'mysql'
+  php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
+
   ssl_key_dir = '/etc/ssl/private'
   ssl_cert_dir = '/etc/ssl/certs'
 when 'redhat', 'centos'
   if node['platform_version'].to_f < 6
     php_pkgs = %w{ php53-gd php53-mbstring php53-xml }
-    php_mysql_pkg = 'php53-mysql'
+    php_pkgs << 'php53-mysql' if dbtype == 'mysql'
+    php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
+    if dbtype == 'sqlite'
+      Chef::Application.fatal!("SQLite database type not supported on #{node['platform']} 5.")
+    end
   else
     php_pkgs = %w{ php-gd php-mbstring php-xml }
-    php_mysql_pkg = 'php-mysql'
+    php_pkgs << 'php-pdo' if dbtype == 'sqlite'
+    php_pkgs << 'php-mysql' if dbtype == 'mysql'
+    php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
   end
   ssl_key_dir = '/etc/pki/tls/private'
   ssl_cert_dir = '/etc/pki/tls/certs'
 when 'fedora', 'scientific', 'amazon'
   php_pkgs = %w{ php-gd php-mbstring php-xml }
-  php_mysql_pkg = 'php-mysql'
+  php_pkgs << 'php-pdo' if dbtype == 'sqlite'
+  php_pkgs << 'php-mysql' if dbtype == 'mysql'
+  php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
+
   ssl_key_dir = '/etc/pki/tls/private'
   ssl_cert_dir = '/etc/pki/tls/certs'
 else
   log('Unsupported platform, trying to guess packages.') { level :warn }
   php_pkgs = %w{ php-gd php-mbstring php-xml }
-  php_mysql_pkg = 'php-mysql'
+  php_pkgs << 'php-pdo' if dbtype == 'sqlite'
+  php_pkgs << 'php-mysql' if dbtype == 'mysql'
+  php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
+
   ssl_key_dir = node['owncloud']['www_dir']
   ssl_cert_dir = node['owncloud']['www_dir']
 end
@@ -57,14 +77,16 @@ end
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 if Chef::Config[:solo]
-  if node['owncloud']['config']['dbpassword'].nil? or
-    node['owncloud']['admin']['pass'].nil?
-    Chef::Application.fatal!(
-      'You must set owncloud\'s database and admin passwords in chef-solo mode.'
-    )
+  if node['owncloud']['config']['dbpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
+    Chef::Application.fatal!('You must set owncloud\'s database password in chef-solo mode.')
+  end
+  if node['owncloud']['admin']['pass'].nil?
+    Chef::Application.fatal!('You must set owncloud\'s admin password in chef-solo mode.')
   end
 else
-  node.set_unless['owncloud']['config']['dbpassword'] = secure_password
+  unless node['owncloud']['config']['dbtype'] == 'sqlite'
+    node.set_unless['owncloud']['config']['dbpassword'] = secure_password
+  end
   node.set_unless['owncloud']['admin']['pass'] = secure_password
   node.save
 end
@@ -85,29 +107,67 @@ end
 # Set up database
 #==============================================================================
 
-include_recipe 'database::mysql'
-include_recipe 'mysql::server'
+case node['owncloud']['config']['dbtype']
+when 'sqlite'
+  # With SQLite the table prefix must be oc_
+  node.override['owncloud']['config']['dbtableprefix'] = 'oc_'
+when 'mysql'
+  # Install MySQL
+  include_recipe 'mysql::server'
+  include_recipe 'database::mysql'
 
-package php_mysql_pkg
+  mysql_connection_info = {
+    :host => 'localhost',
+    :username => 'root',
+    :password => node['mysql']['server_root_password']
+  }
 
-mysql_connection_info = {
-  :host => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
-}
+  mysql_database node['owncloud']['config']['dbname'] do
+    connection mysql_connection_info
+    action :create
+  end
 
-mysql_database node['owncloud']['config']['dbname'] do
-  connection mysql_connection_info
-  action :create
-end
+  mysql_database_user node['owncloud']['config']['dbuser'] do
+    connection mysql_connection_info
+    database_name node['owncloud']['config']['dbname']
+    host 'localhost'
+    password node['owncloud']['config']['dbpassword']
+    privileges [:all]
+    action :grant
+  end
+when 'pgsql'
+  # Install PostgreSQL
+  include_recipe 'postgresql::server'
+  include_recipe 'database::postgresql'
 
-mysql_database_user node['owncloud']['config']['dbuser'] do
-  connection mysql_connection_info
-  database_name node['owncloud']['config']['dbname']
-  host 'localhost'
-  password node['owncloud']['config']['dbpassword']
-  privileges [:all]
-  action :grant
+  postgresql_connection_info = {
+    :host => 'localhost',
+    :username => 'postgres',
+    :password => node['postgresql']['password']['postgres']
+  }
+
+  postgresql_database node['owncloud']['config']['dbname'] do
+    connection postgresql_connection_info
+    action :create
+  end
+
+  postgresql_database_user node['owncloud']['config']['dbuser'] do
+    connection postgresql_connection_info
+    host 'localhost'
+    password node['owncloud']['config']['dbpassword']
+    action :create
+  end
+
+  postgresql_database_user node['owncloud']['config']['dbuser'] do
+    connection postgresql_connection_info
+    database_name node['owncloud']['config']['dbname']
+    host 'localhost'
+    password node['owncloud']['config']['dbpassword']
+    privileges [:all]
+    action :grant
+  end
+else
+  Chef::Application.fatal!("Unsupported database type: #{node['owncloud']['config']['dbtype']}")
 end
 
 #==============================================================================
@@ -266,10 +326,6 @@ ruby_block "apply config" do
   block do
     config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
     config = OwnCloud::Config.new(config_file)
-    # exotic case: change dbtype when sqlite3 driver is available
-    if node['owncloud']['config']['dbtype'] == 'sqlite' and config['dbtype'] == 'sqlite3'
-      node['owncloud']['config']['dbtype'] == config['dbtype']
-    end
     config.merge(node['owncloud']['config'])
     config.write
     unless Chef::Config[:solo]
