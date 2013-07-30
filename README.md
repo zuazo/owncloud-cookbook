@@ -77,7 +77,7 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbtype']</code></td>
-    <td>Type of database, only mysql supported for now</td>
+    <td>Type of database, can be sqlite, mysql or pgsql</td>
     <td><code>"mysql"</code></td>
   </tr>
   <tr>
@@ -164,13 +164,16 @@ Usage
 
 Add `recipe[owncloud]` to your node's run list or role, or include it in another cookbook.
 
+The back-end database will be [MySQL](http://www.mysql.com/) by default, but [PostgreSQL](http://www.postgresql.org/) and [SQLite](http://www.sqlite.org/) databases can aslo be used. Database type can be set on `node['owncloud']['config']['dbtype']`, supported values are `mysql`, `pgsql` and `sqlite`.
+
 On the first run, several passwords will be automatically generated and stored in the node:
 
 * `node['owncloud']['admin']['pass']`
-* `node['owncloud']['config']['dbpassword']`
-* `node['mysql']['server_root_password']`
-* `node['mysql']['server_repl_password']`
-* `node['mysql']['server_debian_password']`
+* `node['owncloud']['config']['dbpassword']` (Only when using *MySQL* or *PostgreSQL*)
+* `node['mysql']['server_root_password']` (Only when using *MySQL*)
+* `node['mysql']['server_repl_password']` (Only when using *MySQL*)
+* `node['mysql']['server_debian_password']` (Only when using *MySQL*)
+* `node['postgresql']['password']['postgres']` (Only when using *PosgreSQL*)
 
 When using Chef Solo, these passwords need to be set manually.
 
