@@ -28,12 +28,18 @@ Vagrant.configure("2") do |config|
         "server_repl_password" => "changeme",
         "server_debian_password" => "changeme"
       },
+      "postgresql" => {
+        "password" => {
+          "postgres" => "changeme"
+        }
+      },
       "owncloud" => {
         "admin" => {
           "pass" => "changeme"
         },
         "config" => {
-          "dbpassword" => "changeme"
+          "dbpassword" => "changeme",
+          "dbtype" => ENV["DBTYPE"] || "mysql"
         }
       }
     }
