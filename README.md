@@ -215,49 +215,52 @@ By default ownCloud cookbook relies on a local *Postfix* installation to send em
 
 ### Basic owncloud role
 
-    name "owncloud"
-    description "Install ownCloud"
-    default_attributes(
-      "owncloud" => {
-        "server_name" => "cloud.mysite.com"
-      }
-    )
-    run_list(
-      "recipe[owncloud]"
-    )
+```ruby
+name "owncloud"
+description "Install ownCloud"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com"
+  }
+)
+run_list(
+  "recipe[owncloud]"
+)
+```
 
 ### Using remote SMTP server
 
-In this example an Amazon Simple Email Service account is used to send emails.
+In this example an [Amazon Simple Email Service](http://aws.amazon.com/ses/) account is used to send emails.
 
-    name "owncloud_ses"
-    description "Install ownCloud and use an AWS SES account to send emails"
-    default_attributes(
-      "owncloud" => {
-        "server_name" => "cloud.mysite.com",
-        "config" => {
-          "mail_smtpmode" => "smtp",
-          "mail_smtphost" => "email-smtp.us-east-1.amazonaws.com",
-          "mail_smtpport" => 465,
-          "mail_smtpsecure" => "tls",
-          "mail_smtpauth" => true,
-          "mail_smtpauthtype" => "LOGIN",
-          "mail_smtpname" => "amazon-ses-username",
-          "mail_smtppassword" => "amazon-ses-password",
-        }
-      }
-    )
-    run_list(
-      "recipe[owncloud]"
-    )
+```ruby
+name "owncloud_ses"
+description "Install ownCloud and use an AWS SES account to send emails"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "config" => {
+      "mail_smtpmode" => "smtp",
+      "mail_smtphost" => "email-smtp.us-east-1.amazonaws.com",
+      "mail_smtpport" => 465,
+      "mail_smtpsecure" => "tls",
+      "mail_smtpauth" => true,
+      "mail_smtpauthtype" => "LOGIN",
+      "mail_smtpname" => "amazon-ses-username",
+      "mail_smtppassword" => "amazon-ses-password",
+    }
+  }
+)
+run_list(
+  "recipe[owncloud]"
+)
+```
 
 Testing
 =======
 
 ## Requirements
 
-* Install [Vagrant](http://www.vagrantup.com/)
-* Install gem dependencies with bundler:
+Install gem dependencies with bundler:
 
 ```bash
 $ gem install bundler
@@ -286,6 +289,7 @@ License and Author
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Raúl Rodríguez (<raul@onddo.com>)
+| **Author:**          | Xabier de Zuazo (<xabier@onddo.com>)
 | **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 
