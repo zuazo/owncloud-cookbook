@@ -192,3 +192,45 @@ attribute 'owncloud/config/mail_smtppassword',
   :type => 'string',
   :required => 'optional',
   :default => '""'
+
+attribute 'owncloud/cron/enabled',
+  :display_name => 'ownCloud cron enabled',
+  :description => 'Whether to enable ownCloud cron',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'true'
+
+attribute 'owncloud/cron/min',
+  :display_name => 'ownCloud cron minute',
+  :description => 'Minute to run ownCloud cron at',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"*/15"'
+
+attribute 'owncloud/cron/hour',
+  :display_name => 'ownCloud cron hour',
+  :description => 'Hour to run ownCloud cron at',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"*"'
+
+attribute 'owncloud/cron/day',
+  :display_name => 'ownCloud cron day',
+  :description => 'Day of month to run ownCloud cron at',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"*"'
+
+attribute 'owncloud/cron/month',
+  :display_name => 'ownCloud cron month',
+  :description => 'Month to run ownCloud cron at',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"*"'
+
+attribute 'owncloud/cron/weekday',
+  :display_name => 'ownCloud cron weekday',
+  :description => 'Weekday to run ownCloud cron at',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"*"'

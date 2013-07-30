@@ -30,3 +30,10 @@ default['owncloud']['config']['mail_smtpauth'] = false
 default['owncloud']['config']['mail_smtpauthtype'] = 'LOGIN'
 default['owncloud']['config']['mail_smtpname'] = ''
 default['owncloud']['config']['mail_smtppassword'] = ''
+
+default['owncloud']['cron']['enabled'] = true
+default['owncloud']['cron']['min'] = '*/15'
+default['owncloud']['cron']['day'] = '*'
+default['owncloud']['cron']['hour'] = '*'
+default['owncloud']['cron']['month'] = '*'
+default['owncloud']['cron']['weekday'] = '*'
