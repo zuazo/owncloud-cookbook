@@ -22,6 +22,12 @@ platforms:
     box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
 
 suites:
-- name: default
-  run_list: ["recipe[owncloud_test]"]
+- name: mysql
+  run_list: ["recipe[owncloud_test::mysql]"]
+  attributes: {}
+- name: postgresql
+  run_list: ["recipe[owncloud_test::postgresql]"]
+  attributes: {}
+- name: sqlite
+  run_list: ["recipe[owncloud_test::sqlite]"]
   attributes: {}

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: owncloud_test
-# Recipe:: default
+# Recipe:: sqlite
 #
 # Copyright 2013, Onddo Labs, Sl.
 #
@@ -17,12 +17,8 @@
 # limitations under the License.
 #
 
-node.default['mysql']['server_root_password'] = 'vagrant_root'
-node.default['mysql']['server_debian_password'] = 'vagrant_debian'
-node.default['mysql']['server_repl_password'] = 'vagrant_repl'
-
 node.default['owncloud']['admin']['user'] = 'test'
 node.default['owncloud']['admin']['pass'] = 'test'
-node.default['owncloud']['config']['dbpassword'] = 'database_pass'
+node.default['owncloud']['config']['dbtype'] = 'sqlite'
 
 include_recipe 'owncloud'
