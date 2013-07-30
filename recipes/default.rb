@@ -198,19 +198,19 @@ http_request 'HEAD owncloud' do
   url node['owncloud']['download_url']
   action :head
   if File.exists?(local_file)
-    headers "If-Modified-Since" => File.mtime(local_file).httpdate
+    headers 'If-Modified-Since' => File.mtime(local_file).httpdate
   end
-  notifies :create, "remote_file[download owncloud]", :immediately
+  notifies :create, 'remote_file[download owncloud]', :immediately
 end
 
-remote_file "download owncloud" do
+remote_file 'download owncloud' do
   source node['owncloud']['download_url']
   path local_file
   action :nothing
-  notifies :run, "execute[extract owncloud]", :immediately
+  notifies :run, 'execute[extract owncloud]', :immediately
 end
 
-execute "extract owncloud" do
+execute 'extract owncloud' do
   command "tar xfj '#{local_file}' --no-same-owner"
   cwd node['owncloud']['www_dir']
   action :nothing
@@ -237,7 +237,7 @@ include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
 
 # Disable default site
-apache_site "default" do
+apache_site 'default' do
   enable false
 end
 
@@ -266,7 +266,7 @@ if node['owncloud']['ssl']
     mode 00600
     content cert.key
     action :create_if_missing
-    notifies :create, "file[owncloud.pem]", :immediately
+    notifies :create, 'file[owncloud.pem]', :immediately
   end
 
   # Create ssl certificate
@@ -314,19 +314,19 @@ template 'autoconfig.php' do
     :data_dir => node['owncloud']['data_dir']
   )
   not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
-  notifies :restart, "service[apache2]", :immediately
-  notifies :get, "http_request[run setup]", :immediately
+  notifies :restart, 'service[apache2]', :immediately
+  notifies :get, 'http_request[run setup]', :immediately
 end
 
 # install ownCloud
-http_request "run setup" do
-  url "http://localhost/"
+http_request 'run setup' do
+  url 'http://localhost/'
   message ''
   action :nothing
 end
 
 # Apply the configuration on attributes to config.php
-ruby_block "apply config" do
+ruby_block 'apply config' do
   block do
     config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
     config = OwnCloud::Config.new(config_file)
