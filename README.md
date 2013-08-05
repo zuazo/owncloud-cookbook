@@ -66,6 +66,11 @@ Attributes
     <td><code>true</code></td>
   </tr>
   <tr>
+    <td><code>node['owncloud']['install_postfix']</code></td>
+    <td>Whether to install Postfix when a local MTA is needed</td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
     <td><code>node['owncloud']['admin']['user']</code></td>
     <td>Administrator username</td>
     <td><code>"admin"</code></td>

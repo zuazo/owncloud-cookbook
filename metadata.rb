@@ -71,6 +71,14 @@ attribute 'owncloud/ssl',
   :required => 'optional',
   :default => 'true'
 
+attribute 'owncloud/install_postfix',
+  :display_name => 'install Postfix?',
+  :description => 'Whether to install Postfix when a local MTA is needed',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'true'
+
 attribute 'owncloud/admin/user',
   :display_name => 'ownCloud Admin Username',
   :description => 'Administrator username',

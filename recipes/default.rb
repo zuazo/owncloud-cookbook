@@ -178,9 +178,9 @@ end
 # Set up mail transfer agent
 #==============================================================================
 
-if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail')
-  node.default['postfix']['mail_type'] = 'client'
-  node.default['postfix']['mydomain'] = node['owncloud']['server_name']
+if  node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') and
+    node['owncloud']['install_postfix']
+
   include_recipe 'postfix::default'
 end
 
