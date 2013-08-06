@@ -28,7 +28,7 @@ when 'debian', 'ubuntu'
   # Sync apt package index
   include_recipe 'apt'
 
-  php_pkgs = %w{ php5-gd }
+  php_pkgs = %w{ php5-gd php5-intl php5-curl smbclient }
   php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
@@ -37,14 +37,14 @@ when 'debian', 'ubuntu'
   ssl_cert_dir = '/etc/ssl/certs'
 when 'redhat', 'centos'
   if node['platform_version'].to_f < 6
-    php_pkgs = %w{ php53-gd php53-mbstring php53-xml }
+    php_pkgs = %w{ php53-gd php53-mbstring php53-xml php53-intl samba-client }
     php_pkgs << 'php53-mysql' if dbtype == 'mysql'
     php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
     if dbtype == 'sqlite'
       Chef::Application.fatal!("SQLite database type not supported on #{node['platform']} 5.")
     end
   else
-    php_pkgs = %w{ php-gd php-mbstring php-xml }
+    php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
     php_pkgs << 'php-pdo' if dbtype == 'sqlite'
     php_pkgs << 'php-mysql' if dbtype == 'mysql'
     php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
@@ -52,7 +52,7 @@ when 'redhat', 'centos'
   ssl_key_dir = '/etc/pki/tls/private'
   ssl_cert_dir = '/etc/pki/tls/certs'
 when 'fedora', 'scientific', 'amazon'
-  php_pkgs = %w{ php-gd php-mbstring php-xml }
+  php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
@@ -61,7 +61,7 @@ when 'fedora', 'scientific', 'amazon'
   ssl_cert_dir = '/etc/pki/tls/certs'
 else
   log('Unsupported platform, trying to guess packages.') { level :warn }
-  php_pkgs = %w{ php-gd php-mbstring php-xml }
+  php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
