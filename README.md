@@ -15,11 +15,13 @@ Requirements
 ## Cookbooks:
 
 * apache2
+* apt
 * database
 * mysql
 * openssl
 * php
 * postfix
+* postgresql
 
 Attributes
 ==========
