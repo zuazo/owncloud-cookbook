@@ -321,6 +321,7 @@ end
 # install ownCloud
 http_request 'run setup' do
   url 'http://localhost/'
+  headers({ 'Host' => node['owncloud']['server_name'] })
   message ''
   action :nothing
 end
