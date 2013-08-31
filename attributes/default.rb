@@ -9,8 +9,21 @@ default['owncloud']['www_dir'] = value_for_platform_family(
 default['owncloud']['dir'] = "#{node['owncloud']['www_dir']}/owncloud"
 default['owncloud']['data_dir'] = "#{node['owncloud']['dir']}/data"
 default['owncloud']['server_name'] = node['fqdn']
-default['owncloud']['ssl'] = true
 default['owncloud']['install_postfix'] = true
+default['owncloud']['web_server'] = 'apache'
+
+default['owncloud']['ssl'] = true
+case node['platform']
+when 'debian', 'ubuntu'
+  default['owncloud']['ssl_key_dir'] = '/etc/ssl/private'
+  default['owncloud']['ssl_cert_dir'] = '/etc/ssl/certs'
+when 'redhat', 'centos', 'fedora', 'scientific', 'amazon'
+  default['owncloud']['ssl_key_dir'] = '/etc/pki/tls/private'
+  default['owncloud']['ssl_cert_dir'] = '/etc/pki/tls/certs'
+else
+  default['owncloud']['ssl_key_dir'] = node['owncloud']['www_dir']
+  default['owncloud']['ssl_cert_dir'] = node['owncloud']['www_dir']
+end
 
 default['owncloud']['admin']['user'] = 'admin'
 default['owncloud']['admin']['pass'] = nil
