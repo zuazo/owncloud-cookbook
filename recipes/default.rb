@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
+
 # Get the webserver used
 web_server = node['owncloud']['web_server']
 unless [ 'apache', 'nginx' ].include?(web_server)
