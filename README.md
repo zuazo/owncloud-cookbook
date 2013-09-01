@@ -61,6 +61,11 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['owncloud']['server_aliases']</code></td>
+    <td>Sets the server name aliases for the ownCloud virtual host</td>
+    <td><code>[ "localhost" ]</code></td>
+  </tr>
+  <tr>
     <td><code>node['owncloud']['install_postfix']</code></td>
     <td>Whether to install Postfix when a local MTA is needed</td>
     <td><code>true</code></td>

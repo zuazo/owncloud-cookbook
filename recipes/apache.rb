@@ -34,6 +34,7 @@ web_app 'owncloud' do
   template 'apache_vhost.erb'
   docroot node['owncloud']['dir']
   server_name node['owncloud']['server_name']
+  server_aliases node['owncloud']['server_aliases']
   port '80'
   enable true
 end
@@ -49,6 +50,7 @@ if node['owncloud']['ssl']
     template 'apache_vhost.erb'
     docroot node['owncloud']['dir']
     server_name node['owncloud']['server_name']
+    server_aliases node['owncloud']['server_aliases']
     port '443'
     ssl_key ssl_key_path
     ssl_cert ssl_cert_path

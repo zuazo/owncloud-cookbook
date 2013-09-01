@@ -213,19 +213,6 @@ execute 'extract owncloud' do
   action :nothing
 end
 
-[
-  ::File.join(node['owncloud']['dir'], 'apps'),
-  ::File.join(node['owncloud']['dir'], 'config'),
-  node['owncloud']['data_dir']
-].each do |dir|
-  directory dir do
-    owner node[web_server]['user']
-    group node[web_server]['group']
-    mode 00750
-    action :create
-  end
-end
-
 #==============================================================================
 # Set up webserver
 #==============================================================================
@@ -241,6 +228,20 @@ end
 #==============================================================================
 # Initialize configuration file and install ownCloud
 #==============================================================================
+
+# create required directories
+[
+  ::File.join(node['owncloud']['dir'], 'apps'),
+  ::File.join(node['owncloud']['dir'], 'config'),
+  node['owncloud']['data_dir']
+].each do |dir|
+  directory dir do
+    owner node[web_server]['user']
+    group node[web_server]['group']
+    mode 00750
+    action :create
+  end
+end
 
 # create autoconfig.php for the installation
 template 'autoconfig.php' do

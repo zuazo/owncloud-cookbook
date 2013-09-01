@@ -1,6 +1,10 @@
-
 server {
-  server_name <%= @server_name %>;
+  server_name <%=
+    server_names = []
+    server_names.push @server_name  if @server_name.kind_of? String
+    server_names += @server_aliases if @server_aliases.kind_of? Array
+    server_names.join ' '
+  %>;
   <% if @port.to_s == '443' -%>
   listen 443 ssl;
   ssl_certificate <%= @ssl_cert %>;

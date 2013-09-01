@@ -23,6 +23,11 @@
 
 include_recipe 'nginx'
 node.default['php-fpm']['pool']['testpool']['listen'] = '127.0.0.1:9000'
+web_server = node['owncloud']['web_server']
+node.default['php-fpm']['pool']['www']['user'] = node[web_server]['user']
+node.default['php-fpm']['pool']['testpool']['user'] = node[web_server]['user']
+node.default['php-fpm']['pool']['www']['group'] = node[web_server]['group']
+node.default['php-fpm']['pool']['testpool']['group'] = node[web_server]['group']
 include_recipe 'php-fpm'
 
 # Disable default site
@@ -39,6 +44,7 @@ template(File.join(node['nginx']['dir'], 'sites-available', 'owncloud')) do
   variables(
     :name => 'owncloud',
     :server_name => node['owncloud']['server_name'],
+    :server_aliases => node['owncloud']['server_aliases'],
     :docroot => node['owncloud']['dir'],
     :port => 80
   )
@@ -62,6 +68,7 @@ if node['owncloud']['ssl']
     variables(
       :name => 'owncloud-ssl',
       :server_name => node['owncloud']['server_name'],
+      :server_aliases => node['owncloud']['server_aliases'],
       :docroot => node['owncloud']['dir'],
       :port => 443,
       :ssl_key => ssl_key_path,

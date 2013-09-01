@@ -65,6 +65,13 @@ attribute 'owncloud/server_name',
   :type => 'string',
   :required => 'recommended'
 
+attribute 'owncloud/server_aliases',
+  :display_name => 'ownCloud Server Aliases',
+  :description => 'Sets the server name aliases for the ownCloud virtual host',
+  :type => 'array',
+  :required => 'optional',
+  :default => [ 'localhost' ]
+
 attribute 'owncloud/install_postfix',
   :display_name => 'install Postfix?',
   :description => 'Whether to install Postfix when a local MTA is needed',
