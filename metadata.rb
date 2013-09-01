@@ -65,6 +65,22 @@ attribute 'owncloud/server_name',
   :type => 'string',
   :required => 'recommended'
 
+attribute 'owncloud/install_postfix',
+  :display_name => 'install Postfix?',
+  :description => 'Whether to install Postfix when a local MTA is needed',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'true'
+
+attribute 'owncloud/web_server',
+  :display_name => 'Web Server',
+  :description => 'Web server to use: apache or nginx',
+  :choice => [ 'apache', 'nginx' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'apache'
+
 attribute 'owncloud/ssl',
   :display_name => 'ownCloud Use SSL?',
   :description => 'Whether ownCloud should accept requests through SSL',
@@ -73,13 +89,19 @@ attribute 'owncloud/ssl',
   :required => 'optional',
   :default => 'true'
 
-attribute 'owncloud/install_postfix',
-  :display_name => 'install Postfix?',
-  :description => 'Whether to install Postfix when a local MTA is needed',
-  :choice => [ 'true', 'false' ],
+attribute 'owncloud/ssl_key_dir',
+  :display_name => 'SSL key directory',
+  :description => 'The directory to save the generated private SSL key',
   :type => 'string',
   :required => 'optional',
-  :default => 'true'
+  :calculated => true
+
+attribute 'owncloud/ssl_cert_dir',
+  :display_name => 'SSL certificate directory',
+  :description => 'The directory path to save the generated public SSL certificate',
+  :type => 'string',
+  :required => 'optional',
+  :calculated => true
 
 attribute 'owncloud/admin/user',
   :display_name => 'ownCloud Admin Username',
