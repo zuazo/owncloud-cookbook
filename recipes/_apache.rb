@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: owncloud
-# Recipe:: apache
+# Recipe:: _apache
 #
 # Copyright 2013, Onddo Labs, Sl.
 #

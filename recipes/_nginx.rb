@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: owncloud
-# Recipe:: nginx
+# Recipe:: _nginx
 #
 # Copyright 2013, Onddo Labs, Sl.
 #
@@ -22,7 +22,7 @@
 #==============================================================================
 
 include_recipe 'nginx'
-include_recipe 'owncloud::php_fpm'
+include_recipe 'owncloud::_php_fpm'
 
 # Disable default site
 nginx_site 'default' do

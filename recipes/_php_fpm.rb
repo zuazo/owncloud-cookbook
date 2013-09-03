@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: owncloud
-# Recipe:: php_fpm
+# Recipe:: _php_fpm
 #
 # Copyright 2013, Onddo Labs, Sl.
 #

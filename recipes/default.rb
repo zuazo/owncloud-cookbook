@@ -217,10 +217,10 @@ web_server = node['owncloud']['web_server']
 # include the recipe for installing the webserver
 case web_server
 when 'apache'
-  include_recipe 'owncloud::apache'
+  include_recipe 'owncloud::_apache'
   web_service = 'apache2'
 when 'nginx'
-  include_recipe 'owncloud::nginx'
+  include_recipe 'owncloud::_nginx'
   web_service = 'nginx'
 else
   Chef::Application.fatal!("Web server not supported: #{web_server}")
