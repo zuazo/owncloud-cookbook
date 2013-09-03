@@ -88,6 +88,13 @@ attribute 'owncloud/web_server',
   :required => 'optional',
   :default => 'apache'
 
+attribute 'owncloud/php-fpm/pool',
+  :display_name => 'PHP-FPM pool',
+  :description => 'PHP-FPM pool name. See the php-fpm cookbook for pool names.',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"testpool"'
+
 attribute 'owncloud/ssl',
   :display_name => 'ownCloud Use SSL?',
   :description => 'Whether ownCloud should accept requests through SSL',

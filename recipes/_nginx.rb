@@ -29,8 +29,11 @@ nginx_site 'default' do
   enable false
 end
 
+fastcgi_pass = node['php-fpm']['pool'][ node['owncloud']['php-fpm']['pool'] ]['listen']
+fastcgi_pass = "unix:#{fastcgi_pass}" if fastcgi_pass[0] == '/'
+
 # Create virtualhost for ownCloud
-template(File.join(node['nginx']['dir'], 'sites-available', 'owncloud')) do
+template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
   source 'nginx_vhost.erb'
   mode 00644
   owner 'root'
@@ -40,7 +43,8 @@ template(File.join(node['nginx']['dir'], 'sites-available', 'owncloud')) do
     :server_name => node['owncloud']['server_name'],
     :server_aliases => node['owncloud']['server_aliases'],
     :docroot => node['owncloud']['dir'],
-    :port => 80
+    :port => 80,
+    :fastcgi_pass => fastcgi_pass
   )
   notifies :reload, 'service[nginx]'
 end
@@ -54,7 +58,7 @@ if node['owncloud']['ssl']
   ssl_key_path, ssl_cert_path = generate_certificate
 
   # Create virtualhost for ownCloud
-  template(File.join(node['nginx']['dir'], 'sites-available', 'owncloud-ssl')) do
+  template File.join(node['nginx']['dir'], 'sites-available', 'owncloud-ssl') do
     source 'nginx_vhost.erb'
     mode 00644
     owner 'root'
@@ -65,6 +69,7 @@ if node['owncloud']['ssl']
       :server_aliases => node['owncloud']['server_aliases'],
       :docroot => node['owncloud']['dir'],
       :port => 443,
+      :fastcgi_pass => fastcgi_pass,
       :ssl_key => ssl_key_path,
       :ssl_cert => ssl_cert_path
     )

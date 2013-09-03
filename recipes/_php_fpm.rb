@@ -21,10 +21,11 @@
 # Installs PHP-FPM
 #==============================================================================
 
-node.default['php-fpm']['pool']['testpool']['listen'] = '127.0.0.1:9000'
 web_server = node['owncloud']['web_server']
-node.default['php-fpm']['pool']['www']['user'] = node[web_server]['user']
-node.default['php-fpm']['pool']['testpool']['user'] = node[web_server]['user']
-node.default['php-fpm']['pool']['www']['group'] = node[web_server]['group']
-node.default['php-fpm']['pool']['testpool']['group'] = node[web_server]['group']
+
+node['php-fpm']['pools'].each do |pool|
+  node.default['php-fpm']['pool'][pool]['user'] = node[web_server]['user']
+  node.default['php-fpm']['pool'][pool]['group'] = node[web_server]['group']
+end
+
 include_recipe 'php-fpm'

@@ -63,8 +63,7 @@ server {
     <% if @port.to_s == '443' -%>
     fastcgi_param HTTPS on;
     <% end -%>
-    fastcgi_pass 127.0.0.1:9000;
-    # Or use unix-socket with 'fastcgi_pass unix:/var/run/php5-fpm.sock;'
+    fastcgi_pass <%= @fastcgi_pass %>;
   }
 
   # Optional: set long EXPIRES header on static assets
