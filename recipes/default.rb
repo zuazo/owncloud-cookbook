@@ -19,12 +19,6 @@
 
 Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
 
-# Get the webserver used
-web_server = node['owncloud']['web_server']
-unless [ 'apache', 'nginx' ].include?(web_server)
-  Chef::Application.fatal!("Web server not supported: #{web_server}")
-end
-
 #==============================================================================
 # Calculate dependencies for different distros
 #==============================================================================
@@ -217,12 +211,19 @@ end
 # Set up webserver
 #==============================================================================
 
-if web_server == 'apache'
+# Get the webserver used
+web_server = node['owncloud']['web_server']
+
+# include the recipe for installing the webserver
+case web_server
+when 'apache'
   include_recipe 'owncloud::apache'
   web_service = 'apache2'
-elsif web_server == 'nginx'
+when 'nginx'
   include_recipe 'owncloud::nginx'
   web_service = 'nginx'
+else
+  Chef::Application.fatal!("Web server not supported: #{web_server}")
 end
 
 #==============================================================================
