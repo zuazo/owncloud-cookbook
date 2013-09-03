@@ -20,6 +20,7 @@ Requirements
 * nginx
 * openssl
 * php
+* php-fpm
 * postfix
 
 Attributes
