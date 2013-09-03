@@ -190,30 +190,48 @@ end
 
 directory node['owncloud']['www_dir']
 
-basename = ::File.basename(node['owncloud']['download_url'])
-local_file = ::File.join(Chef::Config[:file_cache_path], basename)
+unless node['owncloud']['deploy_from_git']
+  basename = ::File.basename(node['owncloud']['download_url'])
+  local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
-http_request 'HEAD owncloud' do
-  message ''
-  url node['owncloud']['download_url']
-  action :head
-  if File.exists?(local_file)
-    headers 'If-Modified-Since' => File.mtime(local_file).httpdate
+  http_request 'HEAD owncloud' do
+    message ''
+    url node['owncloud']['download_url']
+    action :head
+    if File.exists?(local_file)
+      headers 'If-Modified-Since' => File.mtime(local_file).httpdate
+    end
+    notifies :create, 'remote_file[download owncloud]', :immediately
   end
-  notifies :create, 'remote_file[download owncloud]', :immediately
-end
 
-remote_file 'download owncloud' do
-  source node['owncloud']['download_url']
-  path local_file
-  action :nothing
-  notifies :run, 'execute[extract owncloud]', :immediately
-end
+  remote_file 'download owncloud' do
+    source node['owncloud']['download_url']
+    path local_file
+    action :nothing
+    notifies :run, 'execute[extract owncloud]', :immediately
+  end
 
-execute 'extract owncloud' do
-  command "tar xfj '#{local_file}' --no-same-owner"
-  cwd node['owncloud']['www_dir']
-  action :nothing
+  execute 'extract owncloud' do
+    command "tar xfj '#{local_file}' --no-same-owner"
+    cwd node['owncloud']['www_dir']
+    action :nothing
+  end
+else
+  if node['owncloud']['git_ref']
+    git_ref = node['owncloud']['git_ref']
+  elsif node['owncloud']['version'].eql?('latest')
+    git_ref = 'master'
+  else
+    git_ref = "v#{node['owncloud']['version']}"
+  end
+
+  git 'clone owncloud' do
+    destination node['owncloud']['dir']
+    repository node['owncloud']['git_repo']
+    reference git_ref
+    enable_submodules true
+    action :sync
+  end
 end
 
 [

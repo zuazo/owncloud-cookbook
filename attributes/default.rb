@@ -2,6 +2,10 @@
 default['owncloud']['version'] = 'latest'
 default['owncloud']['download_url'] = "http://download.owncloud.org/community/owncloud-#{node['owncloud']['version']}.tar.bz2"
 
+default['owncloud']['deploy_from_git'] = false
+default['owncloud']['git_repo'] = 'https://github.com/owncloud/core.git'
+default['owncloud']['git_ref'] = nil
+
 default['owncloud']['www_dir'] = value_for_platform_family(
   ['rhel', 'fedora'] => '/var/www/html',
   'default' => '/var/www',

@@ -19,6 +19,8 @@ depends 'php'
 depends 'postfix'
 depends 'postgresql'
 
+suggests 'git'
+
 recipe 'owncloud::default', 'Installs and configures ownCloud'
 
 attribute 'owncloud/version',
@@ -34,6 +36,27 @@ attribute 'owncloud/download_url',
   :calculated => true,
   :type => 'string',
   :required => 'optional'
+
+attribute 'owncloud/deploy_from_git',
+  :display_name => 'ownCloud Deploy From Git',
+  :description => 'Whether ownCloud should be deployed from the git repository',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'false'
+
+attribute 'owncloud/git_repo',
+  :display_name => 'ownCloud Git Repo',
+  :description => 'Url of the ownCloud git repository',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"https://github.com/owncloud/core.git"'
+
+attribute 'owncloud/git_ref',
+  :display_name => 'ownCloud Git Ref',
+  :description => 'Git reference to deploy',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
 
 attribute 'owncloud/www_dir',
   :display_name => 'ownCloud www Dir',

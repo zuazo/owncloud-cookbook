@@ -43,6 +43,21 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
+    <td><code>node['owncloud']['deploy_from_git']</code></td>
+    <td>Whether ownCloud should be deployed from the git repository</td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['git_repo']</code></td>
+    <td>Url of the ownCloud git repository</td>
+    <td><code>"https://github.com/owncloud/core.git"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['git_ref']</code></td>
+    <td>Git reference to deploy</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
     <td><code>node['owncloud']['www_dir']</code></td>
     <td>Root directory defined in Apache where web documents are stored</td>
     <td><em>calculated</em></td>
@@ -258,6 +273,26 @@ default_attributes(
   }
 )
 run_list(
+  "recipe[owncloud]"
+)
+```
+
+### Deploying from Git
+
+The ownCloud code can be deployed from the Git repository. Git recipe must be included on the run_list.
+
+```ruby
+name "owncloud_git"
+description "Install ownCloud from Git"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "deploy_from_git" => true,
+    "git_ref" => "master"
+  }
+)
+run_list(
+  "recipe[git::default]",
   "recipe[owncloud]"
 )
 ```
