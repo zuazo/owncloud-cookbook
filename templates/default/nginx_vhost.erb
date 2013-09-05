@@ -6,7 +6,7 @@ server {
     server_names.join ' '
   %>;
   <% if @port.to_s == '443' -%>
-  listen 443 ssl;
+  listen 443 <%= Chef::VersionConstraint.new('< 0.8.21').include?(node['nginx']['version']) ? 'default' : '' %> ssl;
   ssl_certificate <%= @ssl_cert %>;
   ssl_certificate_key <%= @ssl_key %>;
   ssl_ciphers ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM;
