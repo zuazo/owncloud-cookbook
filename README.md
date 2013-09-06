@@ -96,7 +96,7 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['php-fpm']['pool']</code></td>
-    <td>PHP-FPM pool name. See the [php-fpm cookbook](https://github.com/yevgenko/cookbook-php-fpm) for pool names.</code></td>
+    <td>PHP-FPM pool name. See the <a href="https://github.com/yevgenko/cookbook-php-fpm">php-fpm cookbook</a> for pool names.</code></td>
     <td><code>"testpool"</code></td>
   </tr>
   <tr>
