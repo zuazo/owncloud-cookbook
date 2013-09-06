@@ -18,8 +18,10 @@ Requirements
 * apt
 * database
 * mysql
+* nginx
 * openssl
 * php
+* php-fpm
 * postfix
 * postgresql
 
@@ -78,14 +80,39 @@ Attributes
     <td><em>calculated</em></td>
   </tr>
   <tr>
-    <td><code>node['owncloud']['ssl']</code></td>
-    <td>Whether ownCloud should accept requests through SSL</td>
-    <td><code>true</code></td>
+    <td><code>node['owncloud']['server_aliases']</code></td>
+    <td>Sets the server name aliases for the ownCloud virtual host</td>
+    <td><code>[ "localhost" ]</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['install_postfix']</code></td>
     <td>Whether to install Postfix when a local MTA is needed</td>
     <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['web_server']</code></td>
+    <td>Web server to use: <code>"apache"</code> or <code>"nginx"</code></td>
+    <td><code>"apache"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['php-fpm']['pool']</code></td>
+    <td>PHP-FPM pool name. See the [php-fpm cookbook](https://github.com/yevgenko/cookbook-php-fpm) for pool names.</code></td>
+    <td><code>"testpool"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl']</code></td>
+    <td>Whether ownCloud should accept requests through SSL</td>
+    <td><code>true</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key_dir']</code></td>
+    <td>The directory to save the generated private SSL key</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert_dir']</code></td>
+    <td>The directory to save the generated public SSL certificate</td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['admin']['user']</code></td>

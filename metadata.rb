@@ -14,8 +14,10 @@ depends 'apache2'
 depends 'apt'
 depends 'database'
 depends 'mysql'
+depends 'nginx'
 depends 'openssl'
 depends 'php'
+depends 'php-fpm'
 depends 'postfix'
 depends 'postgresql'
 
@@ -86,13 +88,12 @@ attribute 'owncloud/server_name',
   :type => 'string',
   :required => 'recommended'
 
-attribute 'owncloud/ssl',
-  :display_name => 'ownCloud Use SSL?',
-  :description => 'Whether ownCloud should accept requests through SSL',
-  :choice => [ 'true', 'false' ],
-  :type => 'string',
+attribute 'owncloud/server_aliases',
+  :display_name => 'ownCloud Server Aliases',
+  :description => 'Sets the server name aliases for the ownCloud virtual host',
+  :type => 'array',
   :required => 'optional',
-  :default => 'true'
+  :default => [ 'localhost' ]
 
 attribute 'owncloud/install_postfix',
   :display_name => 'install Postfix?',
@@ -101,6 +102,43 @@ attribute 'owncloud/install_postfix',
   :type => 'string',
   :required => 'optional',
   :default => 'true'
+
+attribute 'owncloud/web_server',
+  :display_name => 'Web Server',
+  :description => 'Web server to use: apache or nginx',
+  :choice => [ 'apache', 'nginx' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'apache'
+
+attribute 'owncloud/php-fpm/pool',
+  :display_name => 'PHP-FPM pool',
+  :description => 'PHP-FPM pool name. See the php-fpm cookbook for pool names.',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"testpool"'
+
+attribute 'owncloud/ssl',
+  :display_name => 'ownCloud Use SSL?',
+  :description => 'Whether ownCloud should accept requests through SSL',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'true'
+
+attribute 'owncloud/ssl_key_dir',
+  :display_name => 'SSL key directory',
+  :description => 'The directory to save the generated private SSL key',
+  :type => 'string',
+  :required => 'optional',
+  :calculated => true
+
+attribute 'owncloud/ssl_cert_dir',
+  :display_name => 'SSL certificate directory',
+  :description => 'The directory path to save the generated public SSL certificate',
+  :type => 'string',
+  :required => 'optional',
+  :calculated => true
 
 attribute 'owncloud/admin/user',
   :display_name => 'ownCloud Admin Username',

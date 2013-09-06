@@ -38,3 +38,5 @@ suites:
 - name: sqlite
   run_list: ["recipe[owncloud_test::sqlite]"]
   attributes: {}
+- name: nginx
+  run_list: ["recipe[owncloud_test::nginx]"]

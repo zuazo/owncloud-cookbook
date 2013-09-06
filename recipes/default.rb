@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
+
 #==============================================================================
 # Calculate dependencies for different distros
 #==============================================================================
@@ -32,9 +34,6 @@ when 'debian', 'ubuntu'
   php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
-
-  ssl_key_dir = '/etc/ssl/private'
-  ssl_cert_dir = '/etc/ssl/certs'
 when 'redhat', 'centos'
   if node['platform_version'].to_f < 6
     php_pkgs = %w{ php53-gd php53-mbstring php53-xml php53-intl samba-client }
@@ -49,25 +48,17 @@ when 'redhat', 'centos'
     php_pkgs << 'php-mysql' if dbtype == 'mysql'
     php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
   end
-  ssl_key_dir = '/etc/pki/tls/private'
-  ssl_cert_dir = '/etc/pki/tls/certs'
 when 'fedora', 'scientific', 'amazon'
   php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
-
-  ssl_key_dir = '/etc/pki/tls/private'
-  ssl_cert_dir = '/etc/pki/tls/certs'
 else
   log('Unsupported platform, trying to guess packages.') { level :warn }
   php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
-
-  ssl_key_dir = node['owncloud']['www_dir']
-  ssl_cert_dir = node['owncloud']['www_dir']
 end
 
 #==============================================================================
@@ -178,8 +169,8 @@ end
 # Set up mail transfer agent
 #==============================================================================
 
-if  node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') and
-    node['owncloud']['install_postfix']
+if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') and
+   node['owncloud']['install_postfix']
 
   include_recipe 'postfix::default'
 end
@@ -234,91 +225,49 @@ else
   end
 end
 
-[
-  ::File.join(node['owncloud']['dir'], 'apps'),
-  ::File.join(node['owncloud']['dir'], 'config'),
-  node['owncloud']['data_dir']
-].each do |dir|
-  directory dir do
-    owner node['apache']['user']
-    group node['apache']['group']
-    mode 00750
-    action :create
-  end
-end
-
 #==============================================================================
 # Set up webserver
 #==============================================================================
 
-include_recipe 'apache2::default'
-include_recipe 'apache2::mod_php5'
+# Get the webserver used
+web_server = node['owncloud']['web_server']
 
-# Disable default site
-apache_site 'default' do
-  enable false
-end
-
-# Create virtualhost for ownCloud
-web_app 'owncloud' do
-  template 'vhost.erb'
-  docroot node['owncloud']['dir']
-  server_name node['owncloud']['server_name']
-  port '80'
-  enable true
-end
-
-# Enable ssl
-if node['owncloud']['ssl']
-  include_recipe 'apache2::mod_ssl'
-
-  cert = OwnCloud::Certificate.new(node['owncloud']['server_name'])
-  ssl_key_path = ::File.join(ssl_key_dir, 'owncloud.key')
-  ssl_cert_path = ::File.join(ssl_cert_dir, 'owncloud.pem')
-
-  # Create ssl certificate key
-  file 'owncloud.key' do
-    path ssl_key_path
-    owner 'root'
-    group 'root'
-    mode 00600
-    content cert.key
-    action :create_if_missing
-    notifies :create, 'file[owncloud.pem]', :immediately
-  end
-
-  # Create ssl certificate
-  file 'owncloud.pem' do
-    path ssl_cert_path
-    owner 'root'
-    group 'root'
-    mode 00644
-    content cert.cert
-    action :nothing
-  end
-
-  # Create SSL virtualhost
-  web_app 'owncloud-ssl' do
-    template 'vhost.erb'
-    docroot node['owncloud']['dir']
-    server_name node['owncloud']['server_name']
-    port '443'
-    ssl_key ssl_key_path
-    ssl_cert ssl_cert_path
-    enable true
-  end
+# include the recipe for installing the webserver
+case web_server
+when 'apache'
+  include_recipe 'owncloud::_apache'
+  web_service = 'apache2'
+when 'nginx'
+  include_recipe 'owncloud::_nginx'
+  web_service = 'nginx'
+else
+  Chef::Application.fatal!("Web server not supported: #{web_server}")
 end
 
 #==============================================================================
 # Initialize configuration file and install ownCloud
 #==============================================================================
 
+# create required directories
+[
+  ::File.join(node['owncloud']['dir'], 'apps'),
+  ::File.join(node['owncloud']['dir'], 'config'),
+  node['owncloud']['data_dir']
+].each do |dir|
+  directory dir do
+    owner node[web_server]['user']
+    group node[web_server]['group']
+    mode 00750
+    action :create
+  end
+end
+
 # create autoconfig.php for the installation
 template 'autoconfig.php' do
   path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
   source 'autoconfig.php.erb'
-  owner node['apache']['user']
-  group node['apache']['group']
+  owner node[web_server]['user']
+  group node[web_server]['group']
   mode 00640
   variables(
     :dbtype => node['owncloud']['config']['dbtype'],
@@ -332,7 +281,7 @@ template 'autoconfig.php' do
     :data_dir => node['owncloud']['data_dir']
   )
   not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
-  notifies :restart, 'service[apache2]', :immediately
+  notifies :restart, "service[#{web_service}]", :immediately
   notifies :get, 'http_request[run setup]', :immediately
 end
 
@@ -366,7 +315,7 @@ end
 
 if node['owncloud']['cron']['enabled'] == true
   cron 'owncloud cron' do
-    user node['apache']['user']
+    user node[web_server]['user']
     minute node['owncloud']['cron']['min']
     hour node['owncloud']['cron']['hour']
     day node['owncloud']['cron']['day']
@@ -376,7 +325,7 @@ if node['owncloud']['cron']['enabled'] == true
   end
 else
   cron 'owncloud cron' do
-    user node['apache']['user']
+    user node[web_server]['user']
     command "php -f '#{node['owncloud']['dir']}/cron.php' >> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
     action :delete
   end
