@@ -185,10 +185,16 @@ unless node['owncloud']['deploy_from_git']
   basename = ::File.basename(node['owncloud']['download_url'])
   local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
+  # Prior to Chef 11.6, remote_file does not support conditional get
+  # so we do a HEAD http_request to mimic it
   http_request 'HEAD owncloud' do
     message ''
     url node['owncloud']['download_url']
-    action :head
+    if Gem::Version.new(Chef::VERSION) < Gem::Version.new('11.6.0')
+      action :head
+    else
+      action :nothing
+    end
     if File.exists?(local_file)
       headers 'If-Modified-Since' => File.mtime(local_file).httpdate
     end
@@ -198,7 +204,11 @@ unless node['owncloud']['deploy_from_git']
   remote_file 'download owncloud' do
     source node['owncloud']['download_url']
     path local_file
-    action :nothing
+    if Gem::Version.new(Chef::VERSION) < Gem::Version.new('11.6.0')
+      action :nothing
+    else
+      action :create
+    end
     notifies :run, 'execute[extract owncloud]', :immediately
   end
 
