@@ -21,11 +21,17 @@
 # Installs PHP-FPM
 #==============================================================================
 
+include_recipe 'php-fpm'
+
 web_server = node['owncloud']['web_server']
 
-node['php-fpm']['pools'].each do |pool|
-  node.default['php-fpm']['pool'][pool]['user'] = node[web_server]['user']
-  node.default['php-fpm']['pool'][pool]['group'] = node[web_server]['group']
+php_fpm_pool node['owncloud']['php-fpm']['pool'] do
+  user node[web_server]['user']
+  group node[web_server]['group']
+  if node['owncloud']['max_upload_size']
+    php_options({
+      'php_admin_value[upload_max_filesize]' => node['owncloud']['max_upload_size'],
+      'php_admin_value[post_max_size]' => node['owncloud']['max_upload_size']
+    })
+  end
 end
-
-include_recipe 'php-fpm'

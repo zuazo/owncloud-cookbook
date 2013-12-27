@@ -246,10 +246,10 @@ web_server = node['owncloud']['web_server']
 case web_server
 when 'apache'
   include_recipe 'owncloud::_apache'
-  web_service = 'apache2'
+  web_services = [ 'apache2' ]
 when 'nginx'
   include_recipe 'owncloud::_nginx'
-  web_service = 'nginx'
+  web_services = [ 'nginx', 'php-fpm' ]
 else
   Chef::Application.fatal!("Web server not supported: #{web_server}")
 end
@@ -291,7 +291,10 @@ template 'autoconfig.php' do
     :data_dir => node['owncloud']['data_dir']
   )
   not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
-  notifies :restart, "service[#{web_service}]", :immediately
+
+  web_services.each do |web_service|
+    notifies :restart, "service[#{web_service}]", :immediately
+  end
   notifies :get, 'http_request[run setup]', :immediately
 end
 

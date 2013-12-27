@@ -17,7 +17,7 @@ depends 'mysql'
 depends 'nginx'
 depends 'openssl'
 depends 'php'
-depends 'php-fpm'
+depends 'php-fpm', '>= 0.6.0'
 depends 'postfix'
 depends 'postgresql'
 
@@ -113,10 +113,17 @@ attribute 'owncloud/web_server',
 
 attribute 'owncloud/php-fpm/pool',
   :display_name => 'PHP-FPM pool',
-  :description => 'PHP-FPM pool name. See the php-fpm cookbook for pool names.',
+  :description => 'PHP-FPM pool name to use with ownCloud',
   :type => 'string',
   :required => 'optional',
-  :default => '"testpool"'
+  :default => '"owncloud"'
+
+attribute 'owncloud/max_upload_size',
+  :display_name => 'Max Upload Size',
+  :description => 'Maximum allowed size for uploaded files',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"512M"'
 
 attribute 'owncloud/ssl',
   :display_name => 'ownCloud Use SSL?',

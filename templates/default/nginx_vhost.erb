@@ -20,7 +20,9 @@ server {
   # Path to the root of your installation
   root <%= @docroot %>;
 
-  client_max_body_size 10G; # set max upload size
+  <% if @max_upload_size -%>
+  client_max_body_size <%= @max_upload_size %>;
+  <% end -%>
   fastcgi_buffers 64 4K;
 
   rewrite ^/caldav(.*)$ /remote.php/caldav$1 redirect;

@@ -39,4 +39,11 @@
   SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM
 
 <% end -%>
+<% if @params[:max_upload_size] -%>
+  <IfModule mod_php5.c>
+    php_admin_value upload_max_filesize "<%= @params[:max_upload_size] %>"
+    php_admin_value post_max_size "<%= @params[:max_upload_size] %>"
+  </IfModule>
+
+<% end -%>
 </VirtualHost>

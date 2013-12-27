@@ -29,8 +29,7 @@ nginx_site 'default' do
   enable false
 end
 
-fastcgi_pass = node['php-fpm']['pool'][ node['owncloud']['php-fpm']['pool'] ]['listen']
-fastcgi_pass = "unix:#{fastcgi_pass}" if fastcgi_pass[0] == '/'
+fastcgi_pass = "unix:/var/run/php-fpm-#{node['owncloud']['php-fpm']['pool']}.sock"
 
 # Create virtualhost for ownCloud
 template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
@@ -44,7 +43,8 @@ template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
     :server_aliases => node['owncloud']['server_aliases'],
     :docroot => node['owncloud']['dir'],
     :port => 80,
-    :fastcgi_pass => fastcgi_pass
+    :fastcgi_pass => fastcgi_pass,
+    :max_upload_size => node['owncloud']['max_upload_size']
   )
   notifies :reload, 'service[nginx]'
 end

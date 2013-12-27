@@ -16,7 +16,8 @@ default['owncloud']['server_name'] = node['fqdn']
 default['owncloud']['server_aliases'] = [ 'localhost' ] # required by http_request[run setup]
 default['owncloud']['install_postfix'] = true
 default['owncloud']['web_server'] = 'apache'
-default['owncloud']['php-fpm']['pool'] = 'testpool'
+default['owncloud']['php-fpm']['pool'] = 'owncloud'
+default['owncloud']['max_upload_size'] = '512M'
 
 default['owncloud']['ssl'] = true
 case node['platform']

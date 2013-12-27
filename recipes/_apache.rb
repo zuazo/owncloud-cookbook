@@ -36,6 +36,7 @@ web_app 'owncloud' do
   server_name node['owncloud']['server_name']
   server_aliases node['owncloud']['server_aliases']
   port '80'
+  max_upload_size node['owncloud']['max_upload_size']
   enable true
 end
 
@@ -54,6 +55,7 @@ if node['owncloud']['ssl']
     port '443'
     ssl_key ssl_key_path
     ssl_cert ssl_cert_path
+    max_upload_size node['owncloud']['max_upload_size']
     enable true
   end
 end

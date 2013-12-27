@@ -96,8 +96,13 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['php-fpm']['pool']</code></td>
-    <td>PHP-FPM pool name. See the <a href="https://github.com/yevgenko/cookbook-php-fpm">php-fpm cookbook</a> for pool names.</code></td>
-    <td><code>"testpool"</code></td>
+    <td>PHP-FPM pool name to use with ownCloud.</code></td>
+    <td><code>"owncloud"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['max_upload_size']</code></td>
+    <td>Maximum allowed size for uploaded files.</code></td>
+    <td><code>"512M"</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['ssl']</code></td>
