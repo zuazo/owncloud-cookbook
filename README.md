@@ -329,6 +329,8 @@ Testing
 
 ## Requirements
 
+You must have VirtualBox(https://www.virtualbox.org/) and Vagrant(http://www.vagrantup.com/) installed.
+
 Install gem dependencies with bundler:
 
 ```bash
