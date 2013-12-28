@@ -209,11 +209,21 @@ unless node['owncloud']['deploy_from_git']
     else
       action :create
     end
-    notifies :run, 'execute[extract owncloud]', :immediately
+    notifies :run, 'bash[extract owncloud]', :immediately
   end
 
-  execute 'extract owncloud' do
-    command "tar xfj '#{local_file}' --no-same-owner"
+  bash 'extract owncloud' do
+    code <<-EOF
+      # remove previous installation if any
+      if [ -d ./owncloud ]
+      then
+        pushd ./owncloud >/dev/null
+        ls | grep -v 'data\\|config' | xargs rm -r
+        popd >/dev/null
+      fi
+      # extract tar file
+      tar xfj '#{local_file}' --no-same-owner
+    EOF
     cwd node['owncloud']['www_dir']
     action :nothing
   end
