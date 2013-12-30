@@ -71,7 +71,8 @@ if node['owncloud']['ssl']
       :port => 443,
       :fastcgi_pass => fastcgi_pass,
       :ssl_key => ssl_key_path,
-      :ssl_cert => ssl_cert_path
+      :ssl_cert => ssl_cert_path,
+      :max_upload_size => node['owncloud']['max_upload_size']
     )
     notifies :reload, 'service[nginx]'
   end
