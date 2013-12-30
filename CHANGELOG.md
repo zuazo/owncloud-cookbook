@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
+## 0.3.1:
+
+* Fixed max upload size on Nginx with SSL
+
 ## 0.3.0:
 
 * Added attribute to define the maximum file size for uploads
