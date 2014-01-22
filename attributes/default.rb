@@ -8,7 +8,7 @@ default['owncloud']['git_ref'] = nil
 
 default['owncloud']['www_dir'] = value_for_platform_family(
   ['rhel', 'fedora'] => '/var/www/html',
-  'default' => '/var/www',
+  'default' => '/var/www'
 )
 default['owncloud']['dir'] = "#{node['owncloud']['www_dir']}/owncloud"
 default['owncloud']['data_dir'] = "#{node['owncloud']['dir']}/data"

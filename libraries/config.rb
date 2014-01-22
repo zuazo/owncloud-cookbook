@@ -53,7 +53,9 @@ module OwnCloud
         f.close_write
         data = f.read
         f.close
-        IO.write(@file, "<?php\n$CONFIG = #{data};\n")
+        File.open(@file, 'w') do |f|
+          f.write "<?php\n$CONFIG = #{data};\n"
+        end
         Chef::Log.info("OwnCloud config written")
       rescue Exception => e
         Chef::Application.fatal!("Error writting OwnCloud config: #{e.message}")
