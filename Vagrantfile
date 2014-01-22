@@ -12,8 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 443, host: 8443
 
-  config.ssh.max_tries = 40
-  config.ssh.timeout   = 120
+  config.vm.boot_timeout = 120
 
   config.berkshelf.enabled = true
   config.omnibus.chef_version = :latest
