@@ -30,7 +30,7 @@ when 'debian', 'ubuntu'
   # Sync apt package index
   include_recipe 'apt'
 
-  php_pkgs = %w{ php5-gd php5-intl php5-curl smbclient }
+  php_pkgs = %w{ php5-gd php5-intl php5-curl php5-json smbclient }
   php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
