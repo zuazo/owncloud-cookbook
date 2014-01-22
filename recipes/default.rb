@@ -313,6 +313,7 @@ http_request 'run setup' do
   url 'http://localhost/'
   headers({ 'Host' => node['owncloud']['server_name'] })
   message ''
+  retries 3 # dirty trick to wait all web services to be up in some scenarios
   action :nothing
 end
 
