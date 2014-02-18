@@ -106,10 +106,10 @@ attribute 'owncloud/install_postfix',
 attribute 'owncloud/web_server',
   :display_name => 'Web Server',
   :description => 'Web server to use: apache or nginx',
-  :choice => [ 'apache', 'nginx' ],
+  :choice => [ '"apache"', '"nginx"' ],
   :type => 'string',
   :required => 'optional',
-  :default => 'apache'
+  :default => '"apache"'
 
 attribute 'owncloud/php-fpm/pool',
   :display_name => 'PHP-FPM pool',
@@ -133,19 +133,121 @@ attribute 'owncloud/ssl',
   :required => 'optional',
   :default => 'true'
 
-attribute 'owncloud/ssl_key_dir',
-  :display_name => 'SSL key directory',
-  :description => 'The directory to save the generated private SSL key',
+attribute 'owncloud/ssl_key/source',
+  :display_name => 'ownCloud SSL key source',
+  :description => 'Source type to get the SSL key from',
+  :choice => [ '"self-signed"', '"attribute"', '"data-bag"', '"chef-vault"', '"file"' ],
   :type => 'string',
   :required => 'optional',
-  :calculated => true
+  :default => '"self-signed"'
 
-attribute 'owncloud/ssl_cert_dir',
-  :display_name => 'SSL certificate directory',
-  :description => 'The directory path to save the generated public SSL certificate',
+attribute 'owncloud/ssl_key/bag',
+  :display_name => 'ownCloud SSL key data bag',
+  :description => 'Name of the Data Bag where the SSL key is stored',
   :type => 'string',
   :required => 'optional',
-  :calculated => true
+  :default => 'nil'
+
+attribute 'owncloud/ssl_key/item',
+  :display_name => 'ownCloud SSL key data bag item',
+  :description => 'Name of the Data Bag Item where the SSL key is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_key/item_key',
+  :display_name => 'ownCloud SSL key data bag item key',
+  :description => 'Key of the Data Bag Item where the SSL key is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_key/encrypted',
+  :display_name => 'ownCloud SSL key data bag encrypted?',
+  :description => 'Whether the Data Bag where the SSL key is stored is encrypted',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'false'
+
+attribute 'owncloud/ssl_key/secret_file',
+  :display_name => 'ownCloud SSL key data bag secret file',
+  :description => 'Secret file used to decrypt the Data Bag where the SSL key is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_key/path',
+  :display_name => 'ownCloud SSL key path',
+  :description => 'Path to the file where the SSL key is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_key/content',
+  :display_name => 'ownCloud SSL key content',
+  :description => 'String containing the raw SSL key',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/source',
+  :display_name => 'ownCloud SSL cert source',
+  :description => 'Source type to get the SSL cert from',
+  :choice => [ '"self-signed"', '"attribute"', '"data-bag"', '"chef-vault"', '"file"' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => '"self-signed"'
+
+attribute 'owncloud/ssl_cert/bag',
+  :display_name => 'ownCloud SSL cert data bag',
+  :description => 'Name of the Data Bag where the SSL cert is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/item',
+  :display_name => 'ownCloud SSL cert data bag item',
+  :description => 'Name of the Data Bag Item where the SSL cert is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/item_key',
+  :display_name => 'ownCloud SSL cert data bag item key',
+  :description => 'Key of the Data Bag Item where the SSL cert is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/encrypted',
+  :display_name => 'ownCloud SSL cert data bag encrypted?',
+  :description => 'Whether the Data Bag where the SSL cert is stored is encrypted',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional',
+  :default => 'false'
+
+attribute 'owncloud/ssl_cert/secret_file',
+  :display_name => 'ownCloud SSL cert data bag secret file',
+  :description => 'Secret file used to decrypt the Data Bag where the SSL cert is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/path',
+  :display_name => 'ownCloud SSL cert path',
+  :description => 'Path to the file where the SSL cert is stored',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
+attribute 'owncloud/ssl_cert/content',
+  :display_name => 'ownCloud SSL cert content',
+  :description => 'String containing the raw SSL cert',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
 
 attribute 'owncloud/admin/user',
   :display_name => 'ownCloud Admin Username',

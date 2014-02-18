@@ -110,14 +110,84 @@ Attributes
     <td><code>true</code></td>
   </tr>
   <tr>
-    <td><code>node['owncloud']['ssl_key_dir']</code></td>
-    <td>The directory to save the generated private SSL key</td>
-    <td><em>calculated</em></td>
+    <td><code>node['owncloud']['ssl_key']['source']</code></td>
+    <td>Source type to get the SSL key from. Can be self-signed, attribute, data-bag, chef-vault or file</td>
+    <td><code>"self-signed"</code></td>
   </tr>
   <tr>
-    <td><code>node['owncloud']['ssl_cert_dir']</code></td>
-    <td>The directory to save the generated public SSL certificate</td>
-    <td><em>calculated</em></td>
+    <td><code>node['owncloud']['ssl_key']['bag']</code></td>
+    <td>Name of the Data Bag where the SSL key is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['item']</code></td>
+    <td>Name of the Data Bag Item where the SSL key is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['item_key']</code></td>
+    <td>Key of the Data Bag Item where the SSL key is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['encrypted']</code></td>
+    <td>Whether the Data Bag where the SSL key is stored is encrypted</td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['secret_file']</code></td>
+    <td>Secret file used to decrypt the Data Bag where the SSL key is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['path']</code></td>
+    <td>Path to the file where the SSL key is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_key']['content']</code></td>
+    <td>String containing the raw SSL key</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['source']</code></td>
+    <td>Source type to get the SSL cert from. Can be self-signed, attribute, data-bag, chef-vault or file</td>
+    <td><code>"self-signed"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['bag']</code></td>
+    <td>Name of the Data Bag where the SSL cert is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['item']</code></td>
+    <td>Name of the Data Bag Item where the SSL cert is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['item_key']</code></td>
+    <td>Key of the Data Bag Item where the SSL cert is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['encrypted']</code></td>
+    <td>Whether the Data Bag where the SSL cert is stored is encrypted</td>
+    <td><code>false</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['secret_file']</code></td>
+    <td>Secret file used to decrypt the Data Bag where the SSL cert is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['path']</code></td>
+    <td>Path to the file where the SSL cert is stored</td>
+    <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['ssl_cert']['content']</code></td>
+    <td>String containing the raw SSL cert</td>
+    <td><code>nil</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['admin']['user']</code></td>
@@ -325,6 +395,127 @@ default_attributes(
 )
 run_list(
   "recipe[git::default]",
+  "recipe[owncloud]"
+)
+```
+
+## Custom SSL Certificate
+
+OwnCloud will accept SSL requests when `node['owncloud']['ssl']` is set to `true`. By default the cookbook will create a self-signed certificate, but a custom one can also be used.
+
+The custom certificate can be read from several sources:
+
+* Attribute
+* Data Bag
+* Encrypted Data Bag
+* Chef Vault
+* File
+
+### Custom SSL certificate from an Attribute
+
+```ruby
+name "owncloud_ssl_attribute"
+description "Install ownCloud with a custom SSL certificate from an Attribute"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "ssl" => true,
+    "ssl_key" => {
+      "source" => "attribute",
+      "content" => "-----BEGIN PRIVATE KEY-----[...]"
+    },
+    "ssl_cert" => {
+      "source" => "attribute",
+      "content" => "-----BEGIN CERTIFICATE-----[...]"
+    }
+  }
+)
+run_list(
+  "recipe[owncloud]"
+)
+```
+
+### Custom SSL certificate from a Data Bag
+
+```ruby
+name "owncloud_ssl_data_bag"
+description "Install ownCloud with a custom SSL certificate from a Data Bag"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "ssl" => true,
+    "ssl_key" => {
+      "source" => "data-bag",
+      "bag" => "ssl",
+      "item" => "key",
+      "item_key" => "content",
+      "encrypted" => true,
+      "secret_file" => "/path/to/secret/file" # optional
+    },
+    "ssl_cert" => {
+      "source" => "data-bag",
+      "bag" => "ssl",
+      "item" => "cert",
+      "item_key" => "content",
+      "encrypted" => false
+    }
+  }
+)
+run_list(
+  "recipe[owncloud]"
+)
+```
+
+### Custom SSL certificate from Chef Vault
+
+```ruby
+name "owncloud_ssl_chef_vault"
+description "Install ownCloud with a custom SSL certificate from Chef Vault"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "ssl" => true,
+    "ssl_key" => {
+      "source" => "chef-vault",
+      "bag" => "owncloud",
+      "item" => "ssl",
+      "item_key" => "key"
+    },
+    "ssl_cert" => {
+      "source" => "chef-vault",
+      "bag" => "owncloud",
+      "item" => "ssl",
+      "item_key" => "cert"
+    }
+  }
+)
+run_list(
+  "recipe[owncloud]"
+)
+```
+
+### Custom SSL certificate from file
+
+This is usefull if you create the certificate on another cookbook.
+
+```ruby
+name "owncloud_ssl_file"
+description "Install ownCloud with a custom SSL certificate from file"
+default_attributes(
+  "owncloud" => {
+    "server_name" => "cloud.mysite.com",
+    "ssl" => true,
+    "ssl_key" => {
+      "source" => "file",
+      "path" => "/path/to/ssl/key"
+    },
+    "ssl_cert" => {
+      "source" => "file",
+      "path" => "/path/to/ssl/cert"
+    }
+  }
+)
+run_list(
   "recipe[owncloud]"
 )
 ```
