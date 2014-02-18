@@ -20,17 +20,22 @@ default['owncloud']['php-fpm']['pool'] = 'owncloud'
 default['owncloud']['max_upload_size'] = '512M'
 
 default['owncloud']['ssl'] = true
-case node['platform']
-when 'debian', 'ubuntu'
-  default['owncloud']['ssl_key_dir'] = '/etc/ssl/private'
-  default['owncloud']['ssl_cert_dir'] = '/etc/ssl/certs'
-when 'redhat', 'centos', 'fedora', 'scientific', 'amazon'
-  default['owncloud']['ssl_key_dir'] = '/etc/pki/tls/private'
-  default['owncloud']['ssl_cert_dir'] = '/etc/pki/tls/certs'
-else
-  default['owncloud']['ssl_key_dir'] = node['owncloud']['www_dir']
-  default['owncloud']['ssl_cert_dir'] = node['owncloud']['www_dir']
-end
+default['owncloud']['ssl_key']['source'] = 'self-signed'
+default['owncloud']['ssl_key']['bag'] = nil
+default['owncloud']['ssl_key']['item'] = nil
+default['owncloud']['ssl_key']['item_key'] = nil
+default['owncloud']['ssl_key']['encrypted'] = false
+default['owncloud']['ssl_key']['secret_file'] = nil
+default['owncloud']['ssl_key']['path'] = nil
+default['owncloud']['ssl_key']['content'] = nil
+default['owncloud']['ssl_cert']['source'] = 'self-signed'
+default['owncloud']['ssl_cert']['bag'] = nil
+default['owncloud']['ssl_cert']['item'] = nil
+default['owncloud']['ssl_cert']['item_key'] = nil
+default['owncloud']['ssl_cert']['encrypted'] = false
+default['owncloud']['ssl_cert']['secret_file'] = nil
+default['owncloud']['ssl_cert']['path'] = nil
+default['owncloud']['ssl_cert']['content'] = nil
 
 default['owncloud']['admin']['user'] = 'admin'
 default['owncloud']['admin']['pass'] = nil
