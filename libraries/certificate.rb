@@ -99,7 +99,7 @@ module OwnCloud
     def read_from_path(path)
       if ::File.exists?(path)
         ::IO.read(path)
-      end 
+      end
     end
 
     def read_from_data_bag(bag, item, item_key, encrypted = false, secret_file = nil)
