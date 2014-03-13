@@ -105,6 +105,11 @@ Attributes
     <td><code>"512M"</code></td>
   </tr>
   <tr>
+    <td><code>node['owncloud']['sendfile']</code></td>
+    <td>Whether to enable Sendfile on web server. You should set to false if you use NFS or SMB mounts.</code></td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
     <td><code>node['owncloud']['ssl']</code></td>
     <td>Whether ownCloud should accept requests through SSL</td>
     <td><code>true</code></td>

@@ -37,6 +37,7 @@ web_app 'owncloud' do
   server_aliases node['owncloud']['server_aliases']
   port '80'
   max_upload_size node['owncloud']['max_upload_size']
+  sendfile node['owncloud']['sendfile']
   enable true
 end
 
@@ -56,6 +57,7 @@ if node['owncloud']['ssl']
     ssl_key ssl_key_path
     ssl_cert ssl_cert_path
     max_upload_size node['owncloud']['max_upload_size']
+    sendfile node['owncloud']['sendfile']
     enable true
   end
 end

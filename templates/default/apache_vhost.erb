@@ -46,4 +46,5 @@
   </IfModule>
 
 <% end -%>
+  EnableSendfile <%= @params[:sendfile].eql?(true) ? 'On' : 'Off' %>
 </VirtualHost>

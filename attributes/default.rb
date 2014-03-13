@@ -18,6 +18,7 @@ default['owncloud']['install_postfix'] = true
 default['owncloud']['web_server'] = 'apache'
 default['owncloud']['php-fpm']['pool'] = 'owncloud'
 default['owncloud']['max_upload_size'] = '512M'
+default['owncloud']['sendfile'] = node['virtualization']['system'].eql?('vbox') ? false : true
 
 default['owncloud']['ssl'] = true
 default['owncloud']['ssl_key']['source'] = 'self-signed'

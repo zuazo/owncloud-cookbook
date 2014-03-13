@@ -75,4 +75,6 @@ server {
     access_log off;
   }
 
+  sendfile <%= @sendfile.eql?(true) ? 'on' : 'off' %>;
+
 }

@@ -44,7 +44,8 @@ template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
     :docroot => node['owncloud']['dir'],
     :port => 80,
     :fastcgi_pass => fastcgi_pass,
-    :max_upload_size => node['owncloud']['max_upload_size']
+    :max_upload_size => node['owncloud']['max_upload_size'],
+    :sendfile => node['owncloud']['sendfile']
   )
   notifies :reload, 'service[nginx]'
 end
@@ -72,7 +73,8 @@ if node['owncloud']['ssl']
       :fastcgi_pass => fastcgi_pass,
       :ssl_key => ssl_key_path,
       :ssl_cert => ssl_cert_path,
-      :max_upload_size => node['owncloud']['max_upload_size']
+      :max_upload_size => node['owncloud']['max_upload_size'],
+      :sendfile => node['owncloud']['sendfile']
     )
     notifies :reload, 'service[nginx]'
   end

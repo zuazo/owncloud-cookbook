@@ -125,6 +125,14 @@ attribute 'owncloud/max_upload_size',
   :required => 'optional',
   :default => '"512M"'
 
+attribute 'owncloud/sendfile',
+  :display_name => 'Sendfile',
+  :description => 'Whether to enable Sendfile on web server. You should set to false if you use NFS or SMB mounts',
+  :choice => [ 'true', 'false' ],
+  :calculated => true,
+  :type => 'string',
+  :required => 'optional'
+
 attribute 'owncloud/ssl',
   :display_name => 'ownCloud Use SSL?',
   :description => 'Whether ownCloud should accept requests through SSL',
