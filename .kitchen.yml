@@ -1,49 +1,38 @@
 ---
 driver:
   name: vagrant
-  require_chef_omnibus: latest
+  vm_hostname: 'owncloud.local'
   network:
-  - ["forwarded_port", {guest: 80, host: 8080}]
-  - ["forwarded_port", {guest: 443, host: 8443}]
+  - ["forwarded_port", {guest: 80, host: 8080, auto_correct: true}]
+  - ["forwarded_port", {guest: 443, host: 8443, auto_correct: true}]
   customize:
     memory: 512
 
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: latest
+  attributes:
+    owncloud:
+      config:
+        trusted_domains:
+          - "localhost:8080"
+          - "localhost:8443"
+
 platforms:
 - name: ubuntu-12.04
-  driver:
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
 - name: ubuntu-10.04
-  driver:
-    box: opscode-ubuntu-10.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-10.04_chef-provisionerless.box
 - name: centos-6.5
-  driver:
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
 - name: centos-5.10
-  driver:
-    box: opscode-centos-5.10
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-5.10_chef-provisionerless.box
 - name: debian-7.2.0
-  driver:
-    box: opscode-debian-7.2.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
 - name: ubuntu-13.10
-  driver:
-    box: opscode-ubuntu-13.10
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
 
 suites:
 - name: mysql
   run_list: ["recipe[owncloud_test::mysql]"]
-  attributes: {}
 - name: postgresql
   run_list: ["recipe[owncloud_test::postgresql]"]
-  attributes: {}
 - name: sqlite
   run_list: ["recipe[owncloud_test::sqlite]"]
-  attributes: {}
 - name: nginx
   run_list: ["recipe[owncloud_test::nginx]"]
 - name: ssl_data_bag
