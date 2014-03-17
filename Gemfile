@@ -13,3 +13,8 @@ end
 group :kitchen_vagrant do
   gem 'kitchen-vagrant', '~> 0.14'
 end
+
+group :kitchen_cloud do
+  gem 'kitchen-digitalocean', '~> 0.5'
+  gem 'kitchen-ec2', '~> 0.8'
+end

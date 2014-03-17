@@ -1,0 +1,49 @@
+---
+driver:
+  digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
+  digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
+  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+  ssh:
+    forward_agent: true
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: latest
+
+platforms:
+- name: centos-6.5
+  driver:
+    name: digitalocean
+    image_id: 1646467
+    flavor_id: 66
+    region_id: 2
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
+
+- name: ubuntu-1204
+  driver:
+    name: digitalocean
+    image_id: 1505447
+    flavor_id: 66
+    region_id: 2
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
+
+- name: ubuntu-1310
+  driver:
+    name: digitalocean
+    image_id: 1505699
+    flavor_id: 66
+    region_id: 2
+    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
+
+- name: amazon-2013.09.2
+  driver:
+    name: ec2
+    image_id: ami-bba18dd2
+    flavor_id: t1.micro
+    username: ec2-user
+    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>

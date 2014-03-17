@@ -545,6 +545,26 @@ $ bundle install
 $ bundle exec kitchen test
 ```
 
+### Running the tests in the cloud
+
+You can run the tests in the cloud instead of using vagrant. First, you must set the following environment variables:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_KEYPAIR_NAME`: EC2 SSH public key name. This is the name used in Amazon EC2 Console's Key Pairs section.
+* `EC2_SSH_KEY_PATH`: EC2 SSH private key local full path. Only when you are not using an SSH Agent.
+* `DIGITAL_OCEAN_CLIENT_ID`
+* `DIGITAL_OCEAN_API_KEY`
+* `DIGITAL_OCEAN_SSH_KEY_IDS`: DigitalOcean SSH numeric key IDs.
+* `DIGITAL_OCEAN_SSH_KEY_PATH`: DigitalOcean SSH private key local full path. Only when you are not using an SSH Agent.
+
+Then, you must configure test-kitchen to use `.kitchen.cloud.yml` configuration file:
+
+```bash
+$ export KITCHEN_LOCAL_YAML=".kitchen.cloud.yml"
+$ bundle exec kitchen test
+```
+
 Contributing
 ============
 
