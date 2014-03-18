@@ -12,7 +12,7 @@ default['owncloud']['www_dir'] = value_for_platform_family(
 )
 default['owncloud']['dir'] = "#{node['owncloud']['www_dir']}/owncloud"
 default['owncloud']['data_dir'] = "#{node['owncloud']['dir']}/data"
-default['owncloud']['server_name'] = node['fqdn']
+default['owncloud']['server_name'] = node['fqdn'] || 'owncloud.local'
 default['owncloud']['server_aliases'] = [ 'localhost' ] # required by http_request[run setup]
 default['owncloud']['install_postfix'] = true
 default['owncloud']['web_server'] = 'apache'
