@@ -4,7 +4,7 @@ module OwnCloud
   class Certificate
 
     def initialize(node)
-      raise TypeError, "Chef::Node object expected" unless node.kind_of?(Chef::Node)
+      raise TypeError, 'Chef::Node object expected' unless node.kind_of?(Chef::Node)
       @node = node
     end
 
@@ -44,9 +44,11 @@ module OwnCloud
             Chef::Application.fatal!("Cannot read SSL key from chef-vault: #{ssl_key['bag']}.#{ssl_key['item']}->#{ssl_key['item_key']}")
         when 'file'
           read_from_path(ssl_key['path']) or
-            Chef::Application.fatal!("Cannot read SSL key from path: #{key_path}")
+            Chef::Application.fatal!("Cannot read SSL key from path: #{ssl_key['path']}")
         when 'self-signed'
           read_from_path(key_path) or generate_key
+        else
+          Chef::Application.fatal!("Cannot read SSL key, unknown source: #{ssl_key['source']}")
         end
       end
     end
@@ -73,23 +75,25 @@ module OwnCloud
           if ssl_cert.attribute?('content') and ssl_cert['content'].kind_of?(String)
             ssl_cert['content']
           else
-            Chef::Application.fatal!('Cannot read SSL key from attribute: node["owncloud"]["ssl_cert"]["content"]')
+            Chef::Application.fatal!('Cannot read SSL certificate from attribute: node["owncloud"]["ssl_cert"]["content"]')
           end
         when 'data-bag'
           read_from_data_bag(ssl_cert['bag'], ssl_cert['item'], ssl_cert['item_key'], ssl_cert['encrypted'], ssl_cert['secret_file']) or
-            Chef::Application.fatal!("Cannot read SSL key from data bag: #{ssl_cert['bag']}.#{ssl_cert['item']}->#{ssl_cert['item_key']}")
+            Chef::Application.fatal!("Cannot read SSL certificate from data bag: #{ssl_cert['bag']}.#{ssl_cert['item']}->#{ssl_cert['item_key']}")
         when 'chef-vault'
           read_from_chef_vault(ssl_cert['bag'], ssl_cert['item'], ssl_cert['item_key']) or
-            Chef::Application.fatal!("Cannot read SSL key from chef-vault: #{ssl_cert['bag']}.#{ssl_cert['item']}->#{ssl_cert['item_key']}")
+            Chef::Application.fatal!("Cannot read SSL certificate from chef-vault: #{ssl_cert['bag']}.#{ssl_cert['item']}->#{ssl_cert['item_key']}")
         when 'file'
           read_from_path(ssl_cert['path']) or
-            Chef::Application.fatal!("Cannot read SSL key from path: #{key_path}")
+            Chef::Application.fatal!("Cannot read SSL certificate from path: #{ssl_cert['path']}")
         when 'self-signed'
           content = read_from_path(cert_path)
           unless content and verify_self_signed_cert(key_content, content, node['owncloud']['server_name'])
            content = generate_self_signed_cert(key_content, node['owncloud']['server_name'])
           end
           content
+        else
+          Chef::Application.fatal!("Cannot read SSL certificate, unknown source: #{ssl_cert['source']}")
         end
       end
     end
@@ -144,9 +148,9 @@ module OwnCloud
       ef = OpenSSL::X509::ExtensionFactory.new
       ef.subject_certificate = cert
       ef.issuer_certificate = cert
-      cert.add_extension(ef.create_extension("basicConstraints", "CA:TRUE", true))
-      cert.add_extension(ef.create_extension("subjectKeyIdentifier", "hash", false))
-      cert.add_extension(ef.create_extension("authorityKeyIdentifier", "keyid:always,issuer:always", false))
+      cert.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
+      cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash', false))
+      cert.add_extension(ef.create_extension('authorityKeyIdentifier', 'keyid:always,issuer:always', false))
       cert.sign(key, OpenSSL::Digest::SHA256.new)
       cert.to_pem
     end
