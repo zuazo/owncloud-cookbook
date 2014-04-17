@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: owncloud_test
-# Recipe:: nginx
+# Recipe:: mysql
 #
-# Copyright 2013, Onddo Labs, Sl.
+# Copyright 2014, Onddo Labs, Sl.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,9 @@
 # limitations under the License.
 #
 
-node.default['owncloud']['web_server'] = 'nginx'
+node.default['owncloud']['admin']['user'] = 'test'
+node.default['owncloud']['admin']['pass'] = 'test'
 
-node.default['mysql']['server_root_password'] = 'vagrant_root'
-node.default['mysql']['server_debian_password'] = 'vagrant_debian'
-node.default['mysql']['server_repl_password'] = 'vagrant_repl'
+package 'wget'
 
-node.default['owncloud']['config']['dbpassword'] = 'database_pass'
-
-include_recipe 'owncloud_test::common'
+include_recipe 'owncloud'

@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.default['owncloud']['admin']['user'] = 'test'
-node.default['owncloud']['admin']['pass'] = 'test'
 node.default['owncloud']['config']['dbtype'] = 'sqlite'
 
-include_recipe 'owncloud'
+include_recipe 'owncloud_test::common'

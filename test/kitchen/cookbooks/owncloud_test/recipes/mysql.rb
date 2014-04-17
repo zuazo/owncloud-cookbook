@@ -21,8 +21,6 @@ node.default['mysql']['server_root_password'] = 'vagrant_root'
 node.default['mysql']['server_debian_password'] = 'vagrant_debian'
 node.default['mysql']['server_repl_password'] = 'vagrant_repl'
 
-node.default['owncloud']['admin']['user'] = 'test'
-node.default['owncloud']['admin']['pass'] = 'test'
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 
-include_recipe 'owncloud'
+include_recipe 'owncloud_test::common'
