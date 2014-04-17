@@ -14,6 +14,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.boot_timeout = 120
 
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 512
+  end
+
   config.berkshelf.enabled = true
   config.omnibus.chef_version = :latest
 
@@ -38,7 +42,8 @@ Vagrant.configure("2") do |config|
         },
         "config" => {
           "dbpassword" => "changeme",
-          "dbtype" => ENV["DBTYPE"] || "mysql"
+          "dbtype" => ENV["DBTYPE"] || "mysql",
+          "trusted_domains" => [ "localhost:8080", "locahost:8443" ]
         }
       }
     }
