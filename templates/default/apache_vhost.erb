@@ -47,4 +47,12 @@
 
 <% end -%>
   EnableSendfile <%= @params[:sendfile].eql?(true) ? 'On' : 'Off' %>
+
+  # Patch to avoid file corruption. See:
+  # https://github.com/owncloud/core/issues/4783
+  <IfModule mod_deflate.c>
+    SetEnvIfNoCase Request_URI ^/public\.php$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI /apps/files/ajax/download\.php$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI /apps/files/download/ no-gzip dont-vary
+  </IfModule>
 </VirtualHost>
