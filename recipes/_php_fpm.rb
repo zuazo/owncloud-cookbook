@@ -28,6 +28,9 @@ web_server = node['owncloud']['web_server']
 php_fpm_pool node['owncloud']['php-fpm']['pool'] do
   user node[web_server]['user']
   group node[web_server]['group']
+  listen_owner node[web_server]['user']
+  listen_group node[web_server]['group']
+  listen_mode '0660'
   if node['owncloud']['max_upload_size']
     php_options({
       'php_admin_value[upload_max_filesize]' => node['owncloud']['max_upload_size'],
