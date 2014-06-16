@@ -16,27 +16,24 @@ platforms:
 - name: centos-6.5
   driver:
     name: digitalocean
-    image_id: 1646467
-    flavor_id: 66
-    region_id: 2
+    flavor: 512MB
+    region: Amsterdam 2
     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
     ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
-- name: ubuntu-1204
+- name: ubuntu-12.04
   driver:
     name: digitalocean
-    image_id: 1505447
-    flavor_id: 66
-    region_id: 2
+    flavor: 512MB
+    region: Amsterdam 2
     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
     ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
-- name: ubuntu-1310
+- name: ubuntu-14.04
   driver:
     name: digitalocean
-    image_id: 1505699
-    flavor_id: 66
-    region_id: 2
+    flavor: 512MB
+    region: Amsterdam 2
     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
     ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
