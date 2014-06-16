@@ -2,6 +2,16 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
+## 0.4.0:
+
+* Improved support for Ubuntu 13 and above
+* Support for custom x509 certificates
+* Added attribute to enable or disable web servers sendfile directive
+* Handled new config value `trusted_domains`
+* Added some failsafe timeout on nginx for big account
+* Patch to avoid file corruption with mod_deflate
+* Added repo with more recent PHP version for older Ubuntus (< 12.04)
+
 ## 0.3.1:
 
 * Fixed max upload size on Nginx with SSL
