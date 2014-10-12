@@ -2,9 +2,9 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
-## master (unreleased)
+## master (unreleased):
 
-* Fix apache 2.4 support: fixes CentOS 7 and Ubuntu 14 support ([issue #16](https://github.com/onddo/owncloud-cookbook/issues/16), thanks [LEDfan](https://github.com/onddo/owncloud-cookbook/issues/16) for reporting).
+* Fix apache 2.4 support: fixes CentOS 7 and Ubuntu 14 support ([issue #16](https://github.com/onddo/owncloud-cookbook/issues/16), thanks [@LEDfan](https://github.com/LEDfan) for reporting).
 
 ## 0.4.0:
 
