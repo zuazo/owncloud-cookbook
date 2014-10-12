@@ -11,8 +11,12 @@
   <Directory <%= @params[:docroot] %>>
     Options Indexes FollowSymLinks MultiViews
     AllowOverride All
+<% if node['apache']['version'].to_f >= 2.4 -%>
+    Require all granted
+<% else -%>
     Order allow,deny
     allow from all
+<% end -%>
   </Directory>
 
   LogLevel info
