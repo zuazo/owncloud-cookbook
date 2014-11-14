@@ -525,6 +525,15 @@ run_list(
 )
 ```
 
+Upgrading application
+=======
+
+If new owncloud version is released and you has notified in web user interface about update available, then you must re-run chef-client on owncloud server.
+
+Cookbook recipes will download latest release version and install it to server.
+
+Then you must proceed with update in web interface and system will be updated.
+
 Testing
 =======
 
