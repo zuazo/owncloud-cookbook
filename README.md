@@ -1,5 +1,6 @@
 Description
 ===========
+[![Cookbook Version](https://img.shields.io/cookbook/v/owncloud.svg?style=flat)](https://supermarket.getchef.com/cookbooks/owncloud)
 
 Installs and configures [ownCloud](http://owncloud.org/), an open source personal cloud for data and file sync, share and view.
 
