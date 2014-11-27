@@ -1,5 +1,6 @@
 Description
 ===========
+[![Cookbook Version](https://img.shields.io/cookbook/v/owncloud.svg?style=flat)](https://supermarket.getchef.com/cookbooks/owncloud)
 
 Installs and configures [ownCloud](http://owncloud.org/), an open source personal cloud for data and file sync, share and view.
 
@@ -524,6 +525,15 @@ run_list(
   "recipe[owncloud]"
 )
 ```
+
+Upgrading application
+=======
+
+If new owncloud version is released and you has notified in web user interface about update available, then you must re-run chef-client on owncloud server.
+
+Cookbook recipes will download latest release version and install it to server.
+
+Then you must proceed with update in web interface and system will be updated.
 
 Testing
 =======
