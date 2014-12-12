@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
+## v0.4.2 (2014-12-12)
+
+* metadata: Lock to `mysql` cookbook `~> 5.0`.
+
 ## v0.4.1 (2014-11-27)
 
 * Fix Apache httpd `2.4` support: fixes CentOS 7 and Ubuntu 14 support ([issue #16](https://github.com/onddo/owncloud-cookbook/issues/16), thanks [@LEDfan](https://github.com/LEDfan) for reporting).
