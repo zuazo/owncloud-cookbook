@@ -86,8 +86,8 @@ end
 # Install PHP
 #==============================================================================
 
-# ownCloud requires PHP >= 5.3.3, so in older ubuntu versions we need to add an extra repository in order to provide it
-if node['platform'] == 'ubuntu' and Chef::VersionConstraint.new('< 12.04').include?(node['platform_version'])
+# ownCloud requires PHP >= 5.4.0, so in older ubuntu versions we need to add an extra repository in order to provide it
+if node['platform'] == 'ubuntu' and Chef::VersionConstraint.new('<= 12.04').include?(node['platform_version'])
   apt_repository 'ondrej-php5-oldstable' do
     uri          'http://ppa.launchpad.net/ondrej/php5-oldstable/ubuntu'
     distribution node['lsb']['codename']
