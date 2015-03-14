@@ -310,6 +310,11 @@ Attributes
     <td>Weekday to run ownCloud cron at</td>
     <td><code>"*"</code></td>
   </tr>
+  <tr>
+    <td><code>node['owncloud']['skip_permissions']</code></td>
+    <td>Whether to skip settings the permissions of the ownCloud directory. Set this to true when using NFS synced folders.</td>
+    <td><code>false</code></td>
+  </tr>
 </table>
 
 Recipes

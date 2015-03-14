@@ -422,3 +422,10 @@ attribute 'owncloud/cron/weekday',
   :type => 'string',
   :required => 'optional',
   :default => '"*"'
+
+attribute 'owncloud/skip_permissions',
+  :display_name => 'Skip permissions',
+  :description => 'Whether to skip settings the permissions of the ownCloud directory. Set this to true when using NFS synced folders.',
+  :choice => [ 'true', 'false' ],
+  :type => 'string',
+  :required => 'optional'

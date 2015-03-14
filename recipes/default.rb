@@ -287,9 +287,11 @@ end
   node['owncloud']['data_dir']
 ].each do |dir|
   directory dir do
-    owner node[web_server]['user']
-    group node[web_server]['group']
-    mode 00750
+    if node['owncloud']['skip_permissions'] == false
+        owner node[web_server]['user']
+        group node[web_server]['group']
+        mode 00750
+    end
     action :create
   end
 end
@@ -298,9 +300,11 @@ end
 template 'autoconfig.php' do
   path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
   source 'autoconfig.php.erb'
-  owner node[web_server]['user']
-  group node[web_server]['group']
-  mode 00640
+  if node['owncloud']['skip_permissions'] == false
+    owner node[web_server]['user']
+    group node[web_server]['group']
+    mode 00640
+  end
   variables(
     :dbtype => node['owncloud']['config']['dbtype'],
     :dbname => node['owncloud']['config']['dbname'],
