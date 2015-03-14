@@ -23,3 +23,9 @@ node.default['owncloud']['admin']['pass'] = 'test'
 package 'wget'
 
 include_recipe 'owncloud'
+
+template 'emailtest.php' do
+  path ::File.join(node['owncloud']['dir'], 'emailtest.php')
+  source 'emailtest.php.erb'
+  mode 00644
+end

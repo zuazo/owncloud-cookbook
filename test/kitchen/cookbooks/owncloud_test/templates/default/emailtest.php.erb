@@ -1,0 +1,17 @@
+<?php
+
+try {
+  require_once 'lib/base.php';
+
+  $defaults = new \OC_Defaults();
+  \OC_Mail::send(
+    'root@localhost.localdomain',
+    'root',
+    'Email Sending Test',
+    'Email Sending Test',
+    \OCP\Util::getDefaultEmailAddress('kitchen-test'),
+    $defaults->getName()
+  );
+} catch (Exception $ex) {
+  OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+}
