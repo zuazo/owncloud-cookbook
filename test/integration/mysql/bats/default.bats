@@ -5,7 +5,7 @@
 }
 
 @test "owncloud should be installed" {
-  wget -qO- 'localhost/status.php' | grep -qF '"installed":"true"'
+  wget -qO- 'localhost/status.php' | grep -qE '"installed":"?true"?'
 }
 
 @test "ssl should be enabled" {
