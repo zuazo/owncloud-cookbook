@@ -93,7 +93,7 @@ attribute 'owncloud/server_aliases',
   :description => 'Sets the server name aliases for the ownCloud virtual host',
   :type => 'array',
   :required => 'optional',
-  :default => [ 'localhost' ]
+  :default => []
 
 attribute 'owncloud/install_postfix',
   :display_name => 'install Postfix?',

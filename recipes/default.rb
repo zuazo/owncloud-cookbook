@@ -317,19 +317,13 @@ template 'autoconfig.php' do
     :data_dir => node['owncloud']['data_dir']
   )
   not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
-
-  web_services.each do |web_service|
-    notifies :restart, "service[#{web_service}]", :immediately
-  end
-  notifies :get, 'http_request[run setup]', :immediately
+  notifies :run, 'execute[run setup]', :immediately
 end
 
 # install ownCloud
-http_request 'run setup' do
-  url 'http://localhost/'
-  headers({ 'Host' => node['owncloud']['server_name'] })
-  message ''
-  retries 3 # dirty trick to wait all web services to be up in some scenarios
+execute 'run setup' do
+  cwd node['owncloud']['dir']
+  command "sudo -u '#{node[web_server]['user']}' php -f index.php | { ! grep -iA2 error; }"
   action :nothing
 end
 
@@ -353,6 +347,7 @@ ruby_block 'apply config' do
       node.save
     end
   end
+  only_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
 end
 
 #==============================================================================

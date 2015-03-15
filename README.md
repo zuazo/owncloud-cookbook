@@ -83,7 +83,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['server_aliases']</code></td>
     <td>Sets the server name aliases for the ownCloud virtual host</td>
-    <td><code>[ "localhost" ]</code></td>
+    <td><code>[]</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['install_postfix']</code></td>
