@@ -317,6 +317,9 @@ template 'autoconfig.php' do
     :data_dir => node['owncloud']['data_dir']
   )
   not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
+  web_services.each do |web_service|
+    notifies :restart, "service[#{web_service}]", :immediately
+  end
   notifies :run, 'execute[run setup]', :immediately
 end
 
