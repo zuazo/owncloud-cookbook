@@ -13,6 +13,8 @@ provisioner:
   require_chef_omnibus: true
   attributes:
     owncloud:
+      server_aliases:
+        - "localhost"
       config:
         trusted_domains:
           - "localhost:8080"
