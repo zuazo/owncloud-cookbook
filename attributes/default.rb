@@ -43,10 +43,12 @@ default['owncloud']['admin']['user'] = 'admin'
 default['owncloud']['admin']['pass'] = nil
 
 default['owncloud']['config']['dbtype'] = 'mysql'
+default['owncloud']['config']['dbversion'] = nil
 default['owncloud']['config']['dbname'] = 'owncloud'
 default['owncloud']['config']['dbuser'] = 'owncloud'
 default['owncloud']['config']['dbpassword'] = nil
-default['owncloud']['config']['dbhost'] = 'localhost'
+default['owncloud']['config']['dbrootpassword'] = 'my_root_password'
+default['owncloud']['config']['dbhost'] = '127.0.0.1'
 default['owncloud']['config']['dbtableprefix'] = ''
 
 default['owncloud']['config']['mail_smtpmode'] = 'sendmail'

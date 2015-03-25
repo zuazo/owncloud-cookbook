@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "database should be created" {
-  echo "show databases" | mysql -uroot -pvagrant_root | grep -q "^owncloud$"
+  echo "show databases" | mysql -uroot -h 127.0.0.1 -pvagrant_root | grep -q "^owncloud$"
 }
 
 @test "owncloud should be installed" {

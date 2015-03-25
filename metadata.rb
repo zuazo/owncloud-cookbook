@@ -12,8 +12,9 @@ supports 'ubuntu'
 
 depends 'apache2', '~> 3.0'
 depends 'apt', '~> 2.0'
-depends 'database', '= 2.3.1'
-depends 'mysql', '~> 5.0'
+depends 'database', '~> 4.0'
+depends 'mysql', '~> 6.0'
+depends "mysql2_chef_gem", "~> 1.0.1"
 depends 'nginx', '~> 2.7'
 depends 'openssl', '~> 2.0'
 depends 'php', '~> 1.4'

@@ -117,13 +117,22 @@ when 'sqlite'
 when 'mysql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
-    include_recipe 'mysql::server'
-    include_recipe 'database::mysql'
+    mysql2_chef_gem 'default' do
+      action :install
+    end
+    mysql_service 'default' do
+      version node['owncloud']['config']['dbversion']
+      bind_address '127.0.0.1'
+      port '3306'
+      initial_root_password node['owncloud']['config']['dbrootpassword']
+      action [:create, :start]
+    end
+
 
     mysql_connection_info = {
-      :host => 'localhost',
+      :host => '127.0.0.1',
       :username => 'root',
-      :password => node['mysql']['server_root_password']
+      :password => node['owncloud']['config']['dbrootpassword']
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -143,6 +152,15 @@ when 'mysql'
 when 'pgsql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
+    if ::Chef::Config[:solo]
+      attr = node['postgresql'] && node['postgresql']['password'] && node['postgresql']['password']['postgres']
+      unless attr
+        node['postgresql']['password']['postgress'] = node['owncloud']['config']['dbrootpassword']
+      end
+    else
+      node.set_unless['postgresql']['password']['postgres'] = node['owncloud']['config']['dbrootpassword']
+    end
+
     include_recipe 'postgresql::server'
     include_recipe 'database::postgresql'
 

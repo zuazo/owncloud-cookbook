@@ -17,10 +17,7 @@
 # limitations under the License.
 #
 
-node.default['mysql']['server_root_password'] = 'vagrant_root'
-node.default['mysql']['server_debian_password'] = 'vagrant_debian'
-node.default['mysql']['server_repl_password'] = 'vagrant_repl'
-
+node.default['owncloud']['config']['dbrootpassword'] = 'vagrant_root'
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 
 include_recipe 'owncloud_test::common'
