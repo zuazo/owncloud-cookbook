@@ -280,6 +280,20 @@ attribute 'owncloud/config/dbtype',
   :required => 'optional',
   :default => '"mysql"'
 
+attribute 'owncloud/config/dbinstance',
+  :display_name => 'mySQL database instance name',
+  :description => 'mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"default"'
+
+attribute 'owncloud/config/dbversion',
+  :display_name => 'mySQL server version',
+  :description => 'mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
 attribute 'owncloud/config/dbname',
   :display_name => 'ownCloud Database Name',
   :description => 'Name of the ownCloud database',
@@ -301,12 +315,19 @@ attribute 'owncloud/config/dbpassword',
   :type => 'string',
   :required => 'optional'
 
+attribute 'owncloud/config/dbrootpassword',
+  :display_name => 'Database Root Password',
+  :description => 'Database admin password to access a database instance',
+  :calculated => true,
+  :type => 'string',
+  :required => 'optional'
+
 attribute 'owncloud/config/dbhost',
   :display_name => 'ownCloud Database Host',
   :description => 'Host running the ownCloud database',
   :type => 'string',
   :required => 'optional',
-  :default => '"localhost"'
+  :default => '"127.0.0.1"'
 
 attribute 'owncloud/config/dbtableprefix',
   :display_name => 'ownCloud Database Table Prefix',

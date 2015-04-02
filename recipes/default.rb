@@ -121,7 +121,7 @@ when 'sqlite'
 when 'mysql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
-    dbinstance = node['owncloud']['config']['dbinstance'] = 'default'
+    dbinstance = node['owncloud']['config']['dbinstance']
 
     mysql2_chef_gem dbinstance do
       action :install
