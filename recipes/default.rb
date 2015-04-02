@@ -71,12 +71,16 @@ if Chef::Config[:solo]
   if node['owncloud']['config']['dbpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
     Chef::Application.fatal!('You must set owncloud\'s database password in chef-solo mode.')
   end
+  if node['owncloud']['config']['dbrootpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
+    Chef::Application.fatal!('You must set the database admin password in chef-solo mode.')
+  end
   if node['owncloud']['admin']['pass'].nil?
     Chef::Application.fatal!('You must set owncloud\'s admin password in chef-solo mode.')
   end
 else
   unless node['owncloud']['config']['dbtype'] == 'sqlite'
     node.set_unless['owncloud']['config']['dbpassword'] = secure_password
+    node.set_unless['owncloud']['config']['dbrootpassword'] = secure_password
   end
   node.set_unless['owncloud']['admin']['pass'] = secure_password
   node.save
@@ -117,17 +121,18 @@ when 'sqlite'
 when 'mysql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
-    mysql2_chef_gem 'default' do
+    dbinstance = node['owncloud']['config']['dbinstance'] = 'default'
+
+    mysql2_chef_gem dbinstance do
       action :install
     end
-    mysql_service 'default' do
+    mysql_service dbinstance do
       version node['owncloud']['config']['dbversion']
       bind_address '127.0.0.1'
       port '3306'
       initial_root_password node['owncloud']['config']['dbrootpassword']
       action [:create, :start]
     end
-
 
     mysql_connection_info = {
       :host => '127.0.0.1',
