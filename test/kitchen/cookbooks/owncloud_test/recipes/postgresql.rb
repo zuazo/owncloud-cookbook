@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default['owncloud']['config']['dbrootpassword'] = 'vagrant_postgres'
+node.default['owncloud']['database']['rootpassword'] = 'vagrant_postgres'
 
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 node.default['owncloud']['config']['dbtype'] = 'pgsql'

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default['owncloud']['config']['dbrootpassword'] = 'vagrant_root'
+node.default['owncloud']['database']['rootpassword'] = 'vagrant_root'
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 
 include_recipe 'owncloud_test::common'

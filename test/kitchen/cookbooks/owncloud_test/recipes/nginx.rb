@@ -19,7 +19,7 @@
 
 node.default['owncloud']['web_server'] = 'nginx'
 
-node.default['owncloud']['config']['dbrootpassword'] = 'vagrant_root'
+node.default['owncloud']['database']['rootpassword'] = 'vagrant_root'
 
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 

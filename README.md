@@ -211,16 +211,6 @@ Attributes
     <td><code>"mysql"</code></td>
   </tr>
   <tr>
-    <td><code>node['owncloud']['config']['dbinstance']</code></td>
-    <td>mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
-    <td><code>"default"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbversion']</code></td>
-    <td>mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
     <td><code>node['owncloud']['config']['dbname']</code></td>
     <td>Name of the ownCloud database</td>
     <td><code>"owncloud"</code></td>
@@ -233,11 +223,6 @@ Attributes
   <tr>
     <td><code>node['owncloud']['config']['dbpassword']</code></td>
     <td>Password to access the ownCloud database</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbrootpassword']</code></td>
-    <td>Database admin password to access a database instance</td>
     <td><em>calculated</em></td>
   </tr>
   <tr>
@@ -330,6 +315,21 @@ Attributes
     <td>Whether to skip settings the permissions of the ownCloud directory. Set this to true when using NFS synced folders.</td>
     <td><code>false</code></td>
   </tr>
+  <tr>
+    <td><code>node['owncloud']['database']['rootpassword']</code></td>
+    <td>Database admin password to access a database instance</td>
+    <td><em>calculated</em></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['database']['instance']</code></td>
+    <td>mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
+    <td><code>"default"</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['database']['version']</code></td>
+    <td>mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support</td>
+    <td><code>nil</code></td>
+  </tr>
 </table>
 
 Recipes
@@ -350,7 +350,7 @@ On the first run, several passwords will be automatically generated and stored i
 
 * `node['owncloud']['admin']['pass']`
 * `node['owncloud']['config']['dbpassword']` (Only when using *MySQL* or *PostgreSQL*)
-* `node['owncloud']['config']['dbrootpassword']` (Only when using *MySQL* or *PostgreSQL*)
+* `node['owncloud']['database']['rootpassword']` (Only when using *MySQL* or *PostgreSQL*)
 
 When using Chef Solo, these passwords need to be set manually.
 

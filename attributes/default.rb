@@ -43,12 +43,9 @@ default['owncloud']['admin']['user'] = 'admin'
 default['owncloud']['admin']['pass'] = nil
 
 default['owncloud']['config']['dbtype'] = 'mysql'
-default['owncloud']['config']['dbinstance'] = 'default'
-default['owncloud']['config']['dbversion'] = nil
 default['owncloud']['config']['dbname'] = 'owncloud'
 default['owncloud']['config']['dbuser'] = 'owncloud'
 default['owncloud']['config']['dbpassword'] = nil
-default['owncloud']['config']['dbrootpassword'] = nil
 default['owncloud']['config']['dbhost'] = '127.0.0.1'
 default['owncloud']['config']['dbtableprefix'] = ''
 
@@ -68,3 +65,7 @@ default['owncloud']['cron']['day'] = '*'
 default['owncloud']['cron']['hour'] = '*'
 default['owncloud']['cron']['month'] = '*'
 default['owncloud']['cron']['weekday'] = '*'
+
+default['owncloud']['database']['instance'] = 'default'
+default['owncloud']['database']['rootpassword'] = nil
+default['owncloud']['database']['version'] = nil

@@ -280,20 +280,6 @@ attribute 'owncloud/config/dbtype',
   :required => 'optional',
   :default => '"mysql"'
 
-attribute 'owncloud/config/dbinstance',
-  :display_name => 'mySQL database instance name',
-  :description => 'mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
-  :type => 'string',
-  :required => 'optional',
-  :default => '"default"'
-
-attribute 'owncloud/config/dbversion',
-  :display_name => 'mySQL server version',
-  :description => 'mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
-  :type => 'string',
-  :required => 'optional',
-  :default => 'nil'
-
 attribute 'owncloud/config/dbname',
   :display_name => 'ownCloud Database Name',
   :description => 'Name of the ownCloud database',
@@ -311,13 +297,6 @@ attribute 'owncloud/config/dbuser',
 attribute 'owncloud/config/dbpassword',
   :display_name => 'ownCloud Database Password',
   :description => 'Password to access the ownCloud database',
-  :calculated => true,
-  :type => 'string',
-  :required => 'optional'
-
-attribute 'owncloud/config/dbrootpassword',
-  :display_name => 'Database Root Password',
-  :description => 'Database admin password to access a database instance',
   :calculated => true,
   :type => 'string',
   :required => 'optional'
@@ -451,3 +430,25 @@ attribute 'owncloud/skip_permissions',
   :choice => [ 'true', 'false' ],
   :type => 'string',
   :required => 'optional'
+
+attribute 'owncloud/databse/rootpassword',
+  :display_name => 'Database Root Password',
+  :description => 'Database admin password to access a database instance',
+  :calculated => true,
+  :type => 'string',
+  :required => 'optional'
+
+attribute 'owncloud/database/instance',
+  :display_name => 'mySQL database instance name',
+  :description => 'mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"default"'
+
+attribute 'owncloud/database/version',
+  :display_name => 'mySQL server version',
+  :description => 'mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+
