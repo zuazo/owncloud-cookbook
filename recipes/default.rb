@@ -160,7 +160,7 @@ when 'pgsql'
     if ::Chef::Config[:solo]
       attr = node['postgresql'] && node['postgresql']['password'] && node['postgresql']['password']['postgres']
       unless attr
-        node['postgresql']['password']['postgress'] = node['owncloud']['config']['dbrootpassword']
+        node.set['postgresql']['password']['postgres'] = node['owncloud']['config']['dbrootpassword']
       end
     else
       node.set_unless['postgresql']['password']['postgres'] = node['owncloud']['config']['dbrootpassword']
