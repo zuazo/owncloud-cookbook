@@ -2,6 +2,15 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
+## v0.5.0 (2015-04-08)
+
+* Lock cookbook versions on metadata.
+* Add option to skip setting permissions (issues [#18](https://github.com/onddo/owncloud-cookbook/issues/18) and [#20](https://github.com/onddo/owncloud-cookbook/pull/20), thanks [LEDfan](https://github.com/LEDfan)).
+* Install PHP `5.4` repo on Ubuntu `<= 12.04` ([issue #19](https://github.com/onddo/owncloud-cookbook/issues/19), thanks [Jason Boyles](https://github.com/JasonBoyles) for reporting).
+* Run setup from the command line rather than HTTP request.
+* Add web services restart again, required by some SSL setups.
+* metadata: Update `openssl` cookbook to version `4` ([issue #22](https://github.com/onddo/owncloud-cookbook/issues/22), thanks [LEDfan](https://github.com/LEDfan) for reporting).
+
 ## v0.4.2 (2014-12-12)
 
 * metadata: Lock to `mysql` cookbook `~> 5.0`.

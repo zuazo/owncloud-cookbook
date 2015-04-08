@@ -4,7 +4,7 @@ maintainer_email 'team@onddo.com'
 license          'Apache 2.0'
 description      'Installs/Configures ownCloud'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.5.0' # WiP
+version          '0.5.0'
 
 supports 'centos'
 supports 'debian'
