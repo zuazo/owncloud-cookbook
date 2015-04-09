@@ -71,12 +71,16 @@ if Chef::Config[:solo]
   if node['owncloud']['config']['dbpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
     Chef::Application.fatal!('You must set owncloud\'s database password in chef-solo mode.')
   end
+  if node['owncloud']['database']['rootpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
+    Chef::Application.fatal!('You must set the database admin password in chef-solo mode.')
+  end
   if node['owncloud']['admin']['pass'].nil?
     Chef::Application.fatal!('You must set owncloud\'s admin password in chef-solo mode.')
   end
 else
   unless node['owncloud']['config']['dbtype'] == 'sqlite'
     node.set_unless['owncloud']['config']['dbpassword'] = secure_password
+    node.set_unless['owncloud']['database']['rootpassword'] = secure_password
   end
   node.set_unless['owncloud']['admin']['pass'] = secure_password
   node.save
@@ -117,13 +121,23 @@ when 'sqlite'
 when 'mysql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
-    include_recipe 'mysql::server'
-    include_recipe 'database::mysql'
+    dbinstance = node['owncloud']['database']['instance']
+
+    mysql2_chef_gem dbinstance do
+      action :install
+    end
+    mysql_service dbinstance do
+      version node['owncloud']['database']['version']
+      bind_address '127.0.0.1'
+      port '3306'
+      initial_root_password node['owncloud']['database']['rootpassword']
+      action [:create, :start]
+    end
 
     mysql_connection_info = {
-      :host => 'localhost',
+      :host => '127.0.0.1',
       :username => 'root',
-      :password => node['mysql']['server_root_password']
+      :password => node['owncloud']['database']['rootpassword']
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -143,6 +157,15 @@ when 'mysql'
 when 'pgsql'
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
+    if ::Chef::Config[:solo]
+      attr = node['postgresql'] && node['postgresql']['password'] && node['postgresql']['password']['postgres']
+      unless attr
+        node.set['postgresql']['password']['postgres'] = node['owncloud']['database']['rootpassword']
+      end
+    else
+      node.set_unless['postgresql']['password']['postgres'] = node['owncloud']['database']['rootpassword']
+    end
+
     include_recipe 'postgresql::server'
     include_recipe 'database::postgresql'
 

@@ -12,8 +12,9 @@ supports 'ubuntu'
 
 depends 'apache2', '~> 3.0'
 depends 'apt', '~> 2.0'
-depends 'database', '= 2.3.1'
-depends 'mysql', '~> 5.0'
+depends 'database', '~> 4.0'
+depends 'mysql', '~> 6.0'
+depends "mysql2_chef_gem", "~> 1.0.1"
 depends 'nginx', '~> 2.7'
 depends 'openssl', '~> 4.0'
 depends 'php', '~> 1.4'
@@ -305,7 +306,7 @@ attribute 'owncloud/config/dbhost',
   :description => 'Host running the ownCloud database',
   :type => 'string',
   :required => 'optional',
-  :default => '"localhost"'
+  :default => '"127.0.0.1"'
 
 attribute 'owncloud/config/dbtableprefix',
   :display_name => 'ownCloud Database Table Prefix',
@@ -429,3 +430,25 @@ attribute 'owncloud/skip_permissions',
   :choice => [ 'true', 'false' ],
   :type => 'string',
   :required => 'optional'
+
+attribute 'owncloud/databse/rootpassword',
+  :display_name => 'Database Root Password',
+  :description => 'Database admin password to access a database instance',
+  :calculated => true,
+  :type => 'string',
+  :required => 'optional'
+
+attribute 'owncloud/database/instance',
+  :display_name => 'mySQL database instance name',
+  :description => 'mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
+  :type => 'string',
+  :required => 'optional',
+  :default => '"default"'
+
+attribute 'owncloud/database/version',
+  :display_name => 'mySQL server version',
+  :description => 'mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
+  :type => 'string',
+  :required => 'optional',
+  :default => 'nil'
+

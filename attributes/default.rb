@@ -46,7 +46,7 @@ default['owncloud']['config']['dbtype'] = 'mysql'
 default['owncloud']['config']['dbname'] = 'owncloud'
 default['owncloud']['config']['dbuser'] = 'owncloud'
 default['owncloud']['config']['dbpassword'] = nil
-default['owncloud']['config']['dbhost'] = 'localhost'
+default['owncloud']['config']['dbhost'] = '127.0.0.1'
 default['owncloud']['config']['dbtableprefix'] = ''
 
 default['owncloud']['config']['mail_smtpmode'] = 'sendmail'
@@ -65,3 +65,7 @@ default['owncloud']['cron']['day'] = '*'
 default['owncloud']['cron']['hour'] = '*'
 default['owncloud']['cron']['month'] = '*'
 default['owncloud']['cron']['weekday'] = '*'
+
+default['owncloud']['database']['instance'] = 'default'
+default['owncloud']['database']['rootpassword'] = nil
+default['owncloud']['database']['version'] = nil
