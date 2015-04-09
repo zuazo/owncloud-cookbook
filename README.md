@@ -26,6 +26,10 @@ Requirements
 * postfix
 * postgresql
 
+## Other Requirements
+
+On RedHat based platforms, you need to disable or configure SELinux correctly. You can use the `selinux::disabled` recipe for that.
+
 Attributes
 ==========
 
