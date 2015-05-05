@@ -439,16 +439,22 @@ attribute 'owncloud/databse/rootpassword',
   :required => 'optional'
 
 attribute 'owncloud/database/instance',
-  :display_name => 'mySQL database instance name',
-  :description => 'mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
+  :display_name => 'MySQL database instance name',
+  :description => 'MySQL database instance name to run by the mysql_service lwrp from the mysql cookbook',
   :type => 'string',
   :required => 'optional',
   :default => '"default"'
 
 attribute 'owncloud/database/version',
-  :display_name => 'mySQL server version',
-  :description => 'mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
+  :display_name => 'MySQL server version',
+  :description => 'MySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support',
   :type => 'string',
   :required => 'optional',
   :default => 'nil'
 
+attribute 'owncloud/database/data_dir',
+  :display_name => 'MySQL server data dir',
+  :description => 'MySQL data files path',
+  :type => 'string',
+  :required => 'optional',
+  :calculated => true

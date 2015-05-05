@@ -326,13 +326,18 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['database']['instance']</code></td>
-    <td>mySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
+    <td>MySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
     <td><code>"default"</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['database']['version']</code></td>
-    <td>mySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support</td>
+    <td>MySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support</td>
     <td><code>nil</code></td>
+  </tr>
+  <tr>
+    <td><code>node['owncloud']['database']['data_dir']</code></td>
+    <td>MySQL data files path</td>
+    <td><em>calculated</em></td>
   </tr>
 </table>
 

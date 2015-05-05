@@ -66,6 +66,7 @@ default['owncloud']['cron']['hour'] = '*'
 default['owncloud']['cron']['month'] = '*'
 default['owncloud']['cron']['weekday'] = '*'
 
+default['owncloud']['database']['data_dir'] = '/var/lib/mysql'
 default['owncloud']['database']['instance'] = 'default'
 default['owncloud']['database']['rootpassword'] = nil
 default['owncloud']['database']['version'] = nil

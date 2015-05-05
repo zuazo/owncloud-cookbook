@@ -127,6 +127,7 @@ when 'mysql'
       action :install
     end
     mysql_service dbinstance do
+      data_dir node['owncloud']['database']['data_dir']
       version node['owncloud']['database']['version']
       bind_address '127.0.0.1'
       port '3306'
