@@ -156,6 +156,7 @@ when 'mysql'
     end
   end
 when 'pgsql'
+  node.override['owncloud']['config']['dbport'] = node['postgresql']['config']['port']
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
     if ::Chef::Config[:solo]
@@ -172,6 +173,7 @@ when 'pgsql'
 
     postgresql_connection_info = {
       :host => 'localhost',
+      :port => node['postgresql']['config']['port'],
       :username => 'postgres',
       :password => node['postgresql']['password']['postgres']
     }
@@ -334,7 +336,7 @@ template 'autoconfig.php' do
     :dbname => node['owncloud']['config']['dbname'],
     :dbuser => node['owncloud']['config']['dbuser'],
     :dbpass => node['owncloud']['config']['dbpassword'],
-    :dbhost => node['owncloud']['config']['dbhost'],
+    :dbhost => node['owncloud']['config']['dbhost'] + ":#{node['owncloud']['config']['dbport']}",
     :dbprefix => node['owncloud']['config']['dbtableprefix'],
     :admin_user => node['owncloud']['admin']['user'],
     :admin_pass => node['owncloud']['admin']['pass'],
