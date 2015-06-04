@@ -312,7 +312,7 @@ attribute 'owncloud/config/dbhost',
 attribute 'owncloud/config/dbport',
   :display_name => 'ownCloud Database Port',
   :description => 'Port the ownCloud database is running at',
-  :type => 'integer',
+  :type => 'string',
   :required => 'optional',
   :default => 'nil'
 
