@@ -47,7 +47,7 @@ default['owncloud']['config']['dbname'] = 'owncloud'
 default['owncloud']['config']['dbuser'] = 'owncloud'
 default['owncloud']['config']['dbpassword'] = nil
 default['owncloud']['config']['dbhost'] = '127.0.0.1'
-default['owncloud']['config']['dbport'] = '3306'
+default['owncloud']['config']['dbport'] = nil
 default['owncloud']['config']['dbtableprefix'] = ''
 
 default['owncloud']['config']['mail_smtpmode'] = 'sendmail'

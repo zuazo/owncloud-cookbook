@@ -235,6 +235,11 @@ Attributes
     <td><code>"127.0.0.1"</code></td>
   </tr>
   <tr>
+    <td><code>node['owncloud']['config']['dbport']</code></td>
+    <td>Port the ownCloud database is running at</td>
+    <td><code>"127.0.0.1"</code></td>
+  </tr>
+  <tr>
     <td><code>node['owncloud']['config']['dbtableprefix']</code></td>
     <td>Prefix for the ownCloud tables in the database</td>
     <td><code>""</code></td>

@@ -308,6 +308,14 @@ attribute 'owncloud/config/dbhost',
   :required => 'optional',
   :default => '"127.0.0.1"'
 
+
+attribute 'owncloud/config/dbport',
+  :display_name => 'ownCloud Database Port',
+  :description => 'Port the ownCloud database is running at',
+  :type => 'integer',
+  :required => 'optional',
+  :default => 'nil'
+
 attribute 'owncloud/config/dbtableprefix',
   :display_name => 'ownCloud Database Table Prefix',
   :description => 'Prefix for the ownCloud tables in the database',
