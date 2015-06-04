@@ -176,7 +176,7 @@ when 'pgsql'
 
     postgresql_connection_info = {
       :host => 'localhost',
-      :port => node['postgresql']['config']['port'],
+      :port => node['owncloud']['config']['dbport'],
       :username => 'postgres',
       :password => node['postgresql']['password']['postgres']
     }
@@ -329,7 +329,7 @@ end
 template 'autoconfig.php' do
   path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
   source 'autoconfig.php.erb'
-  if node['owncloud']['skip_permissions'] == false
+  unless node['owncloud']['skip_permissions']
     owner node[web_server]['user']
     group node[web_server]['group']
     mode 00640
@@ -370,6 +370,7 @@ ruby_block 'apply config' do
     [ node['owncloud']['server_name'], node['owncloud']['server_aliases'] ].flatten.each do |domain|
       cookbook_config['trusted_domains'] << domain unless cookbook_config['trusted_domains'].include?(domain)
     end
+    cookbook_config['dbhost'] = "#{cookbook_config['dbhost']}:#{cookbook_config['dbport']}"
     config.merge(cookbook_config)
     config.write
     unless Chef::Config[:solo]
