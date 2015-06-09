@@ -237,7 +237,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['config']['dbport']</code></td>
     <td>Port the ownCloud database is running at</td>
-    <td><code>"127.0.0.1"</code></td>
+    <td><em>calculated</em></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbtableprefix']</code></td>
@@ -625,6 +625,7 @@ License and Author
 | **Author:**          | Xabier de Zuazo (<xabier@onddo.com>)
 | **Contributor:**     | [@laradji](https://github.com/laradji)
 | **Contributor:**     | [@cvl-skubriev](https://github.com/cvl-skubriev)
+| **Contributor:**     | [Michael Sprauer](https://github.com/MichaelSp)
 | **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
 | **License:**         | Apache License, Version 2.0
 

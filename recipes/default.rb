@@ -119,7 +119,9 @@ when 'sqlite'
   # With SQLite the table prefix must be oc_
   node.override['owncloud']['config']['dbtableprefix'] = 'oc_'
 when 'mysql'
-  node.default['owncloud']['config']['dbport'] = node['mysql']['port'] if node['owncloud']['config']['dbport'].nil?
+  if node['owncloud']['config']['dbport'].nil?
+    node.default['owncloud']['config']['dbport'] = '3306'
+  end
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
     dbinstance = node['owncloud']['database']['instance']
@@ -131,16 +133,16 @@ when 'mysql'
       data_dir node['owncloud']['database']['data_dir']
       version node['owncloud']['database']['version']
       bind_address '127.0.0.1'
-      port node['owncloud']['config']['dbport']
+      port node['owncloud']['config']['dbport'].to_s
       initial_root_password node['owncloud']['database']['rootpassword']
       action [:create, :start]
     end
 
     mysql_connection_info = {
       :host => '127.0.0.1',
+      :port => node['owncloud']['config']['dbport'],
       :username => 'root',
-      :password => node['owncloud']['database']['rootpassword'],
-      :port => node['owncloud']['config']['dbport']
+      :password => node['owncloud']['database']['rootpassword']
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -152,14 +154,17 @@ when 'mysql'
       connection mysql_connection_info
       database_name node['owncloud']['config']['dbname']
       host 'localhost'
-      port node['owncloud']['config']['dbport']
       password node['owncloud']['config']['dbpassword']
       privileges [:all]
       action :grant
     end
   end
 when 'pgsql'
-  node.default['owncloud']['config']['dbport'] = node['postgresql']['config']['port'] if node['owncloud']['config']['dbport'].nil?
+  if node['owncloud']['config']['dbport'].nil?
+    node.default['owncloud']['config']['dbport'] = node['postgresql']['config']['port']
+  else
+    node.default['postgresql']['config']['port'] = node['owncloud']['config']['dbport']
+  end
   if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
     if ::Chef::Config[:solo]
@@ -325,6 +330,15 @@ end
   end
 end
 
+dbhost =
+  if node['owncloud']['config']['dbport'].nil?
+    node['owncloud']['config']['dbhost']
+  else
+    [
+      node['owncloud']['config']['dbhost'],
+      node['owncloud']['config']['dbport']
+    ].join(':')
+  end
 # create autoconfig.php for the installation
 template 'autoconfig.php' do
   path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
@@ -339,7 +353,7 @@ template 'autoconfig.php' do
     :dbname => node['owncloud']['config']['dbname'],
     :dbuser => node['owncloud']['config']['dbuser'],
     :dbpass => node['owncloud']['config']['dbpassword'],
-    :dbhost => "#{node['owncloud']['config']['dbhost']}:#{node['owncloud']['config']['dbport']}",
+    :dbhost => dbhost,
     :dbprefix => node['owncloud']['config']['dbtableprefix'],
     :admin_user => node['owncloud']['admin']['user'],
     :admin_pass => node['owncloud']['admin']['pass'],
