@@ -623,7 +623,9 @@ License and Author
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Raúl Rodríguez (<raul@onddo.com>)
 | **Author:**          | Xabier de Zuazo (<xabier@onddo.com>)
-| **Contributor:**     | [@laradji](https://github.com/laradji)
+| **Contributor:**     | [Nacer Laradji](https://github.com/laradji)
+| **Contributor:**     | [LEDfan](https://github.com/LEDfan)
+| **Contributor:**     | [avsh](https://github.com/avsh)
 | **Contributor:**     | [@cvl-skubriev](https://github.com/cvl-skubriev)
 | **Contributor:**     | [Michael Sprauer](https://github.com/MichaelSp)
 | **Copyright:**       | Copyright (c) 2013 Onddo Labs, SL. (www.onddo.com)
