@@ -17,6 +17,7 @@ Requirements
 
 * apache2
 * apt
+* cron
 * database
 * mysql
 * nginx

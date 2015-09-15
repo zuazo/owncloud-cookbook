@@ -401,6 +401,8 @@ end
 # Enable cron for background jobs
 #==============================================================================
 
+include_recipe 'cron'
+
 if node['owncloud']['cron']['enabled'] == true
   cron 'owncloud cron' do
     user node[web_server]['user']
