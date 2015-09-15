@@ -219,6 +219,10 @@ if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') and
    node['owncloud']['install_postfix']
 
   include_recipe 'postfix::default'
+
+  # Fix Ubuntu 15.04 support:
+  r = resources(service: 'postfix')
+  r.provider(Chef::Provider::Service::Debian)
 end
 
 #==============================================================================
