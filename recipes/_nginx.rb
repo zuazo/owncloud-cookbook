@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
+
 #==============================================================================
 # Set up nginx webserver
 #==============================================================================
