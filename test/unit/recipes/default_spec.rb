@@ -354,6 +354,11 @@ describe 'owncloud::default' do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.0')
     end
 
+    it 'does not use Debian service provider for postfix' do
+      expect(chef_run).to enable_service('postfix')
+        .with_provider(nil)
+    end
+
     it 'creates www/html directory' do
       expect(chef_run).to create_directory('/var/www/html')
     end
