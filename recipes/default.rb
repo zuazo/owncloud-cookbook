@@ -380,7 +380,7 @@ ruby_block 'apply config' do
   block do
     config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
     config = OwnCloud::Config.new(config_file)
-    cookbook_config = node['owncloud']['config'].deep_to_hash
+    cookbook_config = node['owncloud']['config'].to_hash
     # Add server name and server aliases to trusted_domains config option
     cookbook_config['trusted_domains'] = [] unless cookbook_config.has_key?('trusted_domains')
     [ node['owncloud']['server_name'], node['owncloud']['server_aliases'] ].flatten.each do |domain|

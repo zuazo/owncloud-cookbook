@@ -28,6 +28,10 @@ Requirements
 * postfix
 * postgresql
 
+## Required Applications
+
+* Chef `>= 11.12.0`.
+
 ## Other Requirements
 
 On RedHat based platforms, you need to disable or configure SELinux correctly. You can use the `selinux::disabled` recipe for that.
