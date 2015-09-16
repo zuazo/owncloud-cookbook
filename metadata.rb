@@ -22,6 +22,7 @@ depends 'php', '~> 1.4'
 depends 'php-fpm', '~> 0.7'
 depends 'postfix', '~> 3.0'
 depends 'postgresql', '~> 3.4'
+depends 'ssl_certificate', '~> 1.1'
 
 suggests 'git'
 

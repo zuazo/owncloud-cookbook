@@ -75,9 +75,16 @@ describe 'owncloud::_nginx' do
   context 'with SSL enabled' do
     before { node.set['owncloud']['ssl'] = true }
 
-    it 'does not create SSL certificate' do
-      expect(chef_run).to create_file('owncloud.key')
-      expect(chef_run).to create_file('owncloud.pem')
+    it 'creates SSL certificate' do
+      expect(chef_run).to create_ssl_certificate('owncloud')
+    end
+
+    context 'SSL certificate resource' do
+      let(:resource) { chef_run.ssl_certificate('owncloud') }
+
+      it 'notifies nginx to restart' do
+        expect(resource).to notify('service[nginx]').to(:restart).delayed
+      end
     end
 
     it 'creates nginx owncloud-ssl site' do
@@ -96,8 +103,7 @@ describe 'owncloud::_nginx' do
     before { node.set['owncloud']['ssl'] = false }
 
     it 'does not create SSL certificate' do
-      expect(chef_run).to_not create_file('owncloud.key')
-      expect(chef_run).to_not create_file('owncloud.pem')
+      expect(chef_run).to_not create_ssl_certificate('owncloud')
     end
 
     it 'does not create nginx owncloud-ssl site' do

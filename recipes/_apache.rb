@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
-
 #==============================================================================
 # Set up Apache httpd webserver
 #==============================================================================
@@ -47,7 +45,10 @@ end
 if node['owncloud']['ssl']
   include_recipe 'apache2::mod_ssl'
 
-  ssl_key_path, ssl_cert_path = generate_certificate
+  cert = ssl_certificate 'owncloud' do
+    namespace node['owncloud']
+    notifies :restart, 'service[apache2]'
+  end
 
   # Create SSL virtualhost
   web_app 'owncloud-ssl' do
@@ -56,8 +57,10 @@ if node['owncloud']['ssl']
     server_name node['owncloud']['server_name']
     server_aliases node['owncloud']['server_aliases']
     port '443'
-    ssl_key ssl_key_path
-    ssl_cert ssl_cert_path
+    ssl_key cert.key_path
+    ssl_cert cert.cert_path
+    ssl_chain cert.chain_path
+    ssl true
     max_upload_size node['owncloud']['max_upload_size']
     sendfile node['owncloud']['sendfile']
     enable true

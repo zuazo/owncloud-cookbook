@@ -27,6 +27,7 @@ Requirements
 * php-fpm
 * postfix
 * postgresql
+* ssl_certificate
 
 ## Required Applications
 
@@ -442,9 +443,9 @@ run_list(
 )
 ```
 
-## Custom SSL Certificate
+## The HTTPS Certificate
 
-OwnCloud will accept SSL requests when `node['owncloud']['ssl']` is set to `true`. By default the cookbook will create a self-signed certificate, but a custom one can also be used.
+OwnCloud will accept HTTPS requests when `node['owncloud']['ssl']` is set to `true`. By default the cookbook will create a self-signed certificate, but a custom one can also be used.
 
 The custom certificate can be read from several sources:
 
@@ -454,7 +455,16 @@ The custom certificate can be read from several sources:
 * Chef Vault
 * File
 
-### Custom SSL certificate from an Attribute
+This cookbook uses the [`ssl_certificate`](https://supermarket.chef.io/cookbooks/ssl_certificate) cookbook to create the HTTPS certificate. The namespace used is `node['owncloud']`. For example:
+
+```ruby
+node.default['owncloud']['common_name'] = 'owncloud.example.com'
+include_recipe 'owncloud'
+```
+
+See the [`ssl_certificate` namespace documentation](https://supermarket.chef.io/cookbooks/ssl_certificate#namespaces) for more information.
+
+### Custom HTTPS certificate from an Attribute
 
 ```ruby
 name "owncloud_ssl_attribute"
@@ -478,7 +488,7 @@ run_list(
 )
 ```
 
-### Custom SSL certificate from a Data Bag
+### Custom HTTPS certificate from a Data Bag
 
 ```ruby
 name "owncloud_ssl_data_bag"
@@ -509,7 +519,7 @@ run_list(
 )
 ```
 
-### Custom SSL certificate from Chef Vault
+### Custom HTTPS certificate from Chef Vault
 
 ```ruby
 name "owncloud_ssl_chef_vault"
@@ -537,7 +547,7 @@ run_list(
 )
 ```
 
-### Custom SSL certificate from file
+### Custom HTTPS certificate from file
 
 This is usefull if you create the certificate on another cookbook.
 

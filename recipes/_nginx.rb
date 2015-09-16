@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-Chef::Recipe.send(:include, OwnCloud::RecipeHelpers)
-
 #==============================================================================
 # Set up nginx webserver
 #==============================================================================
@@ -58,7 +56,10 @@ end
 
 # SSL certs and port
 if node['owncloud']['ssl']
-  ssl_key_path, ssl_cert_path = generate_certificate
+  cert = ssl_certificate 'owncloud' do
+    namespace node['owncloud']
+    notifies :restart, 'service[nginx]' # TODO: reload?
+  end
 
   # Create virtualhost for ownCloud
   template File.join(node['nginx']['dir'], 'sites-available', 'owncloud-ssl') do
@@ -73,8 +74,9 @@ if node['owncloud']['ssl']
       :docroot => node['owncloud']['dir'],
       :port => 443,
       :fastcgi_pass => fastcgi_pass,
-      :ssl_key => ssl_key_path,
-      :ssl_cert => ssl_cert_path,
+      :ssl_key => cert.key_path,
+      :ssl_cert => cert.chain_combined_path,
+      :ssl => true,
       :max_upload_size => node['owncloud']['max_upload_size'],
       :sendfile => node['owncloud']['sendfile']
     )

@@ -53,8 +53,15 @@ describe 'owncloud::_apache' do
     before { node.set['owncloud']['ssl'] = true }
 
     it 'creates SSL certificate' do
-      expect(chef_run).to create_file('owncloud.key')
-      expect(chef_run).to create_file('owncloud.pem')
+      expect(chef_run).to create_ssl_certificate('owncloud')
+    end
+
+    context 'SSL certificate resource' do
+      let(:resource) { chef_run.ssl_certificate('owncloud') }
+
+      it 'notifies apache service to restart' do
+        expect(resource).to notify('service[apache2]').to(:restart).delayed
+      end
     end
 
     context 'web_app owncloud-ssl definition' do
@@ -69,8 +76,7 @@ describe 'owncloud::_apache' do
     before { node.set['owncloud']['ssl'] = false }
 
     it 'does not create SSL certificate' do
-      expect(chef_run).to_not create_file('owncloud.key')
-      expect(chef_run).to_not create_file('owncloud.pem')
+      expect(chef_run).to_not create_ssl_certificate('owncloud')
     end
 
     context 'web_app owncloud-ssl definition' do
