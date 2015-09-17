@@ -1,6 +1,7 @@
 Description
 ===========
 [![Cookbook Version](https://img.shields.io/cookbook/v/owncloud.svg?style=flat)](https://supermarket.getchef.com/cookbooks/owncloud)
+[![Code Climate](http://img.shields.io/codeclimate/github/zuazo/owncloud-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/owncloud-cookbook)
 [![Build Status](http://img.shields.io/travis/zuazo/owncloud-cookbook.svg?style=flat)](https://travis-ci.org/zuazo/owncloud-cookbook)
 [![Coverage Status](http://img.shields.io/coveralls/zuazo/owncloud-cookbook.svg?style=flat)](https://coveralls.io/r/zuazo/owncloud-cookbook?branch=master)
 
