@@ -388,31 +388,8 @@ end
 # Apply the configuration on attributes to config.php
 ruby_block 'apply config' do
   block do
-    config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
-    config = OwncloudCookbook::Config.new(config_file)
-    cookbook_config = node['owncloud']['config'].to_hash
-    # Add server name and server aliases to trusted_domains config option
-    unless cookbook_config.key?('trusted_domains')
-      cookbook_config['trusted_domains'] = []
-    end
-    [
-      node['owncloud']['server_name'], node['owncloud']['server_aliases']
-    ].flatten.each do |domain|
-      next if cookbook_config['trusted_domains'].include?(domain)
-      cookbook_config['trusted_domains'] << domain
-    end
-    cookbook_config['dbhost'] =
-      "#{cookbook_config['dbhost']}:#{cookbook_config['dbport']}"
-    config.merge(cookbook_config)
-    config.write
-    unless Chef::Config[:solo]
-      # store important options that where generated automatically by the setup
-      node.set_unless['owncloud']['config']['passwordsalt'] =
-        config['passwordsalt']
-      node.set_unless['owncloud']['config']['instanceid'] =
-        config['instanceid']
-      node.save
-    end
+    self.class.send(:include, OwncloudCookbook::CookbookHelpers)
+    apply_owncloud_configuration
   end
   only_if do
     ::File.exist?(::File.join(node['owncloud']['dir'], 'config', 'config.php'))
