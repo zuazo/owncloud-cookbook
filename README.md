@@ -43,238 +43,53 @@ On RedHat based platforms, you need to disable or configure SELinux correctly. Y
 Attributes
 ==========
 
-<table>
-  <tr>
-    <td>Attribute</td>
-    <td>Description</td>
-    <td>Default</td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['version']</code></td>
-    <td>Version of ownCloud to install</td>
-    <td><code>'latest'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['download_url']</code></td>
-    <td>Url from where ownCloud will be downloaded</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['deploy_from_git']</code></td>
-    <td>Whether ownCloud should be deployed from the git repository</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['git_repo']</code></td>
-    <td>Url of the ownCloud git repository</td>
-    <td><code>'https://github.com/owncloud/core.git'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['git_ref']</code></td>
-    <td>Git reference to deploy</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['www_dir']</code></td>
-    <td>Root directory defined in Apache where web documents are stored</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['dir']</code></td>
-    <td>Directory where ownCloud will be installed</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['data_dir']</code></td>
-    <td>Directory where ownCloud data will be stored</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['server_name']</code></td>
-    <td>Sets the server name for the ownCloud virtual host</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['server_aliases']</code></td>
-    <td>Sets the server name aliases for the ownCloud virtual host</td>
-    <td><code>[]</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['install_postfix']</code></td>
-    <td>Whether to install Postfix when a local MTA is needed</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['web_server']</code></td>
-    <td>Web server to use: <code>'apache'</code> or <code>'nginx'</code></td>
-    <td><code>'apache'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['php-fpm']['pool']</code></td>
-    <td>PHP-FPM pool name to use with ownCloud.</code></td>
-    <td><code>'owncloud'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['max_upload_size']</code></td>
-    <td>Maximum allowed size for uploaded files.</code></td>
-    <td><code>'512M'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['sendfile']</code></td>
-    <td>Whether to enable Sendfile on web server. You should set to false if you use NFS or SMB mounts.</code></td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl']</code></td>
-    <td>Whether ownCloud should accept requests through SSL</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['admin']['user']</code></td>
-    <td>Administrator username</td>
-    <td><code>'admin'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['admin']['pass']</code></td>
-    <td>Administrator password</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbtype']</code></td>
-    <td>Type of database, can be sqlite, mysql or pgsql</td>
-    <td><code>'mysql'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbname']</code></td>
-    <td>Name of the ownCloud database</td>
-    <td><code>'owncloud'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbuser']</code></td>
-    <td>User to access the ownCloud database</td>
-    <td><code>'owncloud'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbpassword']</code></td>
-    <td>Password to access the ownCloud database</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbhost']</code></td>
-    <td>Host running the ownCloud database</td>
-    <td><code>'127.0.0.1'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbport']</code></td>
-    <td>Port the ownCloud database is running at</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['dbtableprefix']</code></td>
-    <td>Prefix for the ownCloud tables in the database</td>
-    <td><code>''</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpmode']</code></td>
-    <td>Mode to use for sending mail, can be sendmail, smtp, qmail or php</td>
-    <td><code>'sendmail'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtphost']</code></td>
-    <td>Host to use for sending mail, depends on mail_smtpmode if this is used</td>
-    <td><code>'127.0.0.1'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpport']</code></td>
-    <td>Port to use for sending mail, depends on mail_smtpmode if this is used</td>
-    <td><code>25</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtptimeout']</code></td>
-    <td>SMTP server timeout in seconds for sending mail, depends on mail_smtpmode if this is used</td>
-    <td><code>10</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpsecure']</code></td>
-    <td>SMTP connection prefix or sending mail, depends on mail_smtpmode if this is used. Can be '', ssl or tls</td>
-    <td><code>''</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpauth']</code></td>
-    <td>Whether authentication is needed to send mail, depends on mail_smtpmode if this is used</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpauthtype']</code></td>
-    <td>Authentication type needed to send mail, depends on mail_smtpmode if this is used. Can be LOGIN, PLAIN or NTLM</td>
-    <td><code>'LOGIN'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtpname']</code></td>
-    <td>Username to use for sendmail mail, depends on mail_smtpauth if this is used</td>
-    <td><code>''</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['config']['mail_smtppassword']</code></td>
-    <td>Password to use for sendmail mail, depends on mail_smtpauth if this is used</td>
-    <td><code>''</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['enabled']</code></td>
-    <td>Whether to enable ownCloud cron</td>
-    <td><code>true</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['min']</code></td>
-    <td>Minute to run ownCloud cron at</td>
-    <td><code>'*/15'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['hour']</code></td>
-    <td>Hour to run ownCloud cron at</td>
-    <td><code>'*'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['day']</code></td>
-    <td>Day of month to run ownCloud cron at</td>
-    <td><code>'*'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['month']</code></td>
-    <td>Month to run ownCloud cron at</td>
-    <td><code>'*'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['cron']['weekday']</code></td>
-    <td>Weekday to run ownCloud cron at</td>
-    <td><code>'*'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['skip_permissions']</code></td>
-    <td>Whether to skip settings the permissions of the ownCloud directory. Set this to true when using NFS synced folders.</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['database']['rootpassword']</code></td>
-    <td>Database admin password to access a database instance</td>
-    <td><em>calculated</em></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['database']['instance']</code></td>
-    <td>MySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
-    <td><code>'default'</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['database']['version']</code></td>
-    <td>MySQL version to install by the mysql_service lwrp. Refer to https://github.com/chef-cookbooks/mysql#platform-support</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['database']['data_dir']</code></td>
-    <td>MySQL data files path</td>
-    <td><em>calculated</em></td>
-  </tr>
-</table>
+| Attribute                                         | Default       | Description                    |
+|:--------------------------------------------------|:--------------|:-------------------------------|
+| `node['owncloud']['version']`                     | `'latest'`    | Version of ownCloud to install.
+| `node['owncloud']['download_url']`                | *calculated*  | URL from where ownCloud will be downloaded.
+| `node['owncloud']['deploy_from_git']`             | `false`       | Whether ownCloud should be deployed from the git repository.
+| `node['owncloud']['git_repo']`                    | *calculated*  | URL of the ownCloud git repository.
+| `node['owncloud']['git_ref']`                     | `nil`         | Git reference to deploy.
+| `node['owncloud']['www_dir']`                     | *calculated*  | Root directory defined in the web server where web documents are stored.
+| `node['owncloud']['dir']`                         | *calculated*  | Directory where ownCloud will be installed.
+| `node['owncloud']['data_dir']`                    | *calculated*  | Directory where ownCloud data will be stored.
+| `node['owncloud']['server_name']`                 | *calculated*  | Sets the server name for the ownCloud virtual host.
+| `node['owncloud']['server_aliases']`              | `[]`          | Sets the server name aliases for the ownCloud virtual host.
+| `node['owncloud']['install_postfix']`             | `true`        | Whether to install Postfix when a local MTA is needed.
+| `node['owncloud']['web_server']`                  | `'apache'`    | Web server to use: `'apache'` or `'nginx'`.
+| `node['owncloud']['php-fpm']['pool']`             | `'owncloud'`  | PHP-FPM pool name to use with ownCloud.
+| `node['owncloud']['max_upload_size']`             | `'512M'`      | Maximum allowed size for uploaded files.
+| `node['owncloud']['sendfile']`                    | *calculated*  | Whether to enable *sendfile* on web server. You should set to `'false'` if you use NFS or SMB mounts.
+| `node['owncloud']['ssl']`                         | `true`        | Whether ownCloud should accept requests through TLS.
+| `node['owncloud']['admin']['user']`               | `'admin'`     | Administrator username.
+| `node['owncloud']['admin']['pass']`               | *calculated*  | Administrator password.
+| `node['owncloud']['config']['dbtype']`            | `'mysql'`     | Type of database, can be `'sqlite'`, `'mysql'` or `'pgsql'`.
+| `node['owncloud']['config']['dbname']`            | `'owncloud'`  | Name of the ownCloud database.
+| `node['owncloud']['config']['dbuser']`            | `'owncloud'`  | User to access the ownCloud database.
+| `node['owncloud']['config']['dbpassword']`        | *calculated*  | Password to access the ownCloud database.
+| `node['owncloud']['config']['dbhost']`            | `'127.0.0.1'` | Host running the ownCloud database.
+| `node['owncloud']['config']['dbport']`            | *calculated*  | Port the ownCloud database is running at.
+| `node['owncloud']['config']['dbtableprefix']`     | `''`          | Prefix for the ownCloud tables in the database.
+| `node['owncloud']['config']['mail_smtpmode']`     | `'sendmail'`  | Mode to use for sending mail, can be `'sendmail'`, `'smtp'`, `'qmail'` or `'php'`.
+| `node['owncloud']['config']['mail_smtphost']`     | `'127.0.0.1'` | Host to use for sending mail, depends on *mail_smtpmode* if this is used.
+| `node['owncloud']['config']['mail_smtpport']`     | `25`          | Port to use for sending mail, depends on *mail_smtpmode* if this is used.
+| `node['owncloud']['config']['mail_smtptimeout']`  | `10`          | SMTP server timeout in seconds for sending mail, depends on *mail_smtpmode* if this is used.
+| `node['owncloud']['config']['mail_smtpsecure']`   | `''`          | SMTP connection prefix or sending mail, depends on *mail_smtpmode* if this is used. Can be `''`, `'ssl'` or `'tls'`.
+| `node['owncloud']['config']['mail_smtpauth']`     | `false`       | Whether authentication is needed to send mail, depends on *mail_smtpmode* if this is used.
+| `node['owncloud']['config']['mail_smtpauthtype']` | `'LOGIN'`     | Authentication type needed to send mail, depends on *mail_smtpmode* if this is used. Can be `'LOGIN'`, `'PLAIN'` or `'NTLM'`.
+| `node['owncloud']['config']['mail_smtpname']`     | `''`          | Username to use for sendmail mail, depends on *mail_smtpauth* if this is used.
+| `node['owncloud']['config']['mail_smtppassword']` | `''`          | Password to use for sendmail mail, depends on *mail_smtpauth* if this is used.
+| `node['owncloud']['cron']['enabled']`             | `true`        | Whether to enable ownCloud cron job.
+| `node['owncloud']['cron']['min']`                 | `'*/15'`      | Minute to run ownCloud cron at.
+| `node['owncloud']['cron']['hour']`                | `'*'`         | Hour to run ownCloud cron at.
+| `node['owncloud']['cron']['day']`                 | `'*'`         | Day of month to run ownCloud cron at.
+| `node['owncloud']['cron']['month']`               | `'*'`         | Month to run ownCloud cron at.
+| `node['owncloud']['cron']['weekday']`             | `'*'`         | Weekday to run ownCloud cron at.
+| `node['owncloud']['skip_permissions']`            | `false`       | Whether to skip settings the permissions of the ownCloud directory. Set this to `true` when using NFS synced folders.
+| `node['owncloud']['database']['rootpassword']`    | *calculated*  | Database admin password to access a database instance.
+| `node['owncloud']['database']['instance']`        | `'default'`   | MySQL database instance name to run by the `mysql_service` LWRP from the [mysql](https://supermarket.chef.io/cookbooks/mysql) cookbook.
+| `node['owncloud']['database']['version']`         | `nil`         | MySQL version to install by the `mysql_service` LWRP. Refer to [`mysql` cookbook platform support section](https://github.com/chef-cookbooks/mysql#platform-support).
+| `node['owncloud']['database']['data_dir']`        | *calculated*  | MySQL data files path.
 
 Recipes
 =======
