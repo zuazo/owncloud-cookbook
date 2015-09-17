@@ -11,6 +11,14 @@ module OwnCloud
       read
     end
 
+    protected
+
+    def options_php_json
+      @options.to_json.gsub('\\', '\\\\\\').gsub("'", "\\\\'")
+    end
+
+    public
+
     def [](index)
       @options[index]
     end
@@ -38,7 +46,7 @@ module OwnCloud
       begin
         return unless ::File.exists?(@file)
         f = IO.popen('php', 'r+')
-        f.write "<?php require('#{@file}'); echo json_encode($CONFIG);"
+        f.write "<?php require('#{@file}'); echo json_encode($CONFIG);\n"
         f.close_write
         data = f.read
         f.close
@@ -53,7 +61,7 @@ module OwnCloud
       begin
         return if @options == @original_options
         f = IO.popen('php', 'r+')
-        f.write "<?php var_export(json_decode('#{@options.to_json}', true));"
+        f.write "<?php var_export(json_decode('#{options_php_json}', true));\n"
         f.close_write
         data = f.read
         f.close
