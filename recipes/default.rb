@@ -55,7 +55,7 @@ when 'fedora'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
 else
-  log('Unsupported platform, trying to guess packages.') { level :warn }
+  Chef::Log.warn('Unsupported platform, trying to guess packages.')
   php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
