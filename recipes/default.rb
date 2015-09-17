@@ -23,8 +23,8 @@
 
 dbtype = node['owncloud']['config']['dbtype']
 
-case node['platform']
-when 'debian', 'ubuntu'
+case node['platform_family']
+when 'debian'
   # Sync apt package index
   include_recipe 'apt'
 
@@ -32,8 +32,8 @@ when 'debian', 'ubuntu'
   php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
-when 'redhat', 'centos'
-  if node['platform_version'].to_f < 6
+when 'rhel'
+  if node['platform'] != 'amazon' && node['platform_version'].to_f < 6
     php_pkgs = %w(php53-gd php53-mbstring php53-xml php53-intl samba-client)
     php_pkgs << 'php53-mysql' if dbtype == 'mysql'
     php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
@@ -49,7 +49,7 @@ when 'redhat', 'centos'
     php_pkgs << 'php-mysql' if dbtype == 'mysql'
     php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
   end
-when 'fedora', 'scientific', 'amazon'
+when 'fedora'
   php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
