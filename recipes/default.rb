@@ -123,7 +123,7 @@ end
 case node['owncloud']['config']['dbtype']
 when 'sqlite'
   # With SQLite the table prefix must be oc_
-  node.override['owncloud']['config']['dbtableprefix'] = 'oc_'
+  node.default['owncloud']['config']['dbtableprefix'] = 'oc_'
 when 'mysql'
   if node['owncloud']['config']['dbport'].nil?
     node.default['owncloud']['config']['dbport'] = '3306'
