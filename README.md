@@ -31,7 +31,7 @@ Requirements
 
 ## Required Applications
 
-* Chef `>= 11.12.0`.
+* Chef `>= 11.14.2`.
 
 ## Other Requirements
 
