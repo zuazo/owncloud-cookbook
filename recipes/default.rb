@@ -28,13 +28,13 @@ when 'debian', 'ubuntu'
   # Sync apt package index
   include_recipe 'apt'
 
-  php_pkgs = %w{ php5-gd php5-intl php5-curl php5-json smbclient }
+  php_pkgs = %w(php5-gd php5-intl php5-curl php5-json smbclient)
   php_pkgs << 'php5-sqlite' if dbtype == 'sqlite'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
 when 'redhat', 'centos'
   if node['platform_version'].to_f < 6
-    php_pkgs = %w{ php53-gd php53-mbstring php53-xml php53-intl samba-client }
+    php_pkgs = %w(php53-gd php53-mbstring php53-xml php53-intl samba-client)
     php_pkgs << 'php53-mysql' if dbtype == 'mysql'
     php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
     if dbtype == 'sqlite'
@@ -44,19 +44,19 @@ when 'redhat', 'centos'
       )
     end
   else
-    php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
+    php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
     php_pkgs << 'php-pdo' if dbtype == 'sqlite'
     php_pkgs << 'php-mysql' if dbtype == 'mysql'
     php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
   end
 when 'fedora', 'scientific', 'amazon'
-  php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
+  php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
 else
   log('Unsupported platform, trying to guess packages.') { level :warn }
-  php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
+  php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
   php_pkgs << 'php-pdo' if dbtype == 'sqlite'
   php_pkgs << 'php-mysql' if dbtype == 'mysql'
   php_pkgs << 'php-pgsql' if dbtype == 'pgsql'
@@ -69,10 +69,12 @@ end
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 if Chef::Config[:solo]
-  if node['owncloud']['config']['dbpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
+  if node['owncloud']['config']['dbpassword'].nil? &&
+     node['owncloud']['config']['dbtype'] != 'sqlite'
     fail 'You must set ownCloud\'s database password in chef-solo mode.'
   end
-  if node['owncloud']['database']['rootpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
+  if node['owncloud']['database']['rootpassword'].nil? &&
+     node['owncloud']['config']['dbtype'] != 'sqlite'
     fail 'You must set the database admin password in chef-solo mode.'
   end
   if node['owncloud']['admin']['pass'].nil?
@@ -91,15 +93,17 @@ end
 # Install PHP
 #==============================================================================
 
-# ownCloud requires PHP >= 5.4.0, so in older ubuntu versions we need to add an extra repository in order to provide it
-if node['platform'] == 'ubuntu' and Chef::VersionConstraint.new('<= 12.04').include?(node['platform_version'])
+# ownCloud requires PHP >= 5.4.0, so in older ubuntu versions we need to add an
+# extra repository in order to provide it
+if node['platform'] == 'ubuntu' &&
+   Chef::VersionConstraint.new('<= 12.04').include?(node['platform_version'])
   apt_repository 'ondrej-php5-oldstable' do
-    uri          'http://ppa.launchpad.net/ondrej/php5-oldstable/ubuntu'
+    uri 'http://ppa.launchpad.net/ondrej/php5-oldstable/ubuntu'
     distribution node['lsb']['codename']
-    components   ['main']
-    keyserver    'keyserver.ubuntu.com'
-    key          'E5267A6C'
-    deb_src      true
+    components %w(main)
+    keyserver 'keyserver.ubuntu.com'
+    key 'E5267A6C'
+    deb_src true
   end
 end
 
@@ -123,7 +127,7 @@ when 'mysql'
   if node['owncloud']['config']['dbport'].nil?
     node.default['owncloud']['config']['dbport'] = '3306'
   end
-  if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
+  if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
     dbinstance = node['owncloud']['database']['instance']
 
@@ -140,10 +144,10 @@ when 'mysql'
     end
 
     mysql_connection_info = {
-      :host => '127.0.0.1',
-      :port => node['owncloud']['config']['dbport'],
-      :username => 'root',
-      :password => node['owncloud']['database']['rootpassword']
+      host: '127.0.0.1',
+      port: node['owncloud']['config']['dbport'],
+      username: 'root',
+      password: node['owncloud']['database']['rootpassword']
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -162,29 +166,25 @@ when 'mysql'
   end
 when 'pgsql'
   if node['owncloud']['config']['dbport'].nil?
-    node.default['owncloud']['config']['dbport'] = node['postgresql']['config']['port']
+    node.default['owncloud']['config']['dbport'] =
+      node['postgresql']['config']['port']
   else
-    node.default['postgresql']['config']['port'] = node['owncloud']['config']['dbport']
+    node.default['postgresql']['config']['port'] =
+      node['owncloud']['config']['dbport']
   end
-  if %w{ localhost 127.0.0.1 }.include?(node['owncloud']['config']['dbhost'])
+  if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
-    if ::Chef::Config[:solo]
-      attr = node['postgresql'] && node['postgresql']['password'] && node['postgresql']['password']['postgres']
-      unless attr
-        node.set['postgresql']['password']['postgres'] = node['owncloud']['database']['rootpassword']
-      end
-    else
-      node.set_unless['postgresql']['password']['postgres'] = node['owncloud']['database']['rootpassword']
-    end
+    node.set_unless['postgresql']['password']['postgres'] =
+      node['owncloud']['database']['rootpassword']
 
     include_recipe 'postgresql::server'
     include_recipe 'database::postgresql'
 
     postgresql_connection_info = {
-      :host => 'localhost',
-      :port => node['owncloud']['config']['dbport'],
-      :username => 'postgres',
-      :password => node['postgresql']['password']['postgres']
+      host: 'localhost',
+      port: node['owncloud']['config']['dbport'],
+      username: 'postgres',
+      password: node['postgresql']['password']['postgres']
     }
 
     postgresql_database node['owncloud']['config']['dbname'] do
@@ -216,7 +216,7 @@ end
 # Set up mail transfer agent
 #==============================================================================
 
-if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') and
+if node['owncloud']['config']['mail_smtpmode'].eql?('sendmail') &&
    node['owncloud']['install_postfix']
 
   include_recipe 'postfix::default'
@@ -234,7 +234,7 @@ end
 
 directory node['owncloud']['www_dir']
 
-unless node['owncloud']['deploy_from_git']
+if node['owncloud']['deploy_from_git'] != true
   basename = ::File.basename(node['owncloud']['download_url'])
   local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
@@ -248,7 +248,7 @@ unless node['owncloud']['deploy_from_git']
     else
       action :nothing
     end
-    if File.exists?(local_file)
+    if File.exist?(local_file)
       headers 'If-Modified-Since' => File.mtime(local_file).httpdate
     end
     notifies :create, 'remote_file[download owncloud]', :immediately
@@ -309,10 +309,10 @@ web_server = node['owncloud']['web_server']
 case web_server
 when 'apache'
   include_recipe 'owncloud::_apache'
-  web_services = [ 'apache2' ]
+  web_services = %w(apache2)
 when 'nginx'
   include_recipe 'owncloud::_nginx'
-  web_services = [ 'nginx', 'php-fpm' ]
+  web_services = %w(nginx php-fpm)
 else
   fail "Web server not supported: #{web_server}"
 end
@@ -329,9 +329,9 @@ end
 ].each do |dir|
   directory dir do
     if node['owncloud']['skip_permissions'] == false
-        owner node[web_server]['user']
-        group node[web_server]['group']
-        mode 00750
+      owner node[web_server]['user']
+      group node[web_server]['group']
+      mode 00750
     end
     action :create
   end
@@ -356,17 +356,19 @@ template 'autoconfig.php' do
     mode 00640
   end
   variables(
-    :dbtype => node['owncloud']['config']['dbtype'],
-    :dbname => node['owncloud']['config']['dbname'],
-    :dbuser => node['owncloud']['config']['dbuser'],
-    :dbpass => node['owncloud']['config']['dbpassword'],
-    :dbhost => dbhost,
-    :dbprefix => node['owncloud']['config']['dbtableprefix'],
-    :admin_user => node['owncloud']['admin']['user'],
-    :admin_pass => node['owncloud']['admin']['pass'],
-    :data_dir => node['owncloud']['data_dir']
+    dbtype: node['owncloud']['config']['dbtype'],
+    dbname: node['owncloud']['config']['dbname'],
+    dbuser: node['owncloud']['config']['dbuser'],
+    dbpass: node['owncloud']['config']['dbpassword'],
+    dbhost: dbhost,
+    dbprefix: node['owncloud']['config']['dbtableprefix'],
+    admin_user: node['owncloud']['admin']['user'],
+    admin_pass: node['owncloud']['admin']['pass'],
+    data_dir: node['owncloud']['data_dir']
   )
-  not_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
+  not_if do
+    ::File.exist?(::File.join(node['owncloud']['dir'], 'config', 'config.php'))
+  end
   web_services.each do |web_service|
     notifies :restart, "service[#{web_service}]", :immediately
   end
@@ -376,7 +378,10 @@ end
 # install ownCloud
 execute 'run setup' do
   cwd node['owncloud']['dir']
-  command "sudo -u '#{node[web_server]['user']}' php -f index.php | { ! grep -iA2 error; }"
+  command(
+    "sudo -u '#{node[web_server]['user']}' php -f index.php "\
+    '| { ! grep -iA2 error; }'
+  )
   action :nothing
 end
 
@@ -384,24 +389,34 @@ end
 ruby_block 'apply config' do
   block do
     config_file = ::File.join(node['owncloud']['dir'], 'config', 'config.php')
-    config = OwnCloud::Config.new(config_file)
+    config = OwncloudCookbook::Config.new(config_file)
     cookbook_config = node['owncloud']['config'].to_hash
     # Add server name and server aliases to trusted_domains config option
-    cookbook_config['trusted_domains'] = [] unless cookbook_config.has_key?('trusted_domains')
-    [ node['owncloud']['server_name'], node['owncloud']['server_aliases'] ].flatten.each do |domain|
-      cookbook_config['trusted_domains'] << domain unless cookbook_config['trusted_domains'].include?(domain)
+    unless cookbook_config.key?('trusted_domains')
+      cookbook_config['trusted_domains'] = []
     end
-    cookbook_config['dbhost'] = "#{cookbook_config['dbhost']}:#{cookbook_config['dbport']}"
+    [
+      node['owncloud']['server_name'], node['owncloud']['server_aliases']
+    ].flatten.each do |domain|
+      next if cookbook_config['trusted_domains'].include?(domain)
+      cookbook_config['trusted_domains'] << domain
+    end
+    cookbook_config['dbhost'] =
+      "#{cookbook_config['dbhost']}:#{cookbook_config['dbport']}"
     config.merge(cookbook_config)
     config.write
     unless Chef::Config[:solo]
       # store important options that where generated automatically by the setup
-      node.set_unless['owncloud']['config']['passwordsalt'] = config['passwordsalt']
-      node.set_unless['owncloud']['config']['instanceid'] = config['instanceid']
+      node.set_unless['owncloud']['config']['passwordsalt'] =
+        config['passwordsalt']
+      node.set_unless['owncloud']['config']['instanceid'] =
+        config['instanceid']
       node.save
     end
   end
-  only_if { ::File.exists?(::File.join(node['owncloud']['dir'], 'config', 'config.php')) }
+  only_if do
+    ::File.exist?(::File.join(node['owncloud']['dir'], 'config', 'config.php'))
+  end
 end
 
 #==============================================================================
@@ -410,20 +425,17 @@ end
 
 include_recipe 'cron'
 
-if node['owncloud']['cron']['enabled'] == true
-  cron 'owncloud cron' do
-    user node[web_server]['user']
-    minute node['owncloud']['cron']['min']
-    hour node['owncloud']['cron']['hour']
-    day node['owncloud']['cron']['day']
-    month node['owncloud']['cron']['month']
-    weekday node['owncloud']['cron']['weekday']
-    command "php -f '#{node['owncloud']['dir']}/cron.php' >> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
-  end
-else
-  cron 'owncloud cron' do
-    user node[web_server]['user']
-    command "php -f '#{node['owncloud']['dir']}/cron.php' >> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
-    action :delete
-  end
+cron_command =
+  "php -f '#{node['owncloud']['dir']}/cron.php' "\
+  ">> '#{node['owncloud']['data_dir']}/cron.log' 2>&1"
+
+cron 'owncloud cron' do
+  user node[web_server]['user']
+  minute node['owncloud']['cron']['min']
+  hour node['owncloud']['cron']['hour']
+  day node['owncloud']['cron']['day']
+  month node['owncloud']['cron']['month']
+  weekday node['owncloud']['cron']['weekday']
+  action node['owncloud']['cron']['enabled'] == true ? :create : :delete
+  command cron_command
 end

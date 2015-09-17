@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-#==============================================================================
-# Set up Apache httpd webserver
-#==============================================================================
-
 include_recipe 'apache2::default'
 include_recipe 'apache2::mod_php5'
 

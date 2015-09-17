@@ -20,13 +20,13 @@
 require_relative '../spec_helper'
 require 'config.rb'
 
-describe OwnCloud::Config, order: :random do
+describe OwncloudCookbook::Config, order: :random do
   let(:data_dir) { ::File.join(::File.dirname(__FILE__), '..', 'data') }
   let(:file_path) { 'file.php' }
   let(:config) { described_class.new(file_path) }
   before do
-    allow(::File).to receive(:exists?).and_call_original
-    allow(::File).to receive(:exists?).with(file_path).and_return(false)
+    allow(::File).to receive(:exist?).and_call_original
+    allow(::File).to receive(:exist?).with(file_path).and_return(false)
   end
 
   context '#initialize' do
@@ -125,7 +125,7 @@ describe OwnCloud::Config, order: :random do
       eruby.result(file: file_path)
     end
     before do
-      allow(::File).to receive(:exists?).with(file_path).and_return(true)
+      allow(::File).to receive(:exist?).with(file_path).and_return(true)
       allow(IO).to receive(:popen).and_call_original
       allow(IO).to receive(:popen).with('php', 'r+').and_return(popen)
       allow(popen).to receive(:write)
@@ -166,7 +166,7 @@ describe OwnCloud::Config, order: :random do
     let(:file) { double('File') }
     let(:new_options) { { 'key1' => 'value1', 'key2' => "quo'e" } }
     before do
-      allow(::File).to receive(:exists?).with(file_path).and_return(true)
+      allow(::File).to receive(:exist?).with(file_path).and_return(true)
       allow(IO).to receive(:popen).and_call_original
       allow(IO).to receive(:popen).with('php', 'r+').and_return(popen)
       allow(popen).to receive(:write)

@@ -33,6 +33,7 @@ Requirements
 ## Required Applications
 
 * Chef `>= 11.14.2`.
+* Ruby `1.9.3` or higher.
 
 ## Other Requirements
 
@@ -50,7 +51,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['version']</code></td>
     <td>Version of ownCloud to install</td>
-    <td><code>"latest"</code></td>
+    <td><code>'latest'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['download_url']</code></td>
@@ -65,7 +66,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['git_repo']</code></td>
     <td>Url of the ownCloud git repository</td>
-    <td><code>"https://github.com/owncloud/core.git"</code></td>
+    <td><code>'https://github.com/owncloud/core.git'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['git_ref']</code></td>
@@ -104,18 +105,18 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['web_server']</code></td>
-    <td>Web server to use: <code>"apache"</code> or <code>"nginx"</code></td>
-    <td><code>"apache"</code></td>
+    <td>Web server to use: <code>'apache'</code> or <code>'nginx'</code></td>
+    <td><code>'apache'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['php-fpm']['pool']</code></td>
     <td>PHP-FPM pool name to use with ownCloud.</code></td>
-    <td><code>"owncloud"</code></td>
+    <td><code>'owncloud'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['max_upload_size']</code></td>
     <td>Maximum allowed size for uploaded files.</code></td>
-    <td><code>"512M"</code></td>
+    <td><code>'512M'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['sendfile']</code></td>
@@ -128,89 +129,9 @@ Attributes
     <td><code>true</code></td>
   </tr>
   <tr>
-    <td><code>node['owncloud']['ssl_key']['source']</code></td>
-    <td>Source type to get the SSL key from. Can be self-signed, attribute, data-bag, chef-vault or file</td>
-    <td><code>"self-signed"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['bag']</code></td>
-    <td>Name of the Data Bag where the SSL key is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['item']</code></td>
-    <td>Name of the Data Bag Item where the SSL key is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['item_key']</code></td>
-    <td>Key of the Data Bag Item where the SSL key is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['encrypted']</code></td>
-    <td>Whether the Data Bag where the SSL key is stored is encrypted</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['secret_file']</code></td>
-    <td>Secret file used to decrypt the Data Bag where the SSL key is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['path']</code></td>
-    <td>Path to the file where the SSL key is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_key']['content']</code></td>
-    <td>String containing the raw SSL key</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['source']</code></td>
-    <td>Source type to get the SSL cert from. Can be self-signed, attribute, data-bag, chef-vault or file</td>
-    <td><code>"self-signed"</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['bag']</code></td>
-    <td>Name of the Data Bag where the SSL cert is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['item']</code></td>
-    <td>Name of the Data Bag Item where the SSL cert is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['item_key']</code></td>
-    <td>Key of the Data Bag Item where the SSL cert is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['encrypted']</code></td>
-    <td>Whether the Data Bag where the SSL cert is stored is encrypted</td>
-    <td><code>false</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['secret_file']</code></td>
-    <td>Secret file used to decrypt the Data Bag where the SSL cert is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['path']</code></td>
-    <td>Path to the file where the SSL cert is stored</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
-    <td><code>node['owncloud']['ssl_cert']['content']</code></td>
-    <td>String containing the raw SSL cert</td>
-    <td><code>nil</code></td>
-  </tr>
-  <tr>
     <td><code>node['owncloud']['admin']['user']</code></td>
     <td>Administrator username</td>
-    <td><code>"admin"</code></td>
+    <td><code>'admin'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['admin']['pass']</code></td>
@@ -220,17 +141,17 @@ Attributes
   <tr>
     <td><code>node['owncloud']['config']['dbtype']</code></td>
     <td>Type of database, can be sqlite, mysql or pgsql</td>
-    <td><code>"mysql"</code></td>
+    <td><code>'mysql'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbname']</code></td>
     <td>Name of the ownCloud database</td>
-    <td><code>"owncloud"</code></td>
+    <td><code>'owncloud'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbuser']</code></td>
     <td>User to access the ownCloud database</td>
-    <td><code>"owncloud"</code></td>
+    <td><code>'owncloud'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbpassword']</code></td>
@@ -240,7 +161,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['config']['dbhost']</code></td>
     <td>Host running the ownCloud database</td>
-    <td><code>"127.0.0.1"</code></td>
+    <td><code>'127.0.0.1'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['dbport']</code></td>
@@ -250,17 +171,17 @@ Attributes
   <tr>
     <td><code>node['owncloud']['config']['dbtableprefix']</code></td>
     <td>Prefix for the ownCloud tables in the database</td>
-    <td><code>""</code></td>
+    <td><code>''</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpmode']</code></td>
     <td>Mode to use for sending mail, can be sendmail, smtp, qmail or php</td>
-    <td><code>"sendmail"</code></td>
+    <td><code>'sendmail'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtphost']</code></td>
     <td>Host to use for sending mail, depends on mail_smtpmode if this is used</td>
-    <td><code>"127.0.0.1"</code></td>
+    <td><code>'127.0.0.1'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpport']</code></td>
@@ -274,8 +195,8 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpsecure']</code></td>
-    <td>SMTP connection prefix or sending mail, depends on mail_smtpmode if this is used. Can be "", ssl or tls</td>
-    <td><code>""</code></td>
+    <td>SMTP connection prefix or sending mail, depends on mail_smtpmode if this is used. Can be '', ssl or tls</td>
+    <td><code>''</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpauth']</code></td>
@@ -284,18 +205,18 @@ Attributes
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpauthtype']</code></td>
-    <td>authentication type needed to send mail, depends on mail_smtpmode if this is used. Can be LOGIN, PLAIN or NTLM</td>
-    <td><code>"LOGIN"</code></td>
+    <td>Authentication type needed to send mail, depends on mail_smtpmode if this is used. Can be LOGIN, PLAIN or NTLM</td>
+    <td><code>'LOGIN'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtpname']</code></td>
     <td>Username to use for sendmail mail, depends on mail_smtpauth if this is used</td>
-    <td><code>""</code></td>
+    <td><code>''</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['config']['mail_smtppassword']</code></td>
     <td>Password to use for sendmail mail, depends on mail_smtpauth if this is used</td>
-    <td><code>""</code></td>
+    <td><code>''</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['cron']['enabled']</code></td>
@@ -305,27 +226,27 @@ Attributes
   <tr>
     <td><code>node['owncloud']['cron']['min']</code></td>
     <td>Minute to run ownCloud cron at</td>
-    <td><code>"*/15"</code></td>
+    <td><code>'*/15'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['cron']['hour']</code></td>
     <td>Hour to run ownCloud cron at</td>
-    <td><code>"*"</code></td>
+    <td><code>'*'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['cron']['day']</code></td>
     <td>Day of month to run ownCloud cron at</td>
-    <td><code>"*"</code></td>
+    <td><code>'*'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['cron']['month']</code></td>
     <td>Month to run ownCloud cron at</td>
-    <td><code>"*"</code></td>
+    <td><code>'*'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['cron']['weekday']</code></td>
     <td>Weekday to run ownCloud cron at</td>
-    <td><code>"*"</code></td>
+    <td><code>'*'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['skip_permissions']</code></td>
@@ -340,7 +261,7 @@ Attributes
   <tr>
     <td><code>node['owncloud']['database']['instance']</code></td>
     <td>MySQL database instance name to run by the mysql_service lwrp from the mysql cookbook</td>
-    <td><code>"default"</code></td>
+    <td><code>'default'</code></td>
   </tr>
   <tr>
     <td><code>node['owncloud']['database']['version']</code></td>
@@ -385,15 +306,15 @@ By default ownCloud cookbook relies on a local *Postfix* installation to send em
 ### Basic owncloud role
 
 ```ruby
-name "owncloud"
-description "Install ownCloud"
+name 'owncloud'
+description 'Install ownCloud'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com"
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com'
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
@@ -402,25 +323,25 @@ run_list(
 In this example an [Amazon Simple Email Service](http://aws.amazon.com/ses/) account is used to send emails.
 
 ```ruby
-name "owncloud_ses"
-description "Install ownCloud and use an AWS SES account to send emails"
+name 'owncloud_ses'
+description 'Install ownCloud and use an AWS SES account to send emails'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "config" => {
-      "mail_smtpmode" => "smtp",
-      "mail_smtphost" => "email-smtp.us-east-1.amazonaws.com",
-      "mail_smtpport" => 465,
-      "mail_smtpsecure" => "tls",
-      "mail_smtpauth" => true,
-      "mail_smtpauthtype" => "LOGIN",
-      "mail_smtpname" => "amazon-ses-username",
-      "mail_smtppassword" => "amazon-ses-password",
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'config' => {
+      'mail_smtpmode' => 'smtp',
+      'mail_smtphost' => 'email-smtp.us-east-1.amazonaws.com',
+      'mail_smtpport' => 465,
+      'mail_smtpsecure' => 'tls',
+      'mail_smtpauth' => true,
+      'mail_smtpauthtype' => 'LOGIN',
+      'mail_smtpname' => 'amazon-ses-username',
+      'mail_smtppassword' => 'amazon-ses-password'
     }
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
@@ -429,18 +350,18 @@ run_list(
 The ownCloud code can be deployed from the Git repository. Git recipe must be included on the run_list.
 
 ```ruby
-name "owncloud_git"
-description "Install ownCloud from Git"
+name 'owncloud_git'
+description 'Install ownCloud from Git'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "deploy_from_git" => true,
-    "git_ref" => "master"
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'deploy_from_git' => true,
+    'git_ref' => 'master'
   }
 )
 run_list(
-  "recipe[git::default]",
-  "recipe[owncloud]"
+  'recipe[git::default]',
+  'recipe[owncloud]'
 )
 ```
 
@@ -468,83 +389,83 @@ See the [`ssl_certificate` namespace documentation](https://supermarket.chef.io/
 ### Custom HTTPS certificate from an Attribute
 
 ```ruby
-name "owncloud_ssl_attribute"
-description "Install ownCloud with a custom SSL certificate from an Attribute"
+name 'owncloud_ssl_attribute'
+description 'Install ownCloud with a custom SSL certificate from an Attribute'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "ssl" => true,
-    "ssl_key" => {
-      "source" => "attribute",
-      "content" => "-----BEGIN PRIVATE KEY-----[...]"
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'ssl' => true,
+    'ssl_key' => {
+      'source' => 'attribute',
+      'content' => '-----BEGIN PRIVATE KEY-----[...]'
     },
-    "ssl_cert" => {
-      "source" => "attribute",
-      "content" => "-----BEGIN CERTIFICATE-----[...]"
+    'ssl_cert' => {
+      'source' => 'attribute',
+      'content' => '-----BEGIN CERTIFICATE-----[...]'
     }
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
 ### Custom HTTPS certificate from a Data Bag
 
 ```ruby
-name "owncloud_ssl_data_bag"
-description "Install ownCloud with a custom SSL certificate from a Data Bag"
+name 'owncloud_ssl_data_bag'
+description 'Install ownCloud with a custom SSL certificate from a Data Bag'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "ssl" => true,
-    "ssl_key" => {
-      "source" => "data-bag",
-      "bag" => "ssl",
-      "item" => "key",
-      "item_key" => "content",
-      "encrypted" => true,
-      "secret_file" => "/path/to/secret/file" # optional
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'ssl' => true,
+    'ssl_key' => {
+      'source' => 'data-bag',
+      'bag' => 'ssl',
+      'item' => 'key',
+      'item_key' => 'content',
+      'encrypted' => true,
+      'secret_file' => '/path/to/secret/file' # optional
     },
-    "ssl_cert" => {
-      "source" => "data-bag",
-      "bag" => "ssl",
-      "item" => "cert",
-      "item_key" => "content",
-      "encrypted" => false
+    'ssl_cert' => {
+      'source' => 'data-bag',
+      'bag' => 'ssl',
+      'item' => 'cert',
+      'item_key' => 'content',
+      'encrypted' => false
     }
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
 ### Custom HTTPS certificate from Chef Vault
 
 ```ruby
-name "owncloud_ssl_chef_vault"
-description "Install ownCloud with a custom SSL certificate from Chef Vault"
+name 'owncloud_ssl_chef_vault'
+description 'Install ownCloud with a custom SSL certificate from Chef Vault'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "ssl" => true,
-    "ssl_key" => {
-      "source" => "chef-vault",
-      "bag" => "owncloud",
-      "item" => "ssl",
-      "item_key" => "key"
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'ssl' => true,
+    'ssl_key' => {
+      'source' => 'chef-vault',
+      'bag' => 'owncloud',
+      'item' => 'ssl',
+      'item_key' => 'key'
     },
-    "ssl_cert" => {
-      "source" => "chef-vault",
-      "bag" => "owncloud",
-      "item" => "ssl",
-      "item_key" => "cert"
+    'ssl_cert' => {
+      'source' => 'chef-vault',
+      'bag' => 'owncloud',
+      'item' => 'ssl',
+      'item_key' => 'cert'
     }
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
@@ -553,24 +474,24 @@ run_list(
 This is usefull if you create the certificate on another cookbook.
 
 ```ruby
-name "owncloud_ssl_file"
-description "Install ownCloud with a custom SSL certificate from file"
+name 'owncloud_ssl_file'
+description 'Install ownCloud with a custom SSL certificate from file'
 default_attributes(
-  "owncloud" => {
-    "server_name" => "cloud.mysite.com",
-    "ssl" => true,
-    "ssl_key" => {
-      "source" => "file",
-      "path" => "/path/to/ssl/key"
+  'owncloud' => {
+    'server_name' => 'cloud.mysite.com',
+    'ssl' => true,
+    'ssl_key' => {
+      'source' => 'file',
+      'path' => '/path/to/ssl/key'
     },
-    "ssl_cert" => {
-      "source" => "file",
-      "path" => "/path/to/ssl/cert"
+    'ssl_cert' => {
+      'source' => 'file',
+      'path' => '/path/to/ssl/cert'
     }
   }
 )
 run_list(
-  "recipe[owncloud]"
+  'recipe[owncloud]'
 )
 ```
 
@@ -618,10 +539,8 @@ You can run the tests in the cloud instead of using vagrant. First, you must set
 
 Then, you must configure test-kitchen to use `.kitchen.cloud.yml` configuration file:
 
-```bash
-$ export KITCHEN_LOCAL_YAML=".kitchen.cloud.yml"
-$ bundle exec kitchen test
-```
+    $ export KITCHEN_LOCAL_YAML='.kitchen.cloud.yml'
+    $ bundle exec kitchen test
 
 Contributing
 ============

@@ -22,4 +22,4 @@ matrix:
 bundler_args: --jobs=3 --retry=3 --without='doc integration integration_vagrant integration_docker integration_cloud guard'
 
 script:
-- bundle exec rake unit
+- bundle exec rake style unit

@@ -62,9 +62,9 @@ describe 'owncloud::default' do
     stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
       .and_return(true)
     stub_command('which php').and_return(true)
-    allow(::File).to receive(:exists?).and_call_original
+    allow(::File).to receive(:exist?).and_call_original
     allow(::File)
-      .to receive(:exists?).with('/var/www/owncloud/config/config.php')
+      .to receive(:exist?).with('/var/www/owncloud/config/config.php')
       .and_return(false)
   end
 
@@ -382,8 +382,8 @@ describe 'owncloud::default' do
     end
     before do
       node.set['owncloud']['deploy_from_git'] = false
-      allow(File).to receive(:exists?).and_call_original
-      allow(File).to receive(:exists?).with(local_file).and_return(true)
+      allow(File).to receive(:exist?).and_call_original
+      allow(File).to receive(:exist?).with(local_file).and_return(true)
       allow(File).to receive(:mtime).and_call_original
       allow(File).to receive(:mtime).with(local_file).and_return(file_time)
       allow(file_time).to receive(:httpdate).and_return(http_date)
@@ -543,10 +543,10 @@ describe 'owncloud::default' do
     end
   end
 
-  context 'when config.php exists' do
+  context 'when config.php exist' do
     before do
       allow(::File)
-        .to receive(:exists?).with('/var/www/owncloud/config/config.php')
+        .to receive(:exist?).with('/var/www/owncloud/config/config.php')
         .and_return(true)
     end
 
@@ -571,10 +571,10 @@ describe 'owncloud::default' do
     end
   end # context run setup resource
 
-  context 'when config.php exists' do
+  context 'when config.php exist' do
     before do
       allow(::File)
-        .to receive(:exists?).with('/var/www/owncloud/config/config.php')
+        .to receive(:exist?).with('/var/www/owncloud/config/config.php')
         .and_return(true)
     end
 
@@ -586,7 +586,7 @@ describe 'owncloud::default' do
   context 'when config.php does not exist' do
     before do
       allow(::File)
-        .to receive(:exists?).with('/var/www/owncloud/config/config.php')
+        .to receive(:exist?).with('/var/www/owncloud/config/config.php')
         .and_return(false)
     end
 

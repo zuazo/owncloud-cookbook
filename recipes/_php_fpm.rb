@@ -32,9 +32,10 @@ php_fpm_pool node['owncloud']['php-fpm']['pool'] do
   listen_group node[web_server]['group']
   listen_mode '0660'
   if node['owncloud']['max_upload_size']
-    php_options({
-      'php_admin_value[upload_max_filesize]' => node['owncloud']['max_upload_size'],
+    php_options(
+      'php_admin_value[upload_max_filesize]' =>
+        node['owncloud']['max_upload_size'],
       'php_admin_value[post_max_size]' => node['owncloud']['max_upload_size']
-    })
+    )
   end
 end

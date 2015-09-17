@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-#==============================================================================
-# Set up nginx webserver
-#==============================================================================
-
 include_recipe 'nginx'
 include_recipe 'owncloud::_php_fpm'
 
@@ -29,7 +25,8 @@ nginx_site 'default' do
   enable false
 end
 
-fastcgi_pass = "unix:/var/run/php-fpm-#{node['owncloud']['php-fpm']['pool']}.sock"
+fastcgi_pass =
+  "unix:/var/run/php-fpm-#{node['owncloud']['php-fpm']['pool']}.sock"
 
 # Create virtualhost for ownCloud
 template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
@@ -38,14 +35,14 @@ template File.join(node['nginx']['dir'], 'sites-available', 'owncloud') do
   owner 'root'
   group 'root'
   variables(
-    :name => 'owncloud',
-    :server_name => node['owncloud']['server_name'],
-    :server_aliases => node['owncloud']['server_aliases'],
-    :docroot => node['owncloud']['dir'],
-    :port => 80,
-    :fastcgi_pass => fastcgi_pass,
-    :max_upload_size => node['owncloud']['max_upload_size'],
-    :sendfile => node['owncloud']['sendfile']
+    name: 'owncloud',
+    server_name: node['owncloud']['server_name'],
+    server_aliases: node['owncloud']['server_aliases'],
+    docroot: node['owncloud']['dir'],
+    port: 80,
+    fastcgi_pass: fastcgi_pass,
+    max_upload_size: node['owncloud']['max_upload_size'],
+    sendfile: node['owncloud']['sendfile']
   )
   notifies :reload, 'service[nginx]'
 end
@@ -68,17 +65,17 @@ if node['owncloud']['ssl']
     owner 'root'
     group 'root'
     variables(
-      :name => 'owncloud-ssl',
-      :server_name => node['owncloud']['server_name'],
-      :server_aliases => node['owncloud']['server_aliases'],
-      :docroot => node['owncloud']['dir'],
-      :port => 443,
-      :fastcgi_pass => fastcgi_pass,
-      :ssl_key => cert.key_path,
-      :ssl_cert => cert.chain_combined_path,
-      :ssl => true,
-      :max_upload_size => node['owncloud']['max_upload_size'],
-      :sendfile => node['owncloud']['sendfile']
+      name: 'owncloud-ssl',
+      server_name: node['owncloud']['server_name'],
+      server_aliases: node['owncloud']['server_aliases'],
+      docroot: node['owncloud']['dir'],
+      port: 443,
+      fastcgi_pass: fastcgi_pass,
+      ssl_key: cert.key_path,
+      ssl_cert: cert.chain_combined_path,
+      ssl: true,
+      max_upload_size: node['owncloud']['max_upload_size'],
+      sendfile: node['owncloud']['sendfile']
     )
     notifies :reload, 'service[nginx]'
   end
