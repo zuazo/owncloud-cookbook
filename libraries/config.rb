@@ -53,7 +53,7 @@ module OwnCloud
         @options = JSON.parse(data)
         @original_options = @options.clone
       rescue Exception => e
-        Chef::Application.fatal!("Error reading OwnCloud config: #{e.message}")
+        raise "Error reading ownCloud configuration: #{e.message}"
       end
     end
 
@@ -70,7 +70,7 @@ module OwnCloud
         end
         Chef::Log.info("OwnCloud config written")
       rescue Exception => e
-        Chef::Application.fatal!("Error writting OwnCloud config: #{e.message}")
+        raise "Error writing ownCloud configuration: #{e.message}"
       end
     end
   end

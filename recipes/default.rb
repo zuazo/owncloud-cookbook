@@ -38,7 +38,10 @@ when 'redhat', 'centos'
     php_pkgs << 'php53-mysql' if dbtype == 'mysql'
     php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
     if dbtype == 'sqlite'
-      Chef::Application.fatal!("SQLite database type not supported on #{node['platform']} 5.")
+      fail(
+        "SQLite database type not supported on #{node['platform']}"\
+        " #{node['platform_version']}"
+      )
     end
   else
     php_pkgs = %w{ php-gd php-mbstring php-xml php-intl samba-client }
@@ -67,13 +70,13 @@ end
 
 if Chef::Config[:solo]
   if node['owncloud']['config']['dbpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
-    Chef::Application.fatal!('You must set owncloud\'s database password in chef-solo mode.')
+    fail 'You must set ownCloud\'s database password in chef-solo mode.'
   end
   if node['owncloud']['database']['rootpassword'].nil? and node['owncloud']['config']['dbtype'] != 'sqlite'
-    Chef::Application.fatal!('You must set the database admin password in chef-solo mode.')
+    fail 'You must set the database admin password in chef-solo mode.'
   end
   if node['owncloud']['admin']['pass'].nil?
-    Chef::Application.fatal!('You must set owncloud\'s admin password in chef-solo mode.')
+    fail 'You must set ownCloud\'s admin password in chef-solo mode.'
   end
 else
   unless node['owncloud']['config']['dbtype'] == 'sqlite'
@@ -206,7 +209,7 @@ when 'pgsql'
     end
   end
 else
-  Chef::Application.fatal!("Unsupported database type: #{node['owncloud']['config']['dbtype']}")
+  fail "Unsupported database type: #{node['owncloud']['config']['dbtype']}"
 end
 
 #==============================================================================
@@ -311,7 +314,7 @@ when 'nginx'
   include_recipe 'owncloud::_nginx'
   web_services = [ 'nginx', 'php-fpm' ]
 else
-  Chef::Application.fatal!("Web server not supported: #{web_server}")
+  fail "Web server not supported: #{web_server}"
 end
 
 #==============================================================================

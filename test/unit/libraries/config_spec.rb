@@ -147,7 +147,7 @@ describe OwnCloud::Config, order: :random do
 
     it 'raises an exception on error' do
       allow(popen).to receive(:read).with(no_args).once.and_return('bad-json')
-      expect { config }.to raise_error(SystemExit)
+      expect { config }.to raise_error(/Error reading ownCloud configuration/)
     end
   end # context #read
 
@@ -206,7 +206,8 @@ describe OwnCloud::Config, order: :random do
     it 'raises an exception on error' do
       config.merge(new_options)
       allow(file).to receive(:write).with(file_write).and_raise('Test error')
-      expect { config.write }.to raise_error(SystemExit)
+      expect { config.write }
+        .to raise_error(/Error writing ownCloud configuration/)
     end
   end # context #write
 end

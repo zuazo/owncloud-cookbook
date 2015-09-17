@@ -102,7 +102,8 @@ describe 'owncloud::default' do
     before { node.set['owncloud']['config']['dbpassword'] = nil }
 
     it 'raises an error' do
-      expect { chef_run }.to raise_error(SystemExit)
+      expect { chef_run }
+        .to raise_error(/You must set ownCloud's database password/)
     end
   end
 
@@ -110,7 +111,8 @@ describe 'owncloud::default' do
     before { node.set['owncloud']['database']['rootpassword'] = nil }
 
     it 'raises an error' do
-      expect { chef_run }.to raise_error(SystemExit)
+      expect { chef_run }
+        .to raise_error(/You must set the database admin password/)
     end
   end
 
@@ -118,7 +120,8 @@ describe 'owncloud::default' do
     before { node.set['owncloud']['admin']['pass'] = nil }
 
     it 'raises an error' do
-      expect { chef_run }.to raise_error(SystemExit)
+      expect { chef_run }
+        .to raise_error(/You must set ownCloud's admin password/)
     end
   end
 
@@ -203,7 +206,8 @@ describe 'owncloud::default' do
 
           if packages.empty?
             it 'raises database type not supported exception' do
-              expect { chef_run }.to raise_error(SystemExit)
+              expect { chef_run }
+                .to raise_error(/database type not supported on/)
             end
           end # if packages empty?
         end # context with dbtype packages
@@ -323,7 +327,7 @@ describe 'owncloud::default' do
     before { node.set['owncloud']['config']['dbtype'] = 'unknown' }
 
     it 'raises unsupported database exception' do
-      expect { chef_run }.to raise_error(SystemExit)
+      expect { chef_run }.to raise_error(/Unsupported database type/)
     end
   end # context with unknown database
 
@@ -728,7 +732,7 @@ describe 'owncloud::default' do
     before { node.set['owncloud']['web_server'] = 'unknown' }
 
     it 'raises web server not supported error' do
-      expect { chef_run }.to raise_error(SystemExit)
+      expect { chef_run }.to raise_error(/Web server not supported/)
     end
   end # context with unknown web server
 
