@@ -38,20 +38,8 @@ platforms:
 suites:
 - name: mysql
   run_list: recipe[owncloud_test::mysql]
-- name: mysqlport
-  run_list: recipe[owncloud_test::mysql]
-  attributes:
-    owncloud:
-      config:
-        dbport: 4321
 - name: postgresql
   run_list: recipe[owncloud_test::postgresql]
-- name: postgresqlport
-  run_list: recipe[owncloud_test::postgresql]
-  attributes:
-    owncloud:
-      config:
-        dbport: 4321
 - name: sqlite
   run_list: recipe[owncloud_test::sqlite]
 - name: nginx
