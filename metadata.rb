@@ -27,8 +27,6 @@ depends 'postfix', '~> 3.0'
 depends 'postgresql', '~> 3.4'
 depends 'ssl_certificate', '~> 1.1'
 
-suggests 'git'
-
 recipe 'owncloud::default', 'Installs and configures ownCloud'
 
 attribute 'owncloud/version',
