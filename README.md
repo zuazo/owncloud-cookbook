@@ -324,7 +324,7 @@ Then you must proceed with update in web interface and system will be updated.
 PostgreSQL Support
 ==================
 
-PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/owncloud-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
+ownCloud with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/owncloud-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
 
 ## PostgreSQL Support on Debian and Ubuntu
 
