@@ -197,18 +197,11 @@ when 'pgsql'
 
     postgresql_database_user node['owncloud']['config']['dbuser'] do
       connection postgresql_connection_info
-      host 'localhost'
-      password node['owncloud']['config']['dbpassword']
-      action :create
-    end
-
-    postgresql_database_user node['owncloud']['config']['dbuser'] do
-      connection postgresql_connection_info
       database_name node['owncloud']['config']['dbname']
       host 'localhost'
       password node['owncloud']['config']['dbpassword']
       privileges [:all]
-      action :grant
+      action [:create, :grant]
     end
   end
 else
