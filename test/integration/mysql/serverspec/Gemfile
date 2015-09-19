@@ -1,0 +1,9 @@
+# encoding: UTF-8
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+source 'https://rubygems.org'
+
+gem 'serverspec', '~> 2.0'
+gem 'infrataster', '~> 0.3.0'
+gem 'infrataster-plugin-mysql', '~> 0.2.0'
