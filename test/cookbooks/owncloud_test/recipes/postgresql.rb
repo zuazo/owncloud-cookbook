@@ -17,9 +17,22 @@
 # limitations under the License.
 #
 
+if node['platform_family'] == 'debian'
+  # Debian/Ubuntu requires locale cookbook:
+  # https://github.com/hw-cookbooks/postgresql/issues/108
+  ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
+  ENV['LC_ALL'] = node['locale']['lang']
+  include_recipe 'locale'
+end
+
 node.default['owncloud']['database']['rootpassword'] = 'vagrant_postgres'
 
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 node.default['owncloud']['config']['dbtype'] = 'pgsql'
 
+include_recipe 'owncloud_test::postgresql_memory'
+
 include_recipe 'owncloud_test::common'
+
+# Required for integration tests:
+include_recipe 'nokogiri'

@@ -312,13 +312,35 @@ run_list(
 ```
 
 Upgrading application
-=======
+=====================
 
 If new owncloud version is released and you has notified in web user interface about update available, then you must re-run chef-client on owncloud server.
 
 Cookbook recipes will download latest release version and install it to server.
 
 Then you must proceed with update in web interface and system will be updated.
+
+PostgreSQL Support
+==================
+
+PostfixAdmin with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/owncloud-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
+
+## PostgreSQL Support on Debian and Ubuntu
+
+Due to [`postgresql` cookbook issue #108](https://github.com/hw-cookbooks/postgresql/issues/108), you should configure your system locale correctly for PostgreSQL to work. You can use the `locale` cookbook to fix this. For example:
+
+```ruby
+ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
+ENV['LC_ALL'] = node['locale']['lang']
+include_recipe 'locale'
+# ...
+node.default['owncloud']['config']['dbtype'] = 'pgsql'
+include_recipe 'owncloud'
+```
+
+## PostgreSQL Versions `< 9.3`
+
+If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](https://github.com/zuazo/owncloud-cookbook/tree/master/test/cookbooks/owncloud_test/recipes/postgresql_memory.rb).
 
 Testing
 =======
