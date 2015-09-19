@@ -22,6 +22,8 @@
 #==============================================================================
 
 dbtype = node['owncloud']['config']['dbtype']
+download_url =
+  node['owncloud']['download_url'] % { version: node['owncloud']['version'] }
 
 case node['platform_family']
 when 'debian'
@@ -236,14 +238,14 @@ end
 directory node['owncloud']['www_dir']
 
 if node['owncloud']['deploy_from_git'] != true
-  basename = ::File.basename(node['owncloud']['download_url'])
+  basename = ::File.basename(download_url)
   local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
   # Prior to Chef 11.6, remote_file does not support conditional get
   # so we do a HEAD http_request to mimic it
   http_request 'HEAD owncloud' do
     message ''
-    url node['owncloud']['download_url']
+    url download_url
     if Gem::Version.new(Chef::VERSION) < Gem::Version.new('11.6.0')
       action :head
     else
@@ -256,7 +258,7 @@ if node['owncloud']['deploy_from_git'] != true
   end
 
   remote_file 'download owncloud' do
-    source node['owncloud']['download_url']
+    source download_url
     path local_file
     if Gem::Version.new(Chef::VERSION) < Gem::Version.new('11.6.0')
       action :nothing

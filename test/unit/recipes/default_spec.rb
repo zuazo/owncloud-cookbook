@@ -398,6 +398,9 @@ describe 'owncloud::default' do
 
       it 'downloads owncloud' do
         expect(chef_run).to create_remote_file('download owncloud')
+          .with_source(
+            'http://download.owncloud.org/community/owncloud-latest.tar.bz2'
+          )
           .with_path(local_file)
       end
     end # context with Chef 11.6

@@ -1,8 +1,7 @@
 
 default['owncloud']['version'] = 'latest'
 default['owncloud']['download_url'] =
-  'http://download.owncloud.org/community/'\
-  "owncloud-#{node['owncloud']['version']}.tar.bz2"
+  'http://download.owncloud.org/community/owncloud-%{version}.tar.bz2'
 
 default['owncloud']['deploy_from_git'] = false
 default['owncloud']['git_repo'] = 'https://github.com/owncloud/core.git'
