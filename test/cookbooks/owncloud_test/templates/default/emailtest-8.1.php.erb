@@ -1,0 +1,18 @@
+<?php
+
+try {
+  require_once 'lib/base.php';
+
+  $defaults = new \OC_Defaults();
+  $mailer = \OC::$server->getMailer();
+  $message = $mailer->createMessage();
+  $message->setTo(['root@localhost.localdomain' => 'root']);
+  $message->setSubject('Email Sending Test');
+  $message->setPlainBody('Email Sending Test');
+  $message->setFrom([
+    \OCP\Util::getDefaultEmailAddress('kitchen-test') => $defaults->getName()
+  ]);
+  $mailer->send($message);
+} catch (Exception $ex) {
+  OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+}
