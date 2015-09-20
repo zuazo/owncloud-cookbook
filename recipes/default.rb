@@ -75,17 +75,14 @@ if Chef::Config[:solo]
      node['owncloud']['config']['dbtype'] != 'sqlite'
     fail 'You must set ownCloud\'s database password in chef-solo mode.'
   end
-  if node['owncloud']['database']['rootpassword'].nil? &&
-     node['owncloud']['config']['dbtype'] != 'sqlite'
-    fail 'You must set the database admin password in chef-solo mode.'
-  end
   if node['owncloud']['admin']['pass'].nil?
     fail 'You must set ownCloud\'s admin password in chef-solo mode.'
   end
 else
   unless node['owncloud']['config']['dbtype'] == 'sqlite'
     node.set_unless['owncloud']['config']['dbpassword'] = secure_password
-    node.set_unless['owncloud']['database']['rootpassword'] = secure_password
+    node.set_unless['owncloud']['mysql']['server_root_password'] =
+      secure_password
   end
   node.set_unless['owncloud']['admin']['pass'] = secure_password
   node.save
@@ -132,18 +129,25 @@ when 'mysql'
   end
   if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
     # Install MySQL
-    dbinstance = node['owncloud']['database']['instance']
+    if Chef::Config[:solo] &&
+       node['owncloud']['mysql']['server_root_password'].nil?
+      fail 'You must set the database admin password in chef-solo mode.'
+    end
+
+    dbinstance = node['owncloud']['mysql']['instance']
 
     mysql2_chef_gem dbinstance do
       action :install
     end
 
     mysql_service dbinstance do
-      data_dir node['owncloud']['database']['data_dir']
-      version node['owncloud']['database']['version']
+      data_dir node['owncloud']['mysql']['data_dir']
+      initial_root_password node['owncloud']['mysql']['server_root_password']
       bind_address '127.0.0.1'
       port node['owncloud']['config']['dbport'].to_s
-      initial_root_password node['owncloud']['database']['rootpassword']
+      run_group node['owncloud']['mysql']['run_group']
+      run_user node['owncloud']['mysql']['run_user']
+      version node['owncloud']['mysql']['version']
       action [:create, :start]
     end
 
@@ -151,7 +155,7 @@ when 'mysql'
       host: '127.0.0.1',
       port: node['owncloud']['config']['dbport'],
       username: 'root',
-      password: node['owncloud']['database']['rootpassword']
+      password: node['owncloud']['mysql']['server_root_password']
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -179,8 +183,14 @@ when 'pgsql'
 
   if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
-    node.set_unless['postgresql']['password']['postgres'] =
-      node['owncloud']['database']['rootpassword']
+    if node['postgresql']['password']['postgres'].nil? && Chef::Config[:solo]
+      fail 'You must set node["postgresql"]["password"]["postgres"] in '\
+        'chef-solo mode.'
+    elsif node['postgresql']['password']['postgres'].nil? &&
+          !Chef::Config[:solo]
+      node.set['postgresql']['password']['postgres'] = secure_password
+      node.save
+    end
 
     include_recipe 'postgresql::server'
     include_recipe 'database::postgresql'

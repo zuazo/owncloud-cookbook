@@ -38,7 +38,7 @@ describe 'owncloud::default' do
     node.set['owncloud']['config']['dbname'] = db_name
     node.set['owncloud']['config']['dbuser'] = db_user
     node.set['owncloud']['config']['dbpassword'] = db_password
-    node.set['owncloud']['database']['rootpassword'] = db_root_password
+    node.set['owncloud']['mysql']['server_root_password'] = db_root_password
     node.set['owncloud']['admin']['pass'] = admin_password
     node.set['postgresql']['password']['postgres'] = db_root_password
 
@@ -108,7 +108,7 @@ describe 'owncloud::default' do
   end
 
   context 'without setting database root password' do
-    before { node.set['owncloud']['database']['rootpassword'] = nil }
+    before { node.set['owncloud']['mysql']['server_root_password'] = nil }
 
     it 'raises an error' do
       expect { chef_run }
@@ -292,6 +292,18 @@ describe 'owncloud::default' do
       }
     end
     before { node.set['owncloud']['config']['dbtype'] = 'pgsql' }
+
+    context 'on Chef Solo' do
+      let(:chef_runner) { ChefSpec::SoloRunner.new }
+
+      context 'when password is not set' do
+        before { node.set['postgresql']['password']['postgres'] = nil }
+
+        it 'raises an exception' do
+          expect { chef_run }.to raise_error(/You must set .*password/)
+        end
+      end
+    end
 
     it 'includes postgresql::server recipe' do
       expect(chef_run).to include_recipe('postgresql::server')

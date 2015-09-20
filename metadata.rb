@@ -356,21 +356,35 @@ attribute 'owncloud/skip_permissions',
           type: 'string',
           required: 'optional'
 
-attribute 'owncloud/databse/rootpassword',
-          display_name: 'Database Root Password',
-          description: 'Database admin password to access a database instance',
-          calculated: true,
-          type: 'string',
-          required: 'optional'
-
-attribute 'owncloud/database/instance',
+attribute 'owncloud/mysql/instance',
           display_name: 'MySQL database instance name',
           description:
             'MySQL database instance name to run by the mysql_service lwrp '\
-            'from the mysql cookbook',
+            'from the mysql cookbook.',
           type: 'string',
           required: 'optional',
           default: 'default'
+
+attribute 'owncloud/database/data_dir',
+          display_name: 'MySQL server data dir',
+          description: 'MySQL data files path.',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'owncloud/database/run_group',
+          display_name: 'MySQL run group',
+          description: 'MySQL system group.',
+          type: 'string',
+          required: 'optional',
+          calculated: true
+
+attribute 'owncloud/database/run_user',
+          display_name: 'MySQL run user',
+          description: 'MySQL system user.',
+          type: 'string',
+          required: 'optional',
+          calculated: true
 
 attribute 'owncloud/database/version',
           display_name: 'MySQL server version',
@@ -381,9 +395,9 @@ attribute 'owncloud/database/version',
           required: 'optional',
           default: 'nil'
 
-attribute 'owncloud/database/data_dir',
-          display_name: 'MySQL server data dir',
-          description: 'MySQL data files path',
+attribute 'owncloud/mysql/server_root_password',
+          display_name: 'Database Root Password',
+          description: 'Database admin password to access a database instance.',
+          calculated: true,
           type: 'string',
-          required: 'optional',
-          calculated: true
+          required: 'optional'

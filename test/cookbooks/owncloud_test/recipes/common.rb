@@ -34,3 +34,6 @@ template 'emailtest.php' do
   source 'emailtest.php.erb'
   mode 00644
 end
+
+# Required for integration tests:
+include_recipe 'nokogiri'

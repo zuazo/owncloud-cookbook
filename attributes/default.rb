@@ -54,7 +54,9 @@ default['owncloud']['cron']['hour'] = '*'
 default['owncloud']['cron']['month'] = '*'
 default['owncloud']['cron']['weekday'] = '*'
 
-default['owncloud']['database']['data_dir'] = nil
-default['owncloud']['database']['instance'] = 'default'
-default['owncloud']['database']['rootpassword'] = nil
-default['owncloud']['database']['version'] = nil
+default['owncloud']['mysql']['instance'] = 'default'
+default['owncloud']['mysql']['data_dir'] = nil
+default['owncloud']['mysql']['run_group'] = nil
+default['owncloud']['mysql']['run_user'] = nil
+default['owncloud']['mysql']['version'] = nil
+default['owncloud']['mysql']['server_root_password'] = nil

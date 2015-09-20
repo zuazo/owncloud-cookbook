@@ -19,8 +19,4 @@
 
 node.default['owncloud']['web_server'] = 'nginx'
 
-node.default['owncloud']['database']['rootpassword'] = 'vagrant_root'
-
-node.default['owncloud']['config']['dbpassword'] = 'database_pass'
-
-include_recipe 'owncloud_test::common'
+include_recipe 'owncloud_test::mysql'

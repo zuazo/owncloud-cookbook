@@ -25,7 +25,7 @@ if node['platform_family'] == 'debian'
   include_recipe 'locale'
 end
 
-node.default['owncloud']['database']['rootpassword'] = 'vagrant_postgres'
+node.default['postgresql']['password']['postgres'] = 'vagrant_postgres'
 
 node.default['owncloud']['config']['dbpassword'] = 'database_pass'
 node.default['owncloud']['config']['dbtype'] = 'pgsql'
@@ -33,6 +33,3 @@ node.default['owncloud']['config']['dbtype'] = 'pgsql'
 include_recipe 'owncloud_test::postgresql_memory'
 
 include_recipe 'owncloud_test::common'
-
-# Required for integration tests:
-include_recipe 'nokogiri'
