@@ -26,7 +26,7 @@ web_user =
   when 'debian', 'ubuntu'
     'www-data'
   when 'redhat', 'centos', 'fedora', 'scientific', 'amazon'
-    'apache'
+    'nginx'
   when 'suse', 'opensuse'
     'wwwrun'
   when 'arch'
