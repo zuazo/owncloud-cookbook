@@ -516,7 +516,7 @@ describe 'owncloud::default' do
   end
 
   it 'creates autoconfig.php file' do
-    expect(chef_run).to create_template('autoconfig.php')
+    expect(chef_run).to create_template('owncloud autoconfig.php')
       .with_path('/var/www/owncloud/config/autoconfig.php')
       .with_source('autoconfig.php.erb')
       .with_owner('www-data')
@@ -525,14 +525,15 @@ describe 'owncloud::default' do
   end
 
   context 'autoconfig.php template resource' do
-    let(:resource) { chef_run.template('autoconfig.php') }
+    let(:resource) { chef_run.template('owncloud autoconfig.php') }
 
     it 'notifies apache service restart' do
       expect(resource).to notify('service[apache2]').to(:restart).immediately
     end
 
-    it 'notifies run setup' do
-      expect(resource).to notify('execute[run setup]').to(:run).immediately
+    it 'notifies run owncloud setup' do
+      expect(resource)
+        .to notify('execute[run owncloud setup]').to(:run).immediately
     end
   end # context autoconfig.php template resource
 
@@ -554,12 +555,12 @@ describe 'owncloud::default' do
     end
 
     it 'does not create autoconfig.php file' do
-      expect(chef_run).to_not create_template('autoconfig.php')
+      expect(chef_run).to_not create_template('owncloud autoconfig.php')
     end
   end
 
-  context 'run setup resource' do
-    let(:resource) { chef_run.execute('run setup') }
+  context 'run owncloud setup resource' do
+    let(:resource) { chef_run.execute('run owncloud setup') }
 
     it 'has action nothing' do
       expect(resource).to do_nothing
@@ -572,7 +573,7 @@ describe 'owncloud::default' do
     it 'has the correct command' do
       expect(resource.command).to match(/^sudo -u .* php -f index\.php/)
     end
-  end # context run setup resource
+  end # context run owncloud setup resource
 
   context 'when config.php exist' do
     before do
@@ -582,7 +583,7 @@ describe 'owncloud::default' do
     end
 
     it 'applies configuration on attributes to config.php' do
-      expect(chef_run).to run_ruby_block('apply config')
+      expect(chef_run).to run_ruby_block('apply owncloud config')
     end
   end
 
@@ -593,8 +594,8 @@ describe 'owncloud::default' do
         .and_return(false)
     end
 
-    it 'does not apply configuration on attributes to config.php' do
-      expect(chef_run).to_not run_ruby_block('apply config')
+    it 'does not apply owncloud configuration on attributes to config.php' do
+      expect(chef_run).to_not run_ruby_block('apply owncloud config')
     end
   end
 
@@ -652,7 +653,7 @@ describe 'owncloud::default' do
     end
 
     it 'creates autoconfig.php file without setting permissions' do
-      expect(chef_run).to create_template('autoconfig.php')
+      expect(chef_run).to create_template('owncloud autoconfig.php')
         .with_owner(nil)
         .with_group(nil)
         .with_mode(nil)
@@ -693,7 +694,7 @@ describe 'owncloud::default' do
       end
 
       it 'creates autoconfig.php file with nginx user' do
-        expect(chef_run).to create_template('autoconfig.php')
+        expect(chef_run).to create_template('owncloud autoconfig.php')
           .with_owner('nginx')
           .with_group('nginx')
           .with_mode(00640)
@@ -719,7 +720,7 @@ describe 'owncloud::default' do
     end # context on CentOS
 
     context 'autoconfig.php template resource' do
-      let(:resource) { chef_run.template('autoconfig.php') }
+      let(:resource) { chef_run.template('owncloud autoconfig.php') }
 
       it 'notifies nginx service restart' do
         expect(resource).to notify('service[nginx]').to(:restart).immediately

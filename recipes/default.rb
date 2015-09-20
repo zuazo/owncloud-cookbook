@@ -137,6 +137,7 @@ when 'mysql'
     mysql2_chef_gem dbinstance do
       action :install
     end
+
     mysql_service dbinstance do
       data_dir node['owncloud']['database']['data_dir']
       version node['owncloud']['database']['version']
@@ -166,7 +167,7 @@ when 'mysql'
       privileges [:all]
       action :grant
     end
-  end
+  end # if mysql localhost
 when 'pgsql'
   if node['owncloud']['config']['dbport'].nil?
     node.default['owncloud']['config']['dbport'] =
@@ -175,6 +176,7 @@ when 'pgsql'
     node.default['postgresql']['config']['port'] =
       node['owncloud']['config']['dbport']
   end
+
   if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
     # Install PostgreSQL
     node.set_unless['postgresql']['password']['postgres'] =
@@ -203,7 +205,7 @@ when 'pgsql'
       privileges [:all]
       action [:create, :grant]
     end
-  end
+  end # if pgsql localhost
 else
   fail "Unsupported database type: #{node['owncloud']['config']['dbtype']}"
 end
@@ -343,7 +345,7 @@ dbhost =
     ].join(':')
   end
 # create autoconfig.php for the installation
-template 'autoconfig.php' do
+template 'owncloud autoconfig.php' do
   path ::File.join(node['owncloud']['dir'], 'config', 'autoconfig.php')
   source 'autoconfig.php.erb'
   unless node['owncloud']['skip_permissions']
@@ -368,11 +370,11 @@ template 'autoconfig.php' do
   web_services.each do |web_service|
     notifies :restart, "service[#{web_service}]", :immediately
   end
-  notifies :run, 'execute[run setup]', :immediately
+  notifies :run, 'execute[run owncloud setup]', :immediately
 end
 
 # install ownCloud
-execute 'run setup' do
+execute 'run owncloud setup' do
   cwd node['owncloud']['dir']
   command(
     "sudo -u '#{node[web_server]['user']}' php -f index.php "\
@@ -382,7 +384,7 @@ execute 'run setup' do
 end
 
 # Apply the configuration on attributes to config.php
-ruby_block 'apply config' do
+ruby_block 'apply owncloud config' do
   block do
     self.class.send(:include, OwncloudCookbook::CookbookHelpers)
     apply_owncloud_configuration
@@ -409,6 +411,6 @@ cron 'owncloud cron' do
   day node['owncloud']['cron']['day']
   month node['owncloud']['cron']['month']
   weekday node['owncloud']['cron']['weekday']
-  action node['owncloud']['cron']['enabled'] == true ? :create : :delete
+  action node['owncloud']['cron']['enabled'] ? :create : :delete
   command cron_command
 end
