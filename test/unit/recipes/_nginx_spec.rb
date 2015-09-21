@@ -25,11 +25,7 @@ describe 'owncloud::_nginx' do
   let(:node) { chef_runner.node }
   before do
     node.set['owncloud']['ssl'] = true
-    stub_command('which nginx').and_return(true)
-    stub_command(
-      'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
-    ).and_return(true)
-    allow(::File).to receive(:symlink?).and_call_original
+    stub_nginx_cookbook
     allow(::File).to receive(:exist?).and_call_original
     allow(::File).to receive(:exist?).with('/etc/init.d/apache2')
       .and_return(true)

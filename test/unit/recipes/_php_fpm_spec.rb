@@ -23,13 +23,7 @@ describe 'owncloud::_php_fpm' do
   let(:chef_runner) { ChefSpec::SoloRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
   let(:node) { chef_runner.node }
-  before do
-    stub_command(
-      'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
-    ).and_return(true)
-    stub_command('test -d /etc/php-fpm.d || mkdir -p /etc/php-fpm.d')
-      .and_return(true)
-  end
+  before { stub_php_fpm_cookbook }
 
   it 'include php-fpm recipe' do
     expect(chef_run).to include_recipe('php-fpm')

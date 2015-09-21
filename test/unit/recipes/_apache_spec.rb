@@ -23,7 +23,7 @@ describe 'owncloud::_apache' do
   let(:chef_runner) { ChefSpec::SoloRunner.new }
   let(:chef_run) { chef_runner.converge(described_recipe) }
   let(:node) { chef_runner.node }
-  before { stub_command('/usr/sbin/apache2 -t').and_return(true) }
+  before { stub_apache2_cookbook }
 
   it 'includes apache2::default recipe' do
     expect(chef_run).to include_recipe('apache2::default')

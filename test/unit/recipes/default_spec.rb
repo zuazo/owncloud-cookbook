@@ -42,26 +42,11 @@ describe 'owncloud::default' do
     node.set['owncloud']['admin']['pass'] = admin_password
     node.set['postgresql']['password']['postgres'] = db_root_password
 
-    stub_command('/usr/sbin/apache2 -t').and_return(true)
-    stub_command('/usr/sbin/httpd -t').and_return(true)
-    stub_command(
-      "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{db_name} "\
-      "| grep '^ plpgsql$'"
-    ).and_return(false)
-    stub_command('which nginx').and_return(true)
-    stub_command(
-      'test -d /etc/php-fpm.d || mkdir -p /etc/php-fpm.d'
-    ).and_return(true)
-    stub_command(
-      'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
-    ).and_return(true)
-    stub_command('ls /recovery.conf').and_return(false)
-    stub_command(
-      '/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix'
-    ).and_return(true)
-    stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
-      .and_return(true)
-    stub_command('which php').and_return(true)
+    stub_apache2_cookbook
+    stub_postgresql_cookbook
+    stub_nginx_cookbook
+    stub_postfix_cookbook
+
     allow(::File).to receive(:exist?).and_call_original
     allow(::File)
       .to receive(:exist?).with('/var/www/owncloud/config/config.php')

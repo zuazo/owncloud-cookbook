@@ -24,6 +24,7 @@ require 'chefspec/berkshelf'
 require 'should_not/rspec'
 
 require_relative 'support/matchers'
+require_relative 'support/cookbook_stubs'
 require_relative 'support/coverage'
 
 RSpec.configure do |config|
