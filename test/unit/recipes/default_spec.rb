@@ -20,20 +20,21 @@
 require_relative '../spec_helper'
 
 describe 'owncloud::default' do
+  let(:chef_runner) { ChefSpec::SoloRunner.new }
+  let(:chef_run) { chef_runner.converge(described_recipe) }
+  let(:node) { chef_runner.node }
   let(:db_name) { 'owncloud_db' }
   let(:db_user) { 'owncloud_user' }
   let(:db_root_password) { 'root_db_pass' }
   let(:db_password) { 'owncloud_pass' }
+  let(:db_host) { node['owncloud']['config']['dbhost'] }
   let(:db_connection) do
     {
-      host: '127.0.0.1', port: '3306',
+      host: db_host, port: '3306',
       username: 'root', password: db_root_password
     }
   end
   let(:admin_password) { 'owncloud_setup' }
-  let(:chef_runner) { ChefSpec::SoloRunner.new }
-  let(:chef_run) { chef_runner.converge(described_recipe) }
-  let(:node) { chef_runner.node }
   before do
     node.set['owncloud']['config']['dbname'] = db_name
     node.set['owncloud']['config']['dbuser'] = db_user
@@ -214,7 +215,7 @@ describe 'owncloud::default' do
 
     it 'uses local databse by default' do
       chef_run
-      expect(node['owncloud']['config']['dbhost']).to eq('127.0.0.1')
+      expect(node['owncloud']['config']['dbhost']).to eq(db_host)
     end
 
     it 'installs mysql2 gem' do
@@ -225,7 +226,7 @@ describe 'owncloud::default' do
       expect(chef_run).to create_mysql_service('default')
         .with_data_dir(nil)
         .with_version(nil)
-        .with_bind_address('127.0.0.1')
+        .with_bind_address(db_host)
         .with_port('3306')
         .with_initial_root_password(db_root_password)
     end
@@ -243,7 +244,7 @@ describe 'owncloud::default' do
       expect(chef_run).to grant_mysql_database_user(db_user)
         .with_connection(db_connection)
         .with_database_name(db_name)
-        .with_host('localhost')
+        .with_host(db_host)
         .with_password(db_password)
         .with_privileges([:all])
     end
@@ -272,7 +273,7 @@ describe 'owncloud::default' do
   context 'with PostgreSQL database' do
     let(:db_connection) do
       {
-        host: 'localhost', port: 5432,
+        host: db_host, port: 5432,
         username: 'postgres', password: db_root_password
       }
     end
@@ -306,7 +307,7 @@ describe 'owncloud::default' do
     it 'creates PostgreSQL database user' do
       expect(chef_run).to create_postgresql_database_user(db_user)
         .with_connection(db_connection)
-        .with_host('localhost')
+        .with_host(db_host)
         .with_password(db_password)
     end
 
@@ -314,7 +315,7 @@ describe 'owncloud::default' do
       expect(chef_run).to create_postgresql_database_user(db_user)
         .with_connection(db_connection)
         .with_database_name(db_name)
-        .with_host('localhost')
+        .with_host(db_host)
         .with_password(db_password)
         .with_privileges([:all])
     end

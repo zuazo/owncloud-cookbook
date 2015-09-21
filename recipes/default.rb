@@ -143,7 +143,7 @@ when 'mysql'
     mysql_service dbinstance do
       data_dir node['owncloud']['mysql']['data_dir']
       initial_root_password node['owncloud']['mysql']['server_root_password']
-      bind_address '127.0.0.1'
+      bind_address node['owncloud']['config']['dbhost']
       port node['owncloud']['config']['dbport'].to_s
       run_group node['owncloud']['mysql']['run_group']
       run_user node['owncloud']['mysql']['run_user']
@@ -152,7 +152,7 @@ when 'mysql'
     end
 
     mysql_connection_info = {
-      host: '127.0.0.1',
+      host: node['owncloud']['config']['dbhost'],
       port: node['owncloud']['config']['dbport'],
       username: 'root',
       password: node['owncloud']['mysql']['server_root_password']
@@ -166,7 +166,7 @@ when 'mysql'
     mysql_database_user node['owncloud']['config']['dbuser'] do
       connection mysql_connection_info
       database_name node['owncloud']['config']['dbname']
-      host 'localhost'
+      host node['owncloud']['config']['dbhost']
       password node['owncloud']['config']['dbpassword']
       privileges [:all]
       action :grant
@@ -196,7 +196,7 @@ when 'pgsql'
     include_recipe 'database::postgresql'
 
     postgresql_connection_info = {
-      host: 'localhost',
+      host: node['owncloud']['config']['dbhost'],
       port: node['owncloud']['config']['dbport'],
       username: 'postgres',
       password: node['postgresql']['password']['postgres']
@@ -210,7 +210,7 @@ when 'pgsql'
     postgresql_database_user node['owncloud']['config']['dbuser'] do
       connection postgresql_connection_info
       database_name node['owncloud']['config']['dbname']
-      host 'localhost'
+      host node['owncloud']['config']['dbhost']
       password node['owncloud']['config']['dbpassword']
       privileges [:all]
       action [:create, :grant]
