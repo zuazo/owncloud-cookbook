@@ -119,6 +119,11 @@ end
 # Set up database
 #==============================================================================
 
+if node['owncloud']['manage_database'].nil?
+  node.default['owncloud']['manage_database'] =
+    %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
+end
+
 case node['owncloud']['config']['dbtype']
 when 'sqlite'
   # With SQLite the table prefix must be oc_
@@ -127,7 +132,7 @@ when 'mysql'
   if node['owncloud']['config']['dbport'].nil?
     node.default['owncloud']['config']['dbport'] = '3306'
   end
-  if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
+  if node['owncloud']['manage_database']
     # Install MySQL
     if Chef::Config[:solo] &&
        node['owncloud']['mysql']['server_root_password'].nil?
@@ -171,7 +176,7 @@ when 'mysql'
       privileges [:all]
       action :grant
     end
-  end # if mysql localhost
+  end # if manage database
 when 'pgsql'
   if node['owncloud']['config']['dbport'].nil?
     node.default['owncloud']['config']['dbport'] =
@@ -181,7 +186,7 @@ when 'pgsql'
       node['owncloud']['config']['dbport']
   end
 
-  if %w(localhost 127.0.0.1).include?(node['owncloud']['config']['dbhost'])
+  if node['owncloud']['manage_database']
     # Install PostgreSQL
     if node['postgresql']['password']['postgres'].nil? && Chef::Config[:solo]
       fail 'You must set node["postgresql"]["password"]["postgres"] in '\
@@ -215,7 +220,7 @@ when 'pgsql'
       privileges [:all]
       action [:create, :grant]
     end
-  end # if pgsql localhost
+  end # if manage database
 else
   fail "Unsupported database type: #{node['owncloud']['config']['dbtype']}"
 end

@@ -356,6 +356,13 @@ attribute 'owncloud/skip_permissions',
           type: 'string',
           required: 'optional'
 
+attribute 'owncloud/manage_database',
+          display_name: 'database manage',
+          description: 'Whether to manage database creation.',
+          calculated: true,
+          type: 'string',
+          required: 'optional'
+
 attribute 'owncloud/mysql/instance',
           display_name: 'MySQL database instance name',
           description:

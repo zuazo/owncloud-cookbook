@@ -268,6 +268,69 @@ describe 'owncloud::default' do
         expect(chef_run).to_not create_mysql_database(db_name)
       end
     end # context with remote database
+
+    context 'with manage remote database' do
+      let(:db_host) { '1.2.3.4' }
+      before do
+        node.set['owncloud']['manage_database'] = true
+        node.set['owncloud']['config']['dbhost'] = db_host
+      end
+
+      it 'installs mysql2 gem' do
+        expect(chef_run).to install_mysql2_chef_gem('default')
+      end
+
+      it 'creates MySQL service' do
+        expect(chef_run).to create_mysql_service('default')
+          .with_data_dir(nil)
+          .with_version(nil)
+          .with_bind_address(db_host)
+          .with_port('3306')
+          .with_initial_root_password(db_root_password)
+      end
+
+      it 'starts MySQL service' do
+        expect(chef_run).to start_mysql_service('default')
+      end
+
+      it 'creates MySQL database' do
+        expect(chef_run).to create_mysql_database(db_name)
+          .with_connection(db_connection)
+      end
+
+      it 'grants MySQL user' do
+        expect(chef_run).to grant_mysql_database_user(db_user)
+          .with_connection(db_connection)
+          .with_database_name(db_name)
+          .with_host(db_host)
+          .with_password(db_password)
+          .with_privileges([:all])
+      end
+    end # context with manage remote database
+
+    context 'without manage local database' do
+      let(:db_host) { '127.0.0.1' }
+      before do
+        node.set['owncloud']['manage_database'] = false
+        node.set['owncloud']['config']['dbhost'] = db_host
+      end
+
+      it 'does not install mysql2 gem' do
+        expect(chef_run).to_not install_mysql2_chef_gem('default')
+      end
+
+      it 'does not create MySQL service' do
+        expect(chef_run).to_not create_mysql_service('default')
+      end
+
+      it 'does not start MySQL service' do
+        expect(chef_run).to_not start_mysql_service('default')
+      end
+
+      it 'does not create MySQL database' do
+        expect(chef_run).to_not create_mysql_database(db_name)
+      end
+    end # context without manage local database
   end # context with MySQL database
 
   context 'with PostgreSQL database' do

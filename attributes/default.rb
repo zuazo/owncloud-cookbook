@@ -54,6 +54,8 @@ default['owncloud']['cron']['hour'] = '*'
 default['owncloud']['cron']['month'] = '*'
 default['owncloud']['cron']['weekday'] = '*'
 
+default['owncloud']['manage_database'] = nil
+
 default['owncloud']['mysql']['instance'] = 'default'
 default['owncloud']['mysql']['data_dir'] = nil
 default['owncloud']['mysql']['run_group'] = nil

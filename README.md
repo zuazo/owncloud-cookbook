@@ -88,6 +88,7 @@ Attributes
 | `node['owncloud']['cron']['month']`                 | `'*'`         | Month to run ownCloud cron at.
 | `node['owncloud']['cron']['weekday']`               | `'*'`         | Weekday to run ownCloud cron at.
 | `node['owncloud']['skip_permissions']`              | `false`       | Whether to skip settings the permissions of the ownCloud directory. Set this to `true` when using NFS synced folders.
+| `node['owncloud']['manage_database']`               | *calculated*  | Whether to manage database creation.
 | `node['owncloud']['mysql']['instance']`             | `'default'`   | MySQL database instance name to run by the `mysql_service` LWRP from the [mysql](https://supermarket.chef.io/cookbooks/mysql) cookbook.
 | `node['owncloud']['mysql']['data_dir']`             | *calculated*  | MySQL data files path.
 | `node['owncloud']['mysql']['run_group']`            | *calculated*  | MySQL system group.
