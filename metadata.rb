@@ -1,6 +1,6 @@
 name 'owncloud'
-maintainer 'Onddo Labs, Sl.'
-maintainer_email 'team@onddo.com'
+maintainer 'Xabier de Zuazo'
+maintainer_email 'xabier@zuazo.org'
 license 'Apache 2.0'
 description <<-EOH
 Installs and configures ownCloud, an open source personal cloud for data and

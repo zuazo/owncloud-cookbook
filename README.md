@@ -400,13 +400,14 @@ License and Author
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | [Raul Rodriguez](https://github.com/raulr) (<raul@onddo.com>)
-| **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)
+| **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@zuazo.org>)
 | **Contributor:**     | [Nacer Laradji](https://github.com/laradji)
 | **Contributor:**     | [LEDfan](https://github.com/LEDfan)
 | **Contributor:**     | [avsh](https://github.com/avsh)
 | **Contributor:**     | [@cvl-skubriev](https://github.com/cvl-skubriev)
 | **Contributor:**     | [Michael Sprauer](https://github.com/MichaelSp)
-| **Copyright:**       | Copyright (c) 2013-2015 Onddo Labs, SL. (www.onddo.com)
+| **Copyright:**       | Copyright (c) 2015, Xabier de Zuazo
+| **Copyright:**       | Copyright (c) 2013-2015 Onddo Labs, SL.
 | **License:**         | Apache License, Version 2.0
 
     Licensed under the Apache License, Version 2.0 (the "License");
