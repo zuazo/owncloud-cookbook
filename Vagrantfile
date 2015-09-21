@@ -120,7 +120,7 @@ Vagrant.configure('2') do |config|
   #
   # orgname = 'ORGNAME'
   # config.vm.provision :chef_client do |chef|
-  #   chef.chef_server_url = "https://api.opscode.com/organizations/#{orgname}"
+  #   chef.chef_server_url = "https://api.chef.io/organizations/#{orgname}"
   #   chef.validation_key_path = "#{orgname}-validator.pem"
   # end
   #

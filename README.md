@@ -1,6 +1,6 @@
 ownCloud Cookbook
 =================
-[![Cookbook Version](https://img.shields.io/cookbook/v/owncloud.svg?style=flat)](https://supermarket.getchef.com/cookbooks/owncloud)
+[![Cookbook Version](https://img.shields.io/cookbook/v/owncloud.svg?style=flat)](https://supermarket.chef.io/cookbooks/owncloud)
 [![GitHub Source](https://img.shields.io/badge/source-GitHub-blue.svg?style=flat)](https://github.com/zuazo/owncloud-cookbook)
 [![Dependency Status](http://img.shields.io/gemnasium/zuazo/owncloud-cookbook.svg?style=flat)](https://gemnasium.com/zuazo/owncloud-cookbook)
 [![Code Climate](http://img.shields.io/codeclimate/github/zuazo/owncloud-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/owncloud-cookbook)
