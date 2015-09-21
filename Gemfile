@@ -26,6 +26,7 @@ group :unit do
   gem 'chef', chef_version unless chef_version.nil?
   gem 'should_not', '~> 1.1'
   gem 'chefspec', '~> 4.1'
+  gem 'chef-encrypted-attributes', '~> 0.8'
 end
 
 group :integration do

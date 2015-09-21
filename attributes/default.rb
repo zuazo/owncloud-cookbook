@@ -83,3 +83,5 @@ default['owncloud']['mysql']['run_group'] = nil
 default['owncloud']['mysql']['run_user'] = nil
 default['owncloud']['mysql']['version'] = nil
 default['owncloud']['mysql']['server_root_password'] = nil
+
+default['owncloud']['encrypt_attributes'] = false

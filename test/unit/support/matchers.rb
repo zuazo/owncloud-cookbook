@@ -23,4 +23,17 @@ if defined?(ChefSpec)
       :mysql_service, :start, resource_name
     )
   end
+
+  if ChefSpec.respond_to?(:define_matcher)
+    # ChefSpec >= 4.1
+    ChefSpec.define_matcher :mysql_service
+    ChefSpec.define_matcher :mysql_database_user
+    ChefSpec.define_matcher :postgresql_database_user
+  elsif defined?(ChefSpec::Runner) &&
+        ChefSpec::Runner.respond_to?(:define_runner_method)
+    # ChefSpec < 4.1
+    ChefSpec::Runner.define_runner_method :mysql_service
+    ChefSpec::Runner.define_runner_method :mysql_database_user
+    ChefSpec::Runner.define_runner_method :postgresql_database_user
+  end
 end

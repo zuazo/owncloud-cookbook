@@ -92,6 +92,24 @@ else
 end
 
 #==============================================================================
+# Initialize encrypted attributes
+#==============================================================================
+
+Chef::Recipe.send(:include, Chef::EncryptedAttributesHelpers)
+# Include the #secure_password method:
+Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+
+self.encrypted_attributes_enabled = node['owncloud']['encrypt_attributes']
+
+admin_pass = encrypted_attribute_write(%w(owncloud admin pass)) do
+  secure_password
+end
+
+dbpass = encrypted_attribute_write(%w(owncloud config dbpassword)) do
+  secure_password
+end
+
+#==============================================================================
 # Install PHP
 #==============================================================================
 
@@ -142,6 +160,13 @@ when 'mysql'
       fail 'You must set the database admin password in chef-solo mode.'
     end
 
+    def mysql_password(user)
+      key = "server_#{user}_password"
+      encrypted_attribute_write(['owncloud', 'mysql', key]) { secure_password }
+    end
+
+    root_password = mysql_password('root')
+
     dbinstance = node['owncloud']['mysql']['instance']
 
     mysql2_chef_gem dbinstance do
@@ -150,7 +175,7 @@ when 'mysql'
 
     mysql_service dbinstance do
       data_dir node['owncloud']['mysql']['data_dir']
-      initial_root_password node['owncloud']['mysql']['server_root_password']
+      initial_root_password root_password
       bind_address node['owncloud']['config']['dbhost']
       port node['owncloud']['config']['dbport'].to_s
       run_group node['owncloud']['mysql']['run_group']
@@ -163,7 +188,7 @@ when 'mysql'
       host: node['owncloud']['config']['dbhost'],
       port: node['owncloud']['config']['dbport'],
       username: 'root',
-      password: node['owncloud']['mysql']['server_root_password']
+      password: root_password
     }
 
     mysql_database node['owncloud']['config']['dbname'] do
@@ -175,7 +200,7 @@ when 'mysql'
       connection mysql_connection_info
       database_name node['owncloud']['config']['dbname']
       host node['owncloud']['config']['dbhost']
-      password node['owncloud']['config']['dbpassword']
+      password dbpass
       privileges [:all]
       action :grant
     end
@@ -219,7 +244,7 @@ when 'pgsql'
       connection postgresql_connection_info
       database_name node['owncloud']['config']['dbname']
       host node['owncloud']['config']['dbhost']
-      password node['owncloud']['config']['dbpassword']
+      password dbpass
       privileges [:all]
       action [:create, :grant]
     end
@@ -375,11 +400,11 @@ template 'owncloud autoconfig.php' do
     dbtype: node['owncloud']['config']['dbtype'],
     dbname: node['owncloud']['config']['dbname'],
     dbuser: node['owncloud']['config']['dbuser'],
-    dbpass: node['owncloud']['config']['dbpassword'],
+    dbpass: dbpass,
     dbhost: dbhost,
     dbprefix: node['owncloud']['config']['dbtableprefix'],
     admin_user: node['owncloud']['admin']['user'],
-    admin_pass: node['owncloud']['admin']['pass'],
+    admin_pass: admin_pass,
     data_dir: node['owncloud']['data_dir']
   )
   not_if do

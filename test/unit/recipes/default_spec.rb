@@ -18,6 +18,7 @@
 #
 
 require_relative '../spec_helper'
+require 'chef/encrypted_attributes'
 
 describe 'owncloud::default' do
   let(:chef_runner) { ChefSpec::SoloRunner.new }
@@ -829,4 +830,74 @@ describe 'owncloud::default' do
       end
     end # context without virtualization
   end # context about sendfile
+
+  context 'witn encrypted attributes' do
+    let(:chef_runner) { ChefSpec::ServerRunner.new }
+    before do
+      node.set['owncloud']['encrypt_attributes'] = true
+      node.set['owncloud']['admin']['pass'] = nil
+    end
+
+    it 'includes encrypted_attributes recipe' do
+      expect(chef_run).to include_recipe('encrypted_attributes')
+    end
+
+    it 'encrypts owncloud admin password' do
+      chef_run
+      expect(Chef::EncryptedAttribute.exist?(
+        node['owncloud']['admin']['pass']
+      )).to be(true)
+    end
+
+    it 'uses clear admin password for the autconfig.php file' do
+      resource = chef_run.template('owncloud autoconfig.php')
+      expect(resource.variables[:admin_pass]).to be_a(String)
+    end
+
+    it 'encrypts mysql root password' do
+      chef_run
+      expect(Chef::EncryptedAttribute.exist?(
+        node['owncloud']['mysql']['server_root_password']
+      )).to be(true)
+    end
+
+    it 'uses clear root password for the mysql service' do
+      resource = chef_run.mysql_service('default')
+      expect(resource.initial_root_password).to be_a(String)
+    end
+
+    it 'encrypts mysql owncloud password' do
+      chef_run
+      expect(Chef::EncryptedAttribute.exist?(
+        node['owncloud']['config']['dbpassword']
+      )).to be(true)
+    end
+
+    it 'uses clear owncloud password for the MySQL database user' do
+      resource = chef_run.mysql_database_user(db_user)
+      expect(resource.password).to be_a(String)
+    end
+
+    context 'with PostgreSQL' do
+      let(:db_connection) do
+        {
+          host: db_host, port: 5432,
+          username: 'postgres', password: db_root_password
+        }
+      end
+      before { node.set['owncloud']['config']['dbtype'] = 'pgsql' }
+
+      it 'encrypts mysql owncloud password' do
+        chef_run
+        expect(Chef::EncryptedAttribute.exist?(
+          node['owncloud']['config']['dbpassword']
+        )).to be(true)
+      end
+
+      it 'uses clear owncloud password for the PostgreSQL database user' do
+        resource = chef_run.postgresql_database_user(db_user)
+        expect(resource.password).to be_a(String)
+      end
+    end
+  end # context with encrypted attributes
 end

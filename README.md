@@ -24,6 +24,7 @@ Requirements
 * apt
 * cron
 * database
+* encrypted_attributes
 * mysql
 * nginx
 * openssl
@@ -95,6 +96,7 @@ Attributes
 | `node['owncloud']['mysql']['run_user']`             | *calculated*  | MySQL system user.
 | `node['owncloud']['mysql']['version']`              | `nil`         | MySQL version to install by the `mysql_service` LWRP. Refer to [`mysql` cookbook platform support section](https://github.com/chef-cookbooks/mysql#platform-support).
 | `node['owncloud']['mysql']['server_root_password']` | *calculated*  | MySQL root password to access a database instance.
+| `node['owncloud']['encrypt_attributes']`            | `false`       | Whether to encrypt ownCloud attributes containing credential secrets.
 
 Recipes
 =======
@@ -324,6 +326,27 @@ If new owncloud version is released and you has notified in web user interface a
 Cookbook recipes will download latest release version and install it to server.
 
 Then you must proceed with update in web interface and system will be updated.
+
+Encrypted Attributes
+====================
+
+This cookbook can use the [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes) cookbook to encrypt the secrets generated during the *Chef Run*. This feature is disabled by default, but can be enabled setting the `node['owncloud']['encrypt_attributes']` attribute to `true`. For example:
+
+```ruby
+include_recipe 'encrypted_attributes::users_data_bag'
+node.default['owncloud']['encrypt_attributes'] = true
+inclure_recipe 'owncloud'
+```
+
+This will create the following encrypted attributes:
+
+* `node['owncloud']['admin']['pass']`: ownCloud Admin password.
+* `node['owncloud']['mysql']['server_root_password']`: MySQL *root* user password.
+* `node['owncloud']['config']['dbpassword']`: MySQL ownCloud user password.
+
+Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/chef-encrypted-attributes/) to learn how to read them.
+
+**Warning:** When PostgreSQL is used, the database root password will still remain unencrypted in the `node['postgresql']['password']['postgres']` attribute due to limitations of the [postgresql cookbook](https://supermarket.chef.io/cookbooks/postgresql).
 
 PostgreSQL Support
 ==================

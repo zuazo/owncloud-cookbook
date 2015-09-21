@@ -45,6 +45,7 @@ depends 'apache2', '~> 3.0'
 depends 'apt', '~> 2.0'
 depends 'cron', '~> 1.6'
 depends 'database', '~> 4.0'
+depends 'encrypted_attributes', '~> 0.2'
 depends 'mysql2_chef_gem', '~> 1.0.1'
 depends 'mysql', '~> 6.0'
 depends 'nginx', '~> 2.7'
@@ -429,3 +430,11 @@ attribute 'owncloud/mysql/server_root_password',
           calculated: true,
           type: 'string',
           required: 'optional'
+
+attribute 'owncloud/encrypt_attributes',
+          display_name: 'owncloud encrypt attributes',
+          description: 'Whether to encrypt ownCloud attributes containing '\
+            'credential secrets.',
+          type: 'string',
+          choice: %w(true false),
+          default: 'false'
