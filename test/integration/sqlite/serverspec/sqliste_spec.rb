@@ -20,13 +20,27 @@
 require_relative 'spec_helper'
 require 'json'
 
+family = os[:family].downcase
+docroot_dir =
+  if %w(centos redhat fedora scientific amazon).include?(family)
+    '/var/www/html'
+  elsif %w(suse opensuse).include?(family)
+    '/srv/www/htdocs'
+  elsif %w(arch).include?(family)
+    '/srv/http'
+  elsif %w(freebsd).include?(family)
+    '/usr/local/www/apache24/data'
+  else
+    '/var/www'
+  end
+
 describe 'sqlite' do
-  describe file('/var/www/owncloud/data') do
+  describe file("#{docroot_dir}/owncloud/data") do
     it { should be_directory }
     it { should be_mode 750 }
   end
 
-  describe file('/var/www/owncloud/data/owncloud.db') do
+  describe file("#{docroot_dir}/owncloud/data/owncloud.db") do
     it { should be_file }
     it { should be_mode 644 }
   end
