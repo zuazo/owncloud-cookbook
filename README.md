@@ -33,6 +33,7 @@ Requirements
 * postfix
 * postgresql
 * ssl_certificate
+* yum-webtatic
 
 ## Required Applications
 

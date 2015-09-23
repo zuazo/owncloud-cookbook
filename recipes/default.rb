@@ -38,10 +38,10 @@ when 'debian'
   php_pkgs << 'php5-mysql' if dbtype == 'mysql'
   php_pkgs << 'php5-pgsql' if dbtype == 'pgsql'
 when 'rhel'
-  if node['platform'] != 'amazon' && node['platform_version'].to_f < 6
-    php_pkgs = %w(php53-gd php53-mbstring php53-xml php53-intl samba-client)
-    php_pkgs << 'php53-mysql' if dbtype == 'mysql'
-    php_pkgs << 'php53-pgsql' if dbtype == 'pgsql'
+  if node['platform'] != 'amazon' && node['platform_version'].to_f < 7
+    php_pkgs = %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client)
+    php_pkgs << 'php54w-mysql' if dbtype == 'mysql'
+    php_pkgs << 'php54w-pgsql' if dbtype == 'pgsql'
     if dbtype == 'sqlite'
       fail(
         "SQLite database type not supported on #{node['platform']}"\
@@ -126,6 +126,13 @@ apt_repository 'ondrej-php5-oldstable' do
     node['platform'] == 'ubuntu' &&
       Chef::VersionConstraint.new('<= 12.04').include?(node['platform_version'])
   end
+end
+
+if node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
+  include_recipe 'yum-webtatic'
+  node.default['php']['packages'] =
+    %w(php54w php54w-devel php54w-cli php54w-pear)
+  node.default['php']['mysql']['package'] = 'php54w-mysql'
 end
 
 include_recipe 'php'
