@@ -36,3 +36,6 @@ node.default['owncloud']['config']['dbtype'] = 'pgsql'
 include_recipe 'owncloud_test::postgresql_memory'
 
 include_recipe 'owncloud_test::common'
+
+# Required by infrataster PostgreSQL integration tests:
+package 'libpqxx3-dev' if node['platform_family'] == 'debian'
