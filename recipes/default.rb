@@ -40,14 +40,9 @@ when 'debian'
 when 'rhel'
   if node['platform'] != 'amazon' && node['platform_version'].to_f < 7
     php_pkgs = %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client)
+    php_pkgs << 'php54w-pdo' if dbtype == 'sqlite'
     php_pkgs << 'php54w-mysql' if dbtype == 'mysql'
     php_pkgs << 'php54w-pgsql' if dbtype == 'pgsql'
-    if dbtype == 'sqlite'
-      fail(
-        "SQLite database type not supported on #{node['platform']}"\
-        " #{node['platform_version']}"
-      )
-    end
   else
     php_pkgs = %w(php-gd php-mbstring php-xml php-intl samba-client)
     php_pkgs << 'php-pdo' if dbtype == 'sqlite'

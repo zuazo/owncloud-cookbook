@@ -225,14 +225,14 @@ describe 'owncloud::default' do
     'centos@5.10' => {
       'core' =>
         %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client),
-      'sqlite' => %w(), # Raises an exception
+      'sqlite' => %w(php54w-pdo),
       'mysql' => %w(php54w-mysql),
       'pgsql' => %w(php54w-pgsql)
     },
     'centos@6.0' => {
       'core' =>
         %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client),
-      'sqlite' => %w(),
+      'sqlite' => %w(php54w-pdo),
       'mysql' => %w(php54w-mysql),
       'pgsql' => %w(php54w-pgsql)
     },
