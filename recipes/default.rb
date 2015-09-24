@@ -423,7 +423,7 @@ execute 'run owncloud setup' do
   cwd node['owncloud']['dir']
   command(
     "sudo -u '#{node[web_server]['user']}' php -f index.php "\
-    '| { ! grep -iA2 error; }'
+    '| { ! grep -iA2 -e error -e failed; }'
   )
   action :nothing
 end
