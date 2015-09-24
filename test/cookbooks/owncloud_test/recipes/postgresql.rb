@@ -28,9 +28,9 @@ if node['platform_family'] == 'debian'
   include_recipe 'locale'
 end
 
-node.default['postgresql']['password']['postgres'] = 'vagrant_postgres'
+node.set['postgresql']['password']['postgres'] = 'vagrant_postgres'
 
-node.default['owncloud']['config']['dbpassword'] = 'database_pass'
+node.set['owncloud']['config']['dbpassword'] = 'database_pass'
 node.default['owncloud']['config']['dbtype'] = 'pgsql'
 
 include_recipe 'owncloud_test::postgresql_memory'

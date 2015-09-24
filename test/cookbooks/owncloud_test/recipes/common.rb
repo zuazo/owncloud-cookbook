@@ -21,7 +21,7 @@
 #
 
 node.default['owncloud']['admin']['user'] = 'test'
-node.default['owncloud']['admin']['pass'] = 'test'
+node.set['owncloud']['admin']['pass'] = 'test'
 
 package 'wget'
 
