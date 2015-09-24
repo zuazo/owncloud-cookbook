@@ -27,7 +27,8 @@ platforms:
   run_list: recipe[selinux::disabled]
 - name: centos-7.1
   run_list: recipe[selinux::disabled]
-- name: debian-6.0.10
+# No PHP 5.4 support:
+# - name: debian-6.0.10
 - name: debian-7.8
 - name: debian-8.1
 - name: ubuntu-12.04
