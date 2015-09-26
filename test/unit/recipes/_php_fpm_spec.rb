@@ -34,4 +34,23 @@ describe 'owncloud::_php_fpm' do
       "#{node['php-fpm']['pool_conf_dir']}/owncloud.conf"
     )
   end
+
+  it 'uses the default service provider for php-fpm' do
+    expect(chef_run).to enable_service('php-fpm')
+      .with_provider(nil)
+  end
+
+  context 'on Ubuntu 15.04' do
+    # Ubuntu 15.04 still not supported by fauxhai
+    before do
+      node.automatic['platform_family'] = 'debian'
+      node.automatic['platform'] = 'ubuntu'
+      node.automatic['platform_version'] = '15.04'
+    end
+
+    it 'uses Debian service provider for php-fpm' do
+      expect(chef_run).to enable_service('php-fpm')
+        .with_provider(Chef::Provider::Service::Debian)
+    end
+  end # context on Ubuntu 15.04
 end

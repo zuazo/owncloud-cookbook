@@ -42,3 +42,9 @@ php_fpm_pool node['owncloud']['php-fpm']['pool'] do
     )
   end
 end
+
+# Fix Ubuntu 15.04 support:
+if node['platform'] == 'ubuntu' && node['platform_version'].to_i >= 15
+  r = resources(service: 'php-fpm')
+  r.provider(Chef::Provider::Service::Debian)
+end
