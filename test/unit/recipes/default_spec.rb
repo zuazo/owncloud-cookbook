@@ -271,13 +271,6 @@ describe 'owncloud::default' do
               expect(chef_run).to install_package(package)
             end
           end # packages each
-
-          if packages.empty?
-            it 'raises database type not supported exception' do
-              expect { chef_run }
-                .to raise_error(/database type not supported on/)
-            end
-          end # if packages empty?
         end # context with dbtype packages
       end # packages_by_type each
     end # context on platform platform_version
