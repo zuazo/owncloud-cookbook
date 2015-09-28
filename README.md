@@ -16,6 +16,7 @@ Requirements
 
 * CentOS
 * Debian
+* Scientific Linux
 * Ubuntu
 
 ## Cookbooks:

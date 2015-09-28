@@ -39,6 +39,7 @@ end
 
 supports 'centos'
 supports 'debian'
+supports 'scientific'
 supports 'ubuntu'
 
 depends 'apache2', '~> 3.0'
