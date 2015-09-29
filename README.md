@@ -16,6 +16,7 @@ Requirements
 
 * CentOS
 * Debian
+* Oracle Linux
 * Scientific Linux
 * Ubuntu
 
