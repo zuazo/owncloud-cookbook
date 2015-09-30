@@ -281,6 +281,10 @@ if node['owncloud']['deploy_from_git'] != true
   basename = ::File.basename(download_url)
   local_file = ::File.join(Chef::Config[:file_cache_path], basename)
 
+  # Required on Docker:
+  package 'tar'
+  package 'bzip2'
+
   # Prior to Chef 11.6, remote_file does not support conditional get
   # so we do a HEAD http_request to mimic it
   http_request 'HEAD owncloud' do

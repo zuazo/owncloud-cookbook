@@ -1,0 +1,56 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+# If you add new platforms below, include them in the .travis.yml file matrix
+platforms:
+- name: centos-6
+  run_list: recipe[selinux::disabled]
+# error: unpacking of archive failed on file /usr/sbin/suexec:
+# cpio: cap_set_file failed - Operation not supportederror: unpacking of
+# archive failed on file /usr/sbin/suexec: cpio: cap_set_file failed -
+# Operation not supported:
+# - name: centos-7
+#   run_list: recipe[selinux::disabled]
+# No PHP 5.4 support:
+# - name: debian-6
+- name: debian-7
+- name: debian-8
+- name: ubuntu-12.04
+- name: ubuntu-14.04
+- name: ubuntu-15.04
+
+# Non-official images
+- name: scientific-6.6
+  driver_config:
+    image: ringo/scientific:6.6
+    platform: rhel
+
+suites:
+- name: mysql
+  run_list: recipe[owncloud_test::mysql]
+  excludes:
+  # Can't connect to MySQL server on '127.0.0.1' (111):
+  - ubuntu-12.04
+  - ubuntu-14.04
+  # bash[default :create initial records] timeout:
+  - ubuntu-15.04
+- name: sqlite
+  run_list: recipe[owncloud_test::sqlite]
+  excludes:
+  # Error: mysql55w-libs conflicts with mysql-libs-5.1.73-5.el6_6.x86_64:
+  - centos-6
+  - scientific-6.6
+- name: nginx
+  run_list: recipe[owncloud_test::nginx]
+  excludes:
+  # php54w-common conflicts with php-common-5.3.3-46.el6_6.x86_64:
+  - centos-6
+  # Can't connect to MySQL server on '127.0.0.1' (111):
+  - ubuntu-12.04
+  - ubuntu-14.04
+  # Errno::ENOENT: No such file or directory - /sbin/insserv:
+  - ubuntu-15.04
+  # /etc/sysconfig/network: No such file or directory:
+  - scientific-6.6

@@ -39,4 +39,5 @@ template 'emailtest.php' do
 end
 
 # Required for integration tests:
+include_recipe 'netstat'
 include_recipe 'nokogiri'

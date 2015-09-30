@@ -56,13 +56,13 @@ suites:
   # PostgreSQL >= 9 required
   - centos-5.11
 - name: sqlite
+  run_list: recipe[owncloud_test::sqlite]
   excludes:
   # execute[run owncloud setup]: Writing to database failed
   - centos-5.11
-  run_list: recipe[owncloud_test::sqlite]
 - name: nginx
+  run_list: recipe[owncloud_test::nginx]
   excludes:
   # Error: Missing Dependency: php54w-cli >= 5.1.0-1 is needed by package
   # 1:php54w-pear-1.9.4-7.w5.noarch (installed)
   - centos-5.11
-  run_list: recipe[owncloud_test::nginx]

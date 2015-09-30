@@ -525,6 +525,28 @@ describe 'owncloud::default' do
       allow(file_time).to receive(:httpdate).and_return(http_date)
     end
 
+    it 'installs tar' do
+      expect(chef_run).to install_package('tar')
+    end
+
+    it 'installs bzip2' do
+      expect(chef_run).to install_package('bzip2')
+    end
+
+    context 'on CentOS' do
+      let(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'centos', version: '6.0')
+      end
+
+      it 'installs tar' do
+        expect(chef_run).to install_package('tar')
+      end
+
+      it 'installs bzip2' do
+        expect(chef_run).to install_package('bzip2')
+      end
+    end # context on CentOS
+
     context 'with Chef 11.6' do
       before { stub_const('Chef::VERSION', '11.6.0') }
 
@@ -598,6 +620,14 @@ describe 'owncloud::default' do
 
   context 'with deploying from git' do
     before { node.set['owncloud']['deploy_from_git'] = true }
+
+    it 'does not install tar' do
+      expect(chef_run).to_not install_package('tar')
+    end
+
+    it 'does not install bzip2' do
+      expect(chef_run).to_not install_package('bzip2')
+    end
 
     it 'clones git repository' do
       expect(chef_run).to sync_git('clone owncloud')
