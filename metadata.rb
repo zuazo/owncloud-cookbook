@@ -39,7 +39,6 @@ end
 
 supports 'centos'
 supports 'debian'
-supports 'oracle'
 supports 'scientific'
 supports 'ubuntu'
 
