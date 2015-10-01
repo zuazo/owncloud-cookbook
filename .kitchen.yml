@@ -29,8 +29,7 @@ platforms:
 #   run_list: recipe[selinux::disabled]
 - name: centos-7.1
   run_list: recipe[selinux::disabled]
-# No PHP 5.4 support:
-# - name: debian-6.0.10
+- name: debian-6.0.10
 - name: debian-7.8
 - name: debian-8.1
 - name: ubuntu-12.04
@@ -43,11 +42,12 @@ suites:
 - name: postgresql
   run_list: recipe[owncloud_test::postgresql]
   excludes:
+  # Parent directory /etc/postgresql/8.4/main does not exist:
+  - debian-6.0.10
   - debian-7.8
   # Chef::Exceptions::Package: No candidate version available for postgresql-client-9.1
   - debian-8.1
   # https://github.com/hw-cookbooks/postgresql/issues/249
-  - ubuntu-10.04
   - ubuntu-12.04
   - ubuntu-15.04
   # libpq.so: undefined reference to `SSL_[...]@OPENSSL_1.0.0'

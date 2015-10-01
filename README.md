@@ -50,7 +50,7 @@ Attributes
 
 | Attribute                                           | Default       | Description                    |
 |:----------------------------------------------------|:--------------|:-------------------------------|
-| `node['owncloud']['version']`                       | `'latest'`    | Version of ownCloud to install.
+| `node['owncloud']['version']`                       | *calculated*  | Version of ownCloud to install.
 | `node['owncloud']['download_url']`                  | *calculated*  | URL from where ownCloud will be downloaded.
 | `node['owncloud']['deploy_from_git']`               | `false`       | Whether ownCloud should be deployed from the git repository.
 | `node['owncloud']['git_repo']`                      | *calculated*  | URL of the ownCloud git repository.

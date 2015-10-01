@@ -36,7 +36,7 @@ describe 'owncloud' do
       end
 
       it 'is installed' do
-        expect(body_json['installed']).to eq(true)
+        expect([true, 'true']).to include(body_json['installed'])
       end
     end # http /status.php
 

@@ -56,16 +56,15 @@ depends 'php-fpm', '~> 0.7'
 depends 'postfix', '~> 3.0'
 depends 'postgresql', '~> 3.4'
 depends 'ssl_certificate', '~> 1.1'
-depends 'yum-webtatic', '~> 0.4.0'
 
 recipe 'owncloud::default', 'Installs and configures ownCloud'
 
 attribute 'owncloud/version',
           display_name: 'ownCloud Version',
           description: 'Version of ownCloud to install',
+          calculated: true,
           type: 'string',
-          required: 'optional',
-          default: 'latest'
+          required: 'optional'
 
 attribute 'owncloud/download_url',
           display_name: 'ownCloud Download Url',

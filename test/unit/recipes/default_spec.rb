@@ -55,6 +55,39 @@ describe 'owncloud::default' do
       .and_return(false)
   end
 
+  versions_spec = {
+    'Amazon@2012.09' => 'latest',
+    'Debian@6.0.5'   => /^7\./,
+    'Debian@7.0'     => 'latest',
+    'CentOS@5.10'    => /^7\./,
+    'CentOS@6.0'     => /^7\./,
+    'CentOS@7.0'     => 'latest',
+    'Ubuntu@10.04'   => /^7\./,
+    'Ubuntu@12.04'   => 'latest'
+  }
+
+  context 'ownCloud installed version' do
+    versions_spec.each do |platform_spec, owncloud_version|
+      platform, platform_version = platform_spec.split('@', 2)
+      context "on #{platform} #{platform_version}" do
+        let(:chef_runner) do
+          ChefSpec::SoloRunner.new(
+            platform: platform.downcase, version: platform_version
+          )
+        end
+
+        it "is #{owncloud_version.inspect}" do
+          chef_run
+          if owncloud_version.is_a?(String)
+            expect(node['owncloud']['version']).to eq(owncloud_version)
+          else
+            expect(node['owncloud']['version']).to match(owncloud_version)
+          end
+        end
+      end # context on platform platform_version
+    end # versions_spec each
+  end # context ownCloud installed version
+
   context 'on Ubuntu' do
     let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
@@ -126,17 +159,6 @@ describe 'owncloud::default' do
         .with_key('E5267A6C')
         .with_deb_src(true)
     end
-
-    it 'does not include yum-webtatic recipe' do
-      expect(chef_run).to_not include_recipe('yum-webtatic')
-    end
-
-    it 'does not change PHP 5.4 packages in attributes' do
-      chef_run
-      expect(node['php']['packages'])
-        .to_not eq(%w(php54w php54w-devel php54w-cli php54w-pear))
-      expect(node['php']['mysql']['package']).to_not eq('php54w-mysql')
-    end
   end # context on Ubuntu 12.04
 
   context 'on Ubuntu 14.04' do
@@ -147,102 +169,40 @@ describe 'owncloud::default' do
     it 'does not add ondrej-php5-oldstable apt repository' do
       expect(chef_run).to_not add_apt_repository('ondrej-php5-oldstable')
     end
-
-    it 'does not include yum-webtatic recipe' do
-      expect(chef_run).to_not include_recipe('yum-webtatic')
-    end
-
-    it 'does not change PHP 5.4 packages in attributes' do
-      chef_run
-      expect(node['php']['packages'])
-        .to_not eq(%w(php54w php54w-devel php54w-cli php54w-pear))
-      expect(node['php']['mysql']['package']).to_not eq('php54w-mysql')
-    end
   end # context on Ubuntu 14.04
-
-  context 'on CentOS 5' do
-    let(:chef_runner) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '5.10')
-    end
-
-    it 'includes yum-webtatic recipe' do
-      expect(chef_run).to include_recipe('yum-webtatic')
-    end
-
-    it 'changes PHP 5.4 packages in attributes' do
-      chef_run
-      expect(node['php']['packages'])
-        .to eq(%w(php54w php54w-devel php54w-cli php54w-pear))
-      expect(node['php']['mysql']['package']).to eq('php54w-mysql')
-    end
-  end # context on CentOS 5
-
-  context 'on CentOS 6' do
-    let(:chef_runner) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.0')
-    end
-
-    it 'includes yum-webtatic recipe' do
-      expect(chef_run).to include_recipe('yum-webtatic')
-    end
-
-    it 'changes PHP 5.4 packages in attributes' do
-      chef_run
-      expect(node['php']['packages'])
-        .to eq(%w(php54w php54w-devel php54w-cli php54w-pear))
-      expect(node['php']['mysql']['package']).to eq('php54w-mysql')
-    end
-  end # context on CentOS 6
-
-  context 'on CentOS 7' do
-    let(:chef_runner) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0')
-    end
-
-    it 'does not include yum-webtatic recipe' do
-      expect(chef_run).to_not include_recipe('yum-webtatic')
-    end
-
-    it 'does not change PHP 5.4 packages in attributes' do
-      chef_run
-      expect(node['php']['packages'])
-        .to_not eq(%w(php54w php54w-devel php54w-cli php54w-pear))
-      expect(node['php']['mysql']['package']).to_not eq('php54w-mysql')
-    end
-  end # context on CentOS 7
 
   it 'includes php recipe' do
     expect(chef_run).to include_recipe('php')
   end
 
   packages_spec = {
-    'debian@7.0' => {
+    'Debian@7.0' => {
       'core' => %w(php5-gd php5-intl php5-curl php5-json smbclient),
       'sqlite' => %w(php5-sqlite),
       'mysql' => %w(php5-mysql),
       'pgsql' => %w(php5-pgsql)
     },
-    'centos@5.10' => {
+    'CentOS@5.10' => {
       'core' =>
-        %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client),
-      'sqlite' => %w(php54w-pdo),
-      'mysql' => %w(php54w-mysql),
-      'pgsql' => %w(php54w-pgsql)
+        %w(php53-gd php53-mbstring php53-xml php53-intl samba-client),
+      'sqlite' => %w(php53-pdo),
+      'mysql' => %w(php53-mysql),
+      'pgsql' => %w(php53-pgsql)
     },
-    'centos@6.0' => {
+    'CentOS@6.0' => {
       'core' =>
-        %w(php54w-gd php54w-mbstring php54w-xml php54w-intl samba-client),
-      'sqlite' => %w(php54w-pdo),
-      'mysql' => %w(php54w-mysql),
-      'pgsql' => %w(php54w-pgsql)
+        %w(php-gd php-mbstring php-xml php-intl samba-client),
+      'sqlite' => %w(php-pdo),
+      'mysql' => %w(php-mysql),
+      'pgsql' => %w(php-pgsql)
     },
-    'centos@7.0' => {
+    'CentOS@7.0' => {
       'core' => %w(php-gd php-mbstring php-xml php-intl samba-client),
       'sqlite' => %w(php-pdo),
       'mysql' => %w(php-mysql),
       'pgsql' => %w(php-pgsql)
     },
-    'fedora@20' => {
+    'Fedora@20' => {
       'core' => %w(php-gd php-mbstring php-xml php-intl samba-client),
       'sqlite' => %w(php-pdo),
       'mysql' => %w(php-mysql),
@@ -253,9 +213,11 @@ describe 'owncloud::default' do
   packages_spec.each do |platform_spec, packages_by_type|
     platform, platform_version = platform_spec.split('@', 2)
 
-    context "on #{platform.capitalize} #{platform_version}" do
+    context "on #{platform} #{platform_version}" do
       let(:chef_runner) do
-        ChefSpec::SoloRunner.new(platform: platform, version: platform_version)
+        ChefSpec::SoloRunner.new(
+          platform: platform.downcase, version: platform_version
+        )
       end
 
       packages_by_type.each do |dbtype, packages|

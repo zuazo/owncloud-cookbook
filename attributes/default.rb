@@ -20,7 +20,17 @@
 # limitations under the License.
 #
 
-default['owncloud']['version'] = 'latest'
+default['owncloud']['version'] =
+  # ownCloud 8 requires PHP 5.4
+  if (platform_family?('rhel') && !platform?('amazon') &&
+     node['platform_version'].to_i < 7) ||
+     (platform?('debian') && node['platform_version'].to_i < 7) ||
+     (platform?('ubuntu') && node['platform_version'].to_i < 12)
+    '7.0.4'
+  else
+    'latest'
+  end
+
 default['owncloud']['download_url'] =
   'http://download.owncloud.org/community/owncloud-%{version}.tar.bz2'
 
