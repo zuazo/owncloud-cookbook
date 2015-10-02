@@ -945,12 +945,6 @@ describe 'owncloud::default' do
     end
 
     context 'with PostgreSQL' do
-      let(:db_connection) do
-        {
-          host: db_host, port: 5432,
-          username: 'postgres', password: db_root_password
-        }
-      end
       before { node.set['owncloud']['config']['dbtype'] = 'pgsql' }
 
       it 'encrypts mysql owncloud password' do
