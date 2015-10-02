@@ -2,6 +2,7 @@
 driver:
   name: docker
   use_sudo: false
+  privileged: true
 
 # If you add new platforms below, include them in the .travis.yml file matrix
 platforms:
