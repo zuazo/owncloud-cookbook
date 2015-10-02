@@ -439,3 +439,35 @@ attribute 'owncloud/encrypt_attributes',
           type: 'string',
           choice: %w(true false),
           default: 'false'
+
+grouping 'owncloud/packages',
+         title: 'owncloud packages',
+         description: 'ownCloud packages'
+
+attribute 'owncloud/packages/core',
+          display_name: 'owncloud packages core',
+          description: 'ownCloud core package names as array.',
+          type: 'array',
+          required: 'optional',
+          calculated: true
+
+attribute 'owncloud/packages/sqlite',
+          display_name: 'owncloud packages sqlite',
+          description: 'ownCloud package names array for SQLite.',
+          type: 'array',
+          required: 'optional',
+          calculated: true
+
+attribute 'owncloud/packages/mysql',
+          display_name: 'owncloud packages mysql',
+          description: 'ownCloud package names array for MySQL.',
+          type: 'array',
+          required: 'optional',
+          calculated: true
+
+attribute 'owncloud/packages/postgresql',
+          display_name: 'owncloud packages postgresql',
+          description: 'ownCloud package names array for PostgreSQL.',
+          type: 'array',
+          required: 'optional',
+          calculated: true

@@ -100,6 +100,17 @@ Attributes
 | `node['owncloud']['mysql']['server_root_password']` | *calculated*  | MySQL root password to access a database instance.
 | `node['owncloud']['encrypt_attributes']`            | `false`       | Whether to encrypt ownCloud attributes containing credential secrets.
 
+## Platform Support Related Attributes
+
+Some cookbook attributes are used internally to support the different platforms. Surely you want to change them if you want to support new platforms or want to improve the support of some platforms already supported.
+
+| Attribute                                | Default       | Description                       |
+|:-----------------------------------------|:--------------|:----------------------------------|
+| `node['owncloud']['packages']['core']`   | *calculated*  | ownCloud core package names as array.
+| `node['owncloud']['packages']['sqlite']` | *calculated*  | ownCloud package names array for SQLite.
+| `node['owncloud']['packages']['mysql']`  | *calculated*  | ownCloud package names array for MySQL.
+| `node['owncloud']['packages']['pgsql']`  | *calculated*  | ownCloud package names array for PostgreSQL.
+
 Recipes
 =======
 
