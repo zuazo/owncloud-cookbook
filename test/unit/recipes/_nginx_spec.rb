@@ -40,9 +40,8 @@ describe 'owncloud::_nginx' do
   end
 
   it 'disables nginx default site' do
-    allow(::File).to receive(:symlink?)
-      .with('/etc/nginx/sites-enabled/default').and_return(true)
-    expect(chef_run).to run_execute('nxdissite default')
+    chef_run
+    expect(node['nginx']['default_site_enabled']).to eq(false)
   end
 
   it 'creates owncloud virtualhost' do
