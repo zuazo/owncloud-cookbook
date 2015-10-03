@@ -19,6 +19,21 @@ Requirements
 * Scientific Linux
 * Ubuntu
 
+The following platforms are tested with Test Kitchen:
+
+| Platform          | MySQL      | PostgreSQL | SQLite     | NGINX      |
+|:------------------|:----------:|:----------:|:----------:|:-----------|
+| CentOS 5          | ✔          |            |            |            |
+| CentOS 6          | ✔ (travis) |            | ✔ (travis) |            |
+| CentOS 7          | ✔          | ✔          | ✔          | ✔          |
+| Debian 6          | ✔          |            | ✔          | ✔          |
+| Debian 7          | ✔ (travis) |            | ✔ (travis) | ✔ (travis) |
+| Debian 8          | ✔ (travis) |            | ✔ (travis) | ✔ (travis) |
+| Ubuntu 12.04      | ✔          |            | ✔ (travis) | ✔          |
+| Ubuntu 14.04      | ✔          |            | ✔ (travis) | ✔          |
+| Ubuntu 15.04      | ✔          |            | ✔ (travis) | ✔          |
+| Scientifi Linux 6 | ✔ (travis) |            | ✔ (travis) |            |
+
 ## Cookbooks:
 
 * apache2
