@@ -43,6 +43,7 @@ Please, [let me know](https://github.com/zuazo/owncloud-cookbook/issues/new?titl
 * [cron](https://supermarket.chef.io/cookbooks/cron/)
 * [database](https://supermarket.chef.io/cookbooks/database/)
 * [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes/)
+* [mysql2_chef_gem](https://supermarket.chef.io/cookbooks/mysql2_chef_gem/)
 * [mysql](https://supermarket.chef.io/cookbooks/mysql/)
 * [nginx](https://supermarket.chef.io/cookbooks/nginx/)
 * [openssl](https://supermarket.chef.io/cookbooks/openssl/)
