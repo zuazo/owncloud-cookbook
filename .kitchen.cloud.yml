@@ -1,46 +1,79 @@
 ---
 driver:
-  digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
-  digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
-  aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
-  ssh:
-    forward_agent: true
+  ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
 provisioner:
   name: chef_solo
   require_chef_omnibus: true
 
 platforms:
-- name: centos-6.5
-  driver:
-    name: digitalocean
+<% unless ENV['DIGITALOCEAN_ACCESS_TOKEN'].empty? %>
+- name: centos-5-8-x64
+  driver_plugin: digitalocean
+  driver_config:
     flavor: 512MB
-    region: Amsterdam 2
-    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
-    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
-- name: ubuntu-12.04
-  driver:
-    name: digitalocean
+- name: centos-6-5-x64
+  driver_plugin: digitalocean
+  driver_config:
     flavor: 512MB
-    region: Amsterdam 2
-    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
-    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
-- name: ubuntu-14.04
-  driver:
-    name: digitalocean
+- name: centos-7-0-x64
+  driver_plugin: digitalocean
+  driver_config:
     flavor: 512MB
-    region: Amsterdam 2
-    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
-    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
 
-- name: amazon-2013.09.2
+- name: debian-6-0-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+
+- name: debian-7-0-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+
+- name: debian-8-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+
+- name: ubuntu-12-04-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+
+- name: ubuntu-14-04-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+
+- name: ubuntu-15-04-x64
+  driver_plugin: digitalocean
+  driver_config:
+    flavor: 512MB
+<% end %>
+
+- name: amazon-2014.09.2
   driver:
     name: ec2
-    image_id: ami-bba18dd2
-    flavor_id: t1.micro
+    image_id: ami-8e682ce6
+    instance_type: t1.micro
+  transport:
     username: ec2-user
-    ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
+
+- name: amazon-2015.03.1
+  driver:
+    name: ec2
+    image_id: ami-0f4cfd64
+    instance_type: t1.micro
+  transport:
+    username: ec2-user
+
+- name: amazon-2015.09.0
+  driver:
+    name: ec2
+    image_id: ami-cf1066aa
+    instance_type: t1.micro
+  transport:
+    username: ec2-user
