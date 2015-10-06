@@ -379,6 +379,47 @@ describe 'owncloud::default' do
     end
     before { node.set['owncloud']['config']['dbtype'] = 'pgsql' }
 
+    context 'Fix postgresql#249' do
+      let(:resource) { chef_run.ruby_block('Fix postgresql#249') }
+      let(:last_package) { node['postgresql']['server']['packages'].last }
+
+      context 'on Debian' do
+        let(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'debian', version: '7.0')
+        end
+
+        it 'does nothing' do
+          expect(resource).to do_nothing
+        end
+
+        it 'PostgreSQL last package is a string' do
+          chef_run
+          expect(last_package).to be_a(String)
+        end
+
+        it 'subscribes to package' do
+          expect(resource)
+            .to subscribe_to("package[#{last_package}]").on(:run).immediately
+        end
+
+        it 'notifies the fix resource' do
+          expect(resource)
+            .to notify('execute[Set locale and Create cluster]').to(:run)
+            .immediately
+        end
+      end # context on Debian
+
+      context 'on CentOS' do
+        let(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'centos', version: '6.0')
+        end
+
+        it 'does not exists' do
+          expect(resource).to be_nil
+        end
+      end # context on CentOS
+    end # context Fix postgresql#249
+
     context 'on Chef Solo' do
       let(:chef_runner) { ChefSpec::SoloRunner.new }
 

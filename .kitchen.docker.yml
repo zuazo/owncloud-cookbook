@@ -35,6 +35,15 @@ suites:
   - ubuntu-14.04
   # bash[default :create initial records] timeout:
   - ubuntu-15.04
+- name: postgresql
+  run_list: recipe[owncloud_test::postgresql]
+  excludes:
+  # PostgreSQL >= 9 required
+  - centos-6
+  # Package: No candidate version available for postgresql-client-9.3
+  - ubuntu-15.04
+  # /etc/sysconfig/network: No such file or directory
+  - scientific-6.6
 - name: sqlite
   run_list: recipe[owncloud_test::sqlite]
 - name: nginx

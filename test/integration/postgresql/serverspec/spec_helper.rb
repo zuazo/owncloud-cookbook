@@ -19,7 +19,7 @@
 
 require 'serverspec'
 require 'infrataster/rspec'
-require 'infrataster-plugin-pgsql'
+# require 'infrataster-plugin-pgsql'
 
 # Set backend type
 set :backend, :exec

@@ -27,10 +27,10 @@ The following platforms are tested with Test Kitchen:
 | CentOS 6          | ✔ (travis) |            | ✔ (travis) |            |
 | CentOS 7          | ✔          | ✔          | ✔          | ✔          |
 | Debian 6          | ✔          |            | ✔          | ✔          |
-| Debian 7          | ✔ (travis) |            | ✔ (travis) | ✔ (travis) |
-| Debian 8          | ✔ (travis) |            | ✔ (travis) | ✔ (travis) |
-| Ubuntu 12.04      | ✔          |            | ✔ (travis) | ✔          |
-| Ubuntu 14.04      | ✔          |            | ✔ (travis) | ✔          |
+| Debian 7          | ✔ (travis) | ✔ (travis) | ✔ (travis) | ✔ (travis) |
+| Debian 8          | ✔ (travis) | ✔ (travis) | ✔ (travis) | ✔ (travis) |
+| Ubuntu 12.04      | ✔          | ✔ (travis) | ✔ (travis) | ✔          |
+| Ubuntu 14.04      | ✔          | ✔ (travis) | ✔ (travis) | ✔          |
 | Ubuntu 15.04      | ✔          |            | ✔ (travis) | ✔          |
 | Scientifi Linux 6 | ✔ (travis) |            | ✔ (travis) |            |
 
@@ -379,20 +379,7 @@ Read the [`chef-encrypted-attributes` gem documentation](http://onddo.github.io/
 PostgreSQL Support
 ==================
 
-ownCloud with PostgreSQL may not work properly on some platforms: See for example [`postgresql` cookbook issue #249](https://github.com/hw-cookbooks/postgresql/issues/249). [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/owncloud-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
-
-## PostgreSQL Support on Debian and Ubuntu
-
-Due to [`postgresql` cookbook issue #108](https://github.com/hw-cookbooks/postgresql/issues/108), you should configure your system locale correctly for PostgreSQL to work. You can use the `locale` cookbook to fix this. For example:
-
-```ruby
-ENV['LANGUAGE'] = ENV['LANG'] = node['locale']['lang']
-ENV['LC_ALL'] = node['locale']['lang']
-include_recipe 'locale'
-# ...
-node.default['owncloud']['config']['dbtype'] = 'pgsql'
-include_recipe 'owncloud'
-```
+ownCloud with PostgreSQL may not work properly on some platforms. [Any feedback you can provide regarding the PostgreSQL support](https://github.com/zuazo/owncloud-cookbook/issues/new?title=PostgreSQL%20Support) will be greatly appreciated.
 
 ## PostgreSQL Versions `< 9.3`
 

@@ -28,7 +28,6 @@ description 'This cookbook is used with test-kitchen to test the parent, '\
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.1.0'
 
-depends 'locale', '~> 1.0'
 depends 'netstat', '~> 0.1.0' # Required to run integration tests with Docker
 depends 'nokogiri', '~> 0.1.4'
 depends 'owncloud'

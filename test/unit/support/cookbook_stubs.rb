@@ -43,7 +43,9 @@ if defined?(ChefSpec)
       "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{db_name} "\
       "| grep '^ plpgsql$'"
     ).and_return(false)
+
     stub_command('ls /recovery.conf').and_return(false)
+    stub_command('ls /var/lib/pgsql/data/recovery.conf').and_return(true)
     stub_command('ls /var/lib/postgresql/9.1/main/recovery.conf')
       .and_return(true)
   end

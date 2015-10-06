@@ -193,6 +193,19 @@ when 'pgsql'
       node.save
     end
 
+    # Fix issue: https://github.com/hw-cookbooks/postgresql/issues/249
+    if node['postgresql']['server']['packages'].is_a?(Array) &&
+       platform_family?('debian')
+      pgsql_last_package = node['postgresql']['server']['packages'].last
+
+      ruby_block 'Fix postgresql#249' do
+        block {}
+        subscribes :run, "package[#{pgsql_last_package}]", :immediately
+        notifies :run, 'execute[Set locale and Create cluster]', :immediately
+        action :nothing
+      end
+    end
+
     include_recipe 'postgresql::server'
     include_recipe 'database::postgresql'
 

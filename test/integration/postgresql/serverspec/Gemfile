@@ -6,4 +6,4 @@ source 'https://rubygems.org'
 
 gem 'serverspec', '~> 2.0'
 gem 'infrataster', '~> 0.2.0'
-gem 'infrataster-plugin-pgsql', '~> 0.1.0'
+# gem 'infrataster-plugin-pgsql', '~> 0.1.0'
