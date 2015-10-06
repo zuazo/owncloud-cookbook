@@ -34,6 +34,8 @@ The following platforms are tested with Test Kitchen:
 | Ubuntu 15.04       | ✔          |            | ✔ (travis) | ✔          |
 | Scientific Linux 6 | ✔ (travis) |            | ✔ (travis) |            |
 
+Please, [let me know](https://github.com/zuazo/owncloud-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.
+
 ## Required Cookbooks
 
 * [apache2](https://supermarket.chef.io/cookbooks/apache2/)
