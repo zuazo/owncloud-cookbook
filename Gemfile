@@ -15,6 +15,9 @@ end
 group :test do
   gem 'rake'
   gem 'berkshelf', '~> 3.3'
+  # gems/faraday-0.9.1/lib/faraday.rb:189:in `lookup_middleware': :gzip is not
+  # registered on Faraday::Response (Faraday::Error):
+  gem 'ridley', '~> 4.2.0'
 end
 
 group :style do
