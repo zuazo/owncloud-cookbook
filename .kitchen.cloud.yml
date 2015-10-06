@@ -1,6 +1,6 @@
 ---
 driver:
-  ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['EC2_SSH_KEY_PATH'] : nil %>
+  ssh_key: <%= ENV['SSH_AGENT_PID'].nil? ? ENV['SSH_KEY_PATH'] : nil %>
 
 provisioner:
   name: chef_solo

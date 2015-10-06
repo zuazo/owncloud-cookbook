@@ -12,7 +12,7 @@ ownCloud Cookbook
 Requirements
 ============
 
-## Platform:
+## Supported Platforms
 
 * CentOS
 * Debian
@@ -34,22 +34,21 @@ The following platforms are tested with Test Kitchen:
 | Ubuntu 15.04       | ✔          |            | ✔ (travis) | ✔          |
 | Scientific Linux 6 | ✔ (travis) |            | ✔ (travis) |            |
 
-## Cookbooks:
+## Required Cookbooks
 
-* apache2
-* apt
-* cron
-* database
-* encrypted_attributes
-* mysql
-* nginx
-* openssl
-* php
-* php-fpm
-* postfix
-* postgresql
-* ssl_certificate
-* yum-webtatic
+* [apache2](https://supermarket.chef.io/cookbooks/apache2/)
+* [apt](https://supermarket.chef.io/cookbooks/apt/)
+* [cron](https://supermarket.chef.io/cookbooks/cron/)
+* [database](https://supermarket.chef.io/cookbooks/database/)
+* [encrypted_attributes](https://supermarket.chef.io/cookbooks/encrypted_attributes/)
+* [mysql](https://supermarket.chef.io/cookbooks/mysql/)
+* [nginx](https://supermarket.chef.io/cookbooks/nginx/)
+* [openssl](https://supermarket.chef.io/cookbooks/openssl/)
+* [php](https://supermarket.chef.io/cookbooks/php/)
+* [php-fpm](https://supermarket.chef.io/cookbooks/php-fpm/)
+* [postfix](https://supermarket.chef.io/cookbooks/postfix/)
+* [postgresql](https://supermarket.chef.io/cookbooks/postgresql/)
+* [ssl_certificate](https://supermarket.chef.io/cookbooks/ssl_certificate/)
 
 ## Required Applications
 
@@ -138,7 +137,7 @@ Usage
 
 Add `recipe[owncloud]` to your node's run list or role, or include it in another cookbook.
 
-The back-end database will be [MySQL](http://www.mysql.com/) by default, but [PostgreSQL](http://www.postgresql.org/) and [SQLite](http://www.sqlite.org/) databases can aslo be used. Database type can be set on `node['owncloud']['config']['dbtype']`, supported values are `mysql`, `pgsql` and `sqlite`.
+The back-end database will be [MySQL](http://www.mysql.com/) by default, but [PostgreSQL](http://www.postgresql.org/) and [SQLite](http://www.sqlite.org/) databases can also be used. Database type can be set on `node['owncloud']['config']['dbtype']`, supported values are `mysql`, `pgsql` and `sqlite`.
 
 On the first run, several passwords will be automatically generated and stored in the node:
 
@@ -154,7 +153,7 @@ By default ownCloud cookbook relies on a local *Postfix* installation to send em
 
 ## Examples
 
-### Basic owncloud role
+### Basic ownCloud Role
 
 ```ruby
 name 'owncloud'
@@ -169,7 +168,7 @@ run_list(
 )
 ```
 
-### Using remote SMTP server
+### Using Remote SMTP Server
 
 In this example an [Amazon Simple Email Service](http://aws.amazon.com/ses/) account is used to send emails.
 
@@ -218,7 +217,7 @@ run_list(
 
 ## The HTTPS Certificate
 
-OwnCloud will accept HTTPS requests when `node['owncloud']['ssl']` is set to `true`. By default the cookbook will create a self-signed certificate, but a custom one can also be used.
+ownCloud will accept HTTPS requests when `node['owncloud']['ssl']` is set to `true`. By default the cookbook will create a self-signed certificate, but a custom one can also be used.
 
 The custom certificate can be read from several sources:
 
@@ -237,7 +236,7 @@ include_recipe 'owncloud'
 
 See the [`ssl_certificate` namespace documentation](https://supermarket.chef.io/cookbooks/ssl_certificate#namespaces) for more information.
 
-### Custom HTTPS certificate from an Attribute
+### Custom HTTPS Certificate from an Attribute
 
 ```ruby
 name 'owncloud_ssl_attribute'
@@ -261,7 +260,7 @@ run_list(
 )
 ```
 
-### Custom HTTPS certificate from a Data Bag
+### Custom HTTPS Certificate from a Data Bag
 
 ```ruby
 name 'owncloud_ssl_data_bag'
@@ -292,7 +291,7 @@ run_list(
 )
 ```
 
-### Custom HTTPS certificate from Chef Vault
+### Custom HTTPS Certificate from Chef Vault
 
 ```ruby
 name 'owncloud_ssl_chef_vault'
@@ -320,9 +319,9 @@ run_list(
 )
 ```
 
-### Custom HTTPS certificate from file
+### Custom HTTPS Certificate from File
 
-This is usefull if you create the certificate on another cookbook.
+This is useful if you create the certificate on another cookbook.
 
 ```ruby
 name 'owncloud_ssl_file'
@@ -346,14 +345,14 @@ run_list(
 )
 ```
 
-Upgrading application
-=====================
+Upgrading the Application
+=========================
 
 If new owncloud version is released and you has notified in web user interface about update available, then you must re-run chef-client on owncloud server.
 
 Cookbook recipes will download latest release version and install it to server.
 
-Then you must proceed with update in web interface and system will be updated.
+Then you must proceed with update in the web interface and the system will be updated.
 
 Encrypted Attributes
 ====================
@@ -385,53 +384,47 @@ ownCloud with PostgreSQL may not work properly on some platforms. [Any feedback 
 
 If you are using PostgreSQL version `< 9.3`, you may need to adjust the `shmmax` and `shmall` kernel parameters to configure the shared memory. You can see [the example used for the integration tests](https://github.com/zuazo/owncloud-cookbook/tree/master/test/cookbooks/owncloud_test/recipes/postgresql_memory.rb).
 
+Deploy with Docker
+==================
+
+You can use the *Dockerfile* included in the [cookbook source code](https://github.com/zuazo/owncloud-cookbook) to run the cookbook inside a container:
+
+    $ docker build -t chef-owncloud .
+    $ docker run -ti chef-owncloud
+
+The sample *Dockerfile*:
+
+```Dockerfile
+FROM zuazo/chef-local:debian-7
+
+COPY . /tmp/owncloud
+RUN berks vendor -b /tmp/owncloud/Berksfile $COOKBOOK_PATH
+RUN chef-client -r "recipe[owncloud]"
+
+EXPOSE 80
+
+CMD ["apache2", "-D", "FOREGROUND"]
+```
+
+See the [chef-local container documentation](https://hub.docker.com/r/zuazo/chef-local/) for more examples.
+
 Testing
 =======
 
-## Requirements
-
-You must have VirtualBox(https://www.virtualbox.org/) and Vagrant(http://www.vagrantup.com/) installed.
-
-Install gem dependencies with bundler:
-
-```bash
-$ gem install bundler
-$ bundle install
-```
-
-## Running the tests
-
-```bash
-$ bundle exec kitchen test
-```
-
-### Running the tests in the cloud
-
-You can run the tests in the cloud instead of using vagrant. First, you must set the following environment variables:
-
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-* `AWS_KEYPAIR_NAME`: EC2 SSH public key name. This is the name used in Amazon EC2 Console's Key Pairs section.
-* `EC2_SSH_KEY_PATH`: EC2 SSH private key local full path. Only when you are not using an SSH Agent.
-* `DIGITAL_OCEAN_CLIENT_ID`
-* `DIGITAL_OCEAN_API_KEY`
-* `DIGITAL_OCEAN_SSH_KEY_IDS`: DigitalOcean SSH numeric key IDs.
-* `DIGITAL_OCEAN_SSH_KEY_PATH`: DigitalOcean SSH private key local full path. Only when you are not using an SSH Agent.
-
-Then, you must configure test-kitchen to use `.kitchen.cloud.yml` configuration file:
-
-    $ export KITCHEN_LOCAL_YAML='.kitchen.cloud.yml'
-    $ bundle exec kitchen test
+See [TESTING.md](https://github.com/zuazo/owncloud-cookbook/blob/master/TESTING.md).
 
 Contributing
 ============
 
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write you change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
+Please do not hesitate to [open an issue](https://github.com/zuazo/owncloud-cookbook/issues/new) with any questions or problems.
+
+See [CONTRIBUTING.md](https://github.com/zuazo/owncloud-cookbook/blob/master/CONTRIBUTING.md).
+
+TODO
+====
+
+See [TODO.md](https://github.com/zuazo/owncloud-cookbook/blob/master/TODO.md).
+
 
 License and Author
 ==================
@@ -442,7 +435,7 @@ License and Author
 | **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@zuazo.org>)
 | **Contributor:**     | [Nacer Laradji](https://github.com/laradji)
 | **Contributor:**     | [LEDfan](https://github.com/LEDfan)
-| **Contributor:**     | [avsh](https://github.com/avsh)
+| **Contributor:**     | [@avsh](https://github.com/avsh)
 | **Contributor:**     | [@cvl-skubriev](https://github.com/cvl-skubriev)
 | **Contributor:**     | [Michael Sprauer](https://github.com/MichaelSp)
 | **Copyright:**       | Copyright (c) 2015, Xabier de Zuazo
