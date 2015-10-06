@@ -18,12 +18,32 @@
 #
 
 if defined?(ChefSpec)
+  # ChefSpec stubs for `apache2` cookbook.
+  #
+  # @return void
+  # @example
+  #   describe 'mycookbook::default' do
+  #     let(:chef_runner) { ChefSpec::SoloRunner.new }
+  #     let(:chef_run) { chef_runner.converge(described_recipe) }
+  #     before { stub_apache2_cookbook }
+  #     # [...]
+  #   end
   def stub_apache2_cookbook
     stub_command('/usr/sbin/apache2 -t').and_return(true)
     stub_command('/usr/sbin/httpd -t').and_return(true)
     stub_command('which php').and_return(true)
   end
 
+  # ChefSpec stubs for `php-fpm` cookbook.
+  #
+  # @return void
+  # @example
+  #   describe 'mycookbook::default' do
+  #     let(:chef_runner) { ChefSpec::SoloRunner.new }
+  #     let(:chef_run) { chef_runner.converge(described_recipe) }
+  #     before { stub_php_fpm_cookbook }
+  #     # [...]
+  #   end
   def stub_php_fpm_cookbook
     stub_command(
       'test -d /etc/php5/fpm/pool.d || mkdir -p /etc/php5/fpm/pool.d'
@@ -32,12 +52,32 @@ if defined?(ChefSpec)
       .and_return(true)
   end
 
+  # ChefSpec stubs for `nginx` cookbook.
+  #
+  # @return void
+  # @example
+  #   describe 'mycookbook::default' do
+  #     let(:chef_runner) { ChefSpec::SoloRunner.new }
+  #     let(:chef_run) { chef_runner.converge(described_recipe) }
+  #     before { stub_nginx_cookbook }
+  #     # [...]
+  #   end
   def stub_nginx_cookbook
     stub_php_fpm_cookbook
     stub_command('which nginx').and_return(true)
     allow(::File).to receive(:symlink?).and_call_original
   end
 
+  # ChefSpec stubs for `postgresql` cookbook.
+  #
+  # @return void
+  # @example
+  #   describe 'mycookbook::default' do
+  #     let(:chef_runner) { ChefSpec::SoloRunner.new }
+  #     let(:chef_run) { chef_runner.converge(described_recipe) }
+  #     before { stub_postgresql_cookbook }
+  #     # [...]
+  #   end
   def stub_postgresql_cookbook
     stub_command(
       "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{db_name} "\
@@ -50,6 +90,16 @@ if defined?(ChefSpec)
       .and_return(true)
   end
 
+  # ChefSpec stubs for `postfix` cookbook.
+  #
+  # @return void
+  # @example
+  #   describe 'mycookbook::default' do
+  #     let(:chef_runner) { ChefSpec::SoloRunner.new }
+  #     let(:chef_run) { chef_runner.converge(described_recipe) }
+  #     before { stub_postfix_cookbook }
+  #     # [...]
+  #   end
   def stub_postfix_cookbook
     stub_command(
       '/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix'

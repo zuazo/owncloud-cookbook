@@ -1,0 +1,26 @@
+files:
+  included:
+    - Berksfile
+    - Gemfile
+    - Guardfile
+    - Rakefile
+    - attributes/*.rb
+    - definitions/*.rb
+    - libraries/*.rb
+    - providers/*.rb
+    - recipes/*.rb
+    - resources/*.rb
+    - templates/**/*.rb
+    - spec/**/*.rb
+    - test/**/*.rb
+    - metatada.rb
+    - Gemfile
+    - Rakefile
+    - Capfile
+    - Guardfile
+    - Podfile
+    - Thorfile
+    - Vagrantfile
+    - Berksfile
+    - Cheffile
+    - Vagabondfile

@@ -1,0 +1,5 @@
+--markup markdown
+--no-private
+'*/**/*.rb'
+-
+*.md

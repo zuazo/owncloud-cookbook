@@ -6,6 +6,7 @@ ownCloud Cookbook
 [![Code Climate](http://img.shields.io/codeclimate/github/zuazo/owncloud-cookbook.svg?style=flat)](https://codeclimate.com/github/zuazo/owncloud-cookbook)
 [![Build Status](http://img.shields.io/travis/zuazo/owncloud-cookbook.svg?style=flat)](https://travis-ci.org/zuazo/owncloud-cookbook)
 [![Coverage Status](http://img.shields.io/coveralls/zuazo/owncloud-cookbook.svg?style=flat)](https://coveralls.io/r/zuazo/owncloud-cookbook?branch=master)
+[![Inline docs](http://inch-ci.org/github/zuazo/owncloud-cookbook.svg?branch=master&style=flat)](http://inch-ci.org/github/zuazo/owncloud-cookbook)
 
 [Chef](https://www.chef.io/) cookbook to install and configure [ownCloud](http://owncloud.org/), an open source personal cloud for data and file sync, share and view.
 

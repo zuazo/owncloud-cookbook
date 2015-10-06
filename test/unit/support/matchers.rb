@@ -18,6 +18,11 @@
 #
 
 if defined?(ChefSpec)
+  # ChefSpec matcher for MySQL services `:start` action.
+  #
+  # @return void
+  # @example
+  #   expect(chef_run).to start_mysql_service('default')
   def start_mysql_service(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(
       :mysql_service, :start, resource_name
