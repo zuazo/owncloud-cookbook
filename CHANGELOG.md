@@ -62,7 +62,7 @@ include_recipe 'owncloud'
 
 ### Documentation Changes on master
 
-* Document all the libraries ([#42339d7](https://github.com/zuazo/owncloud-cookbook/commit/42339d70dd3f96e1d1673d143a99293325878a03)).
+* Document all the libraries ([#42339d7](https://github.com/zuazo/owncloud-cookbook/commit/42339d70dd3f96e1d1673d143a99293325878a03), [#c70544e](https://github.com/zuazo/owncloud-cookbook/commit/c70544e772960b29570f2108c6fb3e1aa86d6d7c)).
 * metadata:
   * Improve cookbook description ([#843fcb4](https://github.com/zuazo/owncloud-cookbook/commit/843fcb47ec439da33ee0ec5ea82820f7fd18cdc5)).
   * Add `source_url` and `issues_url` links ([#e43ddf2](https://github.com/zuazo/owncloud-cookbook/commit/e43ddf258c58a6b2a5a01bdedde072a7229c6f82)).
