@@ -2,13 +2,13 @@
 
 This file is used to list changes made in each version of `owncloud`.
 
-## master (unreleased)
+## v1.0.0 (2015-10-08)
 
 ### Upgrading from a `0.x.y` Cookbook Release
 
 ***Note:*** Please do this with caution. Make a full backup before upgrading.
 
-If you want to upgrade the cookbook version from a `0.x` release, you should change the MySQL data directory path to the old one (or migrate the database by hand):
+If you want to upgrade the cookbook version from a `0.x` release, you should change the MySQL data directory to the old path (or migrate the database by hand):
 
 ```ruby
 node.default['owncloud']['mysql']['data_dir'] = '/var/lib/mysql'
@@ -16,7 +16,7 @@ node.default['owncloud']['mysql']['data_dir'] = '/var/lib/mysql'
 include_recipe 'owncloud'
 ```
 
-### Breaking Changes on master
+### Breaking Changes on v1.0.0
 
 * Use [`mysql`](https://supermarket.chef.io/cookbooks/mysql) cookbook version `6` ([issue #21](https://github.com/zuazo/owncloud-cookbook/pull/21), thanks [@avsh](https://github.com/avsh)) ([#bd4eba9](https://github.com/zuazo/owncloud-cookbook/commit/bd4eba9d26186baa3d3033b52449aedbf62e4bf8), [#22a2a4f](https://github.com/zuazo/owncloud-cookbook/commit/22a2a4f3fa9d6bd26598324298e6e9effa086b8a), [#f686605](https://github.com/zuazo/owncloud-cookbook/commit/f686605339db550a249bd79f8a8c306c9938617d), [#33a393c](https://github.com/zuazo/owncloud-cookbook/commit/33a393cf871c489d8282338e4fe8e0e71da9760c), [#f7d467d](https://github.com/zuazo/owncloud-cookbook/commit/f7d467db71082f4e4f465bac271f2f3434815052), [#0e63402](https://github.com/zuazo/owncloud-cookbook/commit/0e63402b8a059c449d67591a43ae26e832088bb9), [#5f04c62](https://github.com/zuazo/owncloud-cookbook/commit/5f04c622da3990cb25c04c7666fd9961d90ce21d), [#778211d](https://github.com/zuazo/owncloud-cookbook/commit/778211d22afb9c8a56123ae86438ddb4903b0d68)).
 * Requires **Chef `11.14.2`**.
@@ -26,7 +26,7 @@ include_recipe 'owncloud'
   * Debian `6`.
   * CentOS `6`.
 
-### New Features on master
+### New Features on v1.0.0
 
 * Add Ubuntu `15.04` support ([#eb328b6](https://github.com/zuazo/owncloud-cookbook/commit/eb328b6b50cf8083d93225e05aa8fac8ed7e58fe), [#2d42783](https://github.com/zuazo/owncloud-cookbook/commit/2d427837099db02bd332b2bbb5ad5d15525a5e3e), [#d43a45b](https://github.com/zuazo/owncloud-cookbook/commit/d43a45b2c120c3f3e764ae40e7ad390b0dc9f5bc)).
 * Add Scientific Linux support ([#f91ce0a](https://github.com/zuazo/owncloud-cookbook/commit/f91ce0a8d4cb3dd612b170d111e0002a1b1bfb55)).
@@ -38,13 +38,13 @@ include_recipe 'owncloud'
 * Move packages to install to node attributes ([#17af639](https://github.com/zuazo/owncloud-cookbook/commit/17af6394a5f3780a9c82ef59496fd09be4f915a9)).
 * Add a Dockerfile ([#489e379](https://github.com/zuazo/owncloud-cookbook/commit/489e379d0ae652ae1fb6ba70e52388ba7758a503)).
 
-### Fixes on master
+### Fixes on v1.0.0
 
 * Install crontab: Fixes a CentOS error ([#7181d5a](https://github.com/zuazo/owncloud-cookbook/commit/7181d5a8a5d9f52b04ed39e509176e82fb3d5eb9)).
 * `OwncloudCookbook::Config` library: Escape JSON backslash and quotes for PHP ([#4941aea](https://github.com/zuazo/owncloud-cookbook/commit/4941aea170398190e83cdd103d7a012eb335c341)).
 * Fix `postgresql_database_user[owncloud]` resource duplication ([#70e48e6](https://github.com/zuazo/owncloud-cookbook/commit/70e48e691d207cd575f32369579064deb917fa10)).
 
-### Improvements on master
+### Improvements on v1.0.0
 
 * Remove `#deep_to_hash` method (requires Chef `11.12`) ([#cadff9e](https://github.com/zuazo/owncloud-cookbook/commit/cadff9e7d193a8a47f1c560df469605ba043a154)).
 * Use `fail` instead of `Chef::Application.fatal!` ([#2fcf112](https://github.com/zuazo/owncloud-cookbook/commit/2fcf1124255e649377b044b6ff56c2c76340d771)).
@@ -60,7 +60,7 @@ include_recipe 'owncloud'
 * Improve disabling nginx default site ([#8df835f](https://github.com/zuazo/owncloud-cookbook/commit/8df835f71e17e2e45b55acddf06ce2ef2a76b787)).
 * Improve PostgreSQL support on Debian platform family ([#22d7d2c](https://github.com/zuazo/owncloud-cookbook/commit/22d7d2c836f0fec13489aacc9ec0101178985027), [#bc40c7f](https://github.com/zuazo/owncloud-cookbook/commit/bc40c7f1cb25ec9c82ac700817ac9d5087c81b5e)).
 
-### Documentation Changes on master
+### Documentation Changes on v1.0.0
 
 * Document all the libraries ([#42339d7](https://github.com/zuazo/owncloud-cookbook/commit/42339d70dd3f96e1d1673d143a99293325878a03), [#c70544e](https://github.com/zuazo/owncloud-cookbook/commit/c70544e772960b29570f2108c6fb3e1aa86d6d7c)).
 * metadata:
@@ -83,7 +83,7 @@ include_recipe 'owncloud'
 * Add LICENSE file ([#f5189ae](https://github.com/zuazo/owncloud-cookbook/commit/f5189ae1792fcaab16a3daa05e7fe944d90c7dcc)).
 * Add license headers ([#93a2c71](https://github.com/zuazo/owncloud-cookbook/commit/93a2c710ff5fb0301763a332414b32c1af1f2c61)).
 
-### Changes on Tests on master
+### Changes on Tests on v1.0.0
 
 * Add ChefSpec unit tests ([#f3ec28e](https://github.com/zuazo/owncloud-cookbook/commit/f3ec28e2516019b93f6fd46eb0ba1ff89fae157e), [#44de096](https://github.com/zuazo/owncloud-cookbook/commit/44de0962b42118688651fff5b6fafd2dcd2f11fb), [#cf68608](https://github.com/zuazo/owncloud-cookbook/commit/cf68608bcf450b9d0ca362dab669778055b5cf00), [#bee15cc](https://github.com/zuazo/owncloud-cookbook/commit/bee15cc1e32c9584a5e8b231979aabb3973368d6), [#e0445b6](https://github.com/zuazo/owncloud-cookbook/commit/e0445b6e995dc40a7e489c8ff7ea6acf58cdc8f9), [#244a729](https://github.com/zuazo/owncloud-cookbook/commit/244a7295ebf0b9aa318ab9ae81db7517a0eb8f3d), [#7110fa7](https://github.com/zuazo/owncloud-cookbook/commit/7110fa7d3d776d69eb52ed2080ee7c117d21e2c4)).
 * Add RSpec unit tests to the `OwncloudCookbook::Config` library ([#807e9dc](https://github.com/zuazo/owncloud-cookbook/commit/807e9dce95bec3c1c034c38e7606a8c0e4f8124a)).
