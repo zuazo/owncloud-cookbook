@@ -32,6 +32,9 @@ module OwncloudCookbook
   #   c.merge(node['owncloud']['config'])
   #   c.write
   class Config
+    # ownCloud configuration values hash.
+    #
+    # @private
     attr_reader :options
 
     # OwncloudCookbook::Config constructor.

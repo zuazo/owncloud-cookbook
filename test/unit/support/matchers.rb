@@ -20,6 +20,7 @@
 if defined?(ChefSpec)
   # ChefSpec matcher for MySQL services `:start` action.
   #
+  # @param resource_name [String] Chef resource name.
   # @return void
   # @example
   #   expect(chef_run).to start_mysql_service('default')

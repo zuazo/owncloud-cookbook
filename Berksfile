@@ -12,6 +12,9 @@ my_cookbook = 'owncloud'
 # @param name [String] cookbook name.
 # @param version [String] cookbook version requirement.
 # @param options [Hash] #cookbook method options.
+# @example
+#   cookbook 'apt'
+#   cookbook 'apt', '~> 2.8'
 # return void
 def local_cookbook(name, version = '>= 0.0.0', options = {})
   cookbook(name, version, {

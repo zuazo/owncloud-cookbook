@@ -19,6 +19,12 @@
 # limitations under the License.
 #
 
+# Query system configuration variables.
+#
+# @param var [String] variable name.
+# @return [String] variable value.
+# @example
+#   getconf('PAGE_SIZE') #=> 4096
 def getconf(var)
   cmd = Mixlib::ShellOut.new("getconf #{var}").run_command
   cmd.error!

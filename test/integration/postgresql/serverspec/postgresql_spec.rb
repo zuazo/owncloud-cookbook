@@ -20,6 +20,11 @@
 require_relative 'spec_helper'
 require 'json'
 
+# Checks if we are on CentOS.
+#
+# @return [Boolean] whether we are in CentOS.
+# @example
+#   centos? #=> true
 def centos?
   File.exist?('/etc/centos-release')
 end
