@@ -406,7 +406,7 @@ execute 'run owncloud setup' do
   cwd node['owncloud']['dir']
   command(
     "sudo -u '#{node[web_server]['user']}' php -f index.php "\
-    '| { ! grep -iA2 -e error -e failed; }'
+    '| { ! grep -iA2 -e error -e failed -e "No database drivers"; }'
   )
   action :nothing
 end
