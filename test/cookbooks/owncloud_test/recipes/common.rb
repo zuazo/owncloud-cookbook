@@ -28,13 +28,13 @@ package 'wget'
 include_recipe 'owncloud'
 
 template 'emailtest.php' do
-  if Chef::VersionConstraint.new('< 8.1').include?(node['owncloud']['version'])
+  if node['owncloud']['version'] != 'latest' &&
+     Chef::VersionConstraint.new('< 8.1').include?(node['owncloud']['version'])
     source 'emailtest.php.erb'
   else
     source 'emailtest-8.1.php.erb'
   end
   path ::File.join(node['owncloud']['dir'], 'emailtest.php')
-  source 'emailtest.php.erb'
   mode 00644
 end
 
